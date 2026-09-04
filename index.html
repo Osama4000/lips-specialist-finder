@@ -16,7 +16,11 @@
     <div class="bg-white p-5 rounded-xl shadow space-y-3 border border-slate-200">
       <label class="block text-xs font-bold text-slate-600 uppercase">Patient Symptoms</label>
       <textarea id="symptoms" rows="3" placeholder="Describe symptoms (e.g. knee pain, swelling when walking)..." class="w-full border rounded p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
-      <button onclick="search()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded text-sm transition">FIND SPECIALIST</button>
+      <button id="searchBtn" onclick="search()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded text-sm transition">FIND SPECIALIST</button>
+    </div>
+
+    <div id="emergencyBanner" class="hidden bg-red-100 border-l-4 border-red-600 p-4 rounded text-red-800 text-sm font-semibold">
+      ⚠️ EMERGENCY WARNING: Symptoms indicate a potential medical emergency. Immediate medical attention or emergency services (999/111) recommended.
     </div>
 
     <div id="results" class="hidden space-y-4">
@@ -35,44 +39,69 @@
 
   <script>
     async function checkDb() {
-      const res = await fetch('/api/db-status');
-      const data = await res.json();
-      document.getElementById('dbBadge').innerText = `${data.count} Doctors Available`;
+      try {
+        const res = await fetch('/api/db-status');
+        const data = await res.json();
+        document.getElementById('dbBadge').innerText = `${data.count} Doctors Available`;
+      } catch (e) {
+        document.getElementById('dbBadge').innerText = 'Database Offline';
+      }
     }
 
     async function search() {
       const symptoms = document.getElementById('symptoms').value.trim();
       if (!symptoms) return alert("Please enter symptoms.");
 
-      const res = await fetch('/api/find-specialist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symptoms })
-      });
+      const btn = document.getElementById('searchBtn');
+      btn.disabled = true;
+      btn.innerText = "Analyzing Symptoms...";
 
-      const data = await res.json();
-      if (!res.ok) return alert(data.detail || "Search failed");
+      try {
+        const res = await fetch('/api/find-specialist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symptoms })
+        });
 
-      document.getElementById('spec').innerText = data.recommendation.recommended_specialty;
-      document.getElementById('subspec').innerText = data.recommendation.recommended_sub_specialty;
-      document.getElementById('conf').innerText = `Confidence: ${data.recommendation.confidence}`;
-      document.getElementById('reason').innerText = data.recommendation.reason;
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Search failed");
 
-      const list = document.getElementById('docsList');
-      list.innerHTML = '';
-      data.doctors.forEach(d => {
-        list.innerHTML += `
-          <div class="bg-white p-3 rounded-lg shadow border flex justify-between items-center text-xs">
-            <div>
-              <strong class="text-sm block">${d.name}</strong>
-              <span class="text-blue-600 font-medium">${d.specialty}</span>
-            </div>
-            <a href="${d.profile_url}" target="_blank" class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded font-bold border border-blue-200">View Profile ↗</a>
-          </div>
-        `;
-      });
+        if (data.recommendation.is_emergency) {
+          document.getElementById('emergencyBanner').classList.remove('hidden');
+        } else {
+          document.getElementById('emergencyBanner').classList.add('hidden');
+        }
 
-      document.getElementById('results').classList.remove('hidden');
+        document.getElementById('spec').innerText = data.recommendation.recommended_specialty;
+        document.getElementById('subspec').innerText = data.recommendation.recommended_sub_specialty || "General";
+        document.getElementById('conf').innerText = `Confidence: ${data.recommendation.confidence}`;
+        document.getElementById('reason').innerText = data.recommendation.reason;
+
+        const list = document.getElementById('docsList');
+        list.innerHTML = '';
+        if (data.doctors.length === 0) {
+          list.innerHTML = '<p class="text-xs text-slate-500 bg-white p-3 rounded shadow">No specific matching doctors found for this recommendation in the database.</p>';
+        } else {
+          data.doctors.forEach(d => {
+            list.innerHTML += `
+              <div class="bg-white p-3 rounded-lg shadow border flex justify-between items-center text-xs">
+                <div>
+                  <strong class="text-sm block">${d.name}</strong>
+                  <span class="text-blue-600 font-medium">${d.specialty}</span>
+                </div>
+                <a href="${d.profile_url}" target="_blank" class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded font-bold border border-blue-200">View Profile ↗</a>
+              </div>
+            `;
+          });
+        }
+
+        document.getElementById('results').classList.remove('hidden');
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "FIND SPECIALIST";
+      }
     }
 
     checkDb();

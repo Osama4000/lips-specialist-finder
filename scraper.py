@@ -1,25 +1,22 @@
 import json
-import asyncio
 import re
-from playwright.async_api import async_playwright
+import urllib.request
 from bs4 import BeautifulSoup
 
 LIPS_SPECIALISTS_URL = "https://lips.org.uk/our-specialists/"
 
-async def scrape_lips_doctors(output_file="doctors.json"):
+def scrape_lips_doctors_live(output_file="doctors.json"):
     doctors = []
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
-        await page.goto(LIPS_SPECIALISTS_URL, wait_until="networkidle", timeout=60000)
-        
-        for _ in range(5):
-            await page.mouse.wheel(0, 3000)
-            await page.wait_for_timeout(1000)
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+    
+    try:
+        req = urllib.request.Request(LIPS_SPECIALISTS_URL, headers=headers)
+        with urllib.request.urlopen(req, timeout=15) as response:
+            html = response.read().decode('utf-8')
             
-        content = await page.content()
-        soup = BeautifulSoup(content, "html.parser")
+        soup = BeautifulSoup(html, "html.parser")
         
+        # Find all specialist links on the main directory page
         profile_links = set()
         for a in soup.find_all("a", href=True):
             href = a['href']
@@ -30,11 +27,14 @@ async def scrape_lips_doctors(output_file="doctors.json"):
                 if clean_url.endswith("/"):
                     profile_links.add(clean_url)
 
+        # Scrape each specialist profile directly from lips.org.uk
         for url in profile_links:
             try:
-                await page.goto(url, wait_until="domcontentloaded", timeout=30000)
-                p_content = await page.content()
-                p_soup = BeautifulSoup(p_content, "html.parser")
+                p_req = urllib.request.Request(url, headers=headers)
+                with urllib.request.urlopen(p_req, timeout=10) as p_res:
+                    p_html = p_res.read().decode('utf-8')
+                    
+                p_soup = BeautifulSoup(p_html, "html.parser")
                 
                 h1 = p_soup.find("h1")
                 name = h1.text.strip() if h1 else "Unknown Specialist"
@@ -43,7 +43,7 @@ async def scrape_lips_doctors(output_file="doctors.json"):
                 description = meta_desc["content"] if meta_desc else ""
                 
                 text_blocks = [p.text.strip() for p in p_soup.find_all(["p", "li"]) if len(p.text.strip()) > 20]
-                full_text = " ".join(text_blocks[:15])
+                full_text = " ".join(text_blocks[:10]) if text_blocks else description
                 
                 specialties = []
                 for tag in p_soup.find_all(["span", "div", "a"]):
@@ -52,30 +52,29 @@ async def scrape_lips_doctors(output_file="doctors.json"):
                         "Orthopaedics", "Cardiology", "Gynaecology", "Neurology", 
                         "Gastroenterology", "Urology", "ENT", "Dermatology", 
                         "General Surgery", "Ophthalmology", "Rheumatology", "Aesthetics"
-                    ]) and len(txt) < 50:
+                    ]) and len(txt) < 40:
                         if txt not in specialties:
                             specialties.append(txt)
 
-                specialty_primary = specialties[0] if specialties else "General Medicine"
-                sub_specialties = specialties[1:] if len(specialties) > 1 else []
+                primary_spec = specialties[0] if specialties else "General Medicine"
+                sub_specs = specialties[1:] if len(specialties) > 1 else []
 
                 doctors.append({
                     "id": re.sub(r'\W+', '-', name.lower()),
                     "name": name,
                     "profile_url": url,
-                    "specialty": specialty_primary,
-                    "sub_specialties": sub_specialties,
-                    "biography": full_text[:1000]
+                    "specialty": primary_spec,
+                    "sub_specialties": sub_specs,
+                    "biography": full_text[:800]
                 })
             except Exception:
-                pass
-                
-        await browser.close()
-        
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(doctors, f, indent=2, ensure_ascii=False)
-        
-    return doctors
+                continue
 
-if __name__ == "__main__":
-    asyncio.run(scrape_lips_doctors())
+        if doctors:
+            with open(output_file, "w", encoding="utf-8") as f:
+                json.dump(doctors, f, indent=2, ensure_ascii=False)
+                
+    except Exception as e:
+        print(f"Live scrape error: {e}")
+
+    return doctors

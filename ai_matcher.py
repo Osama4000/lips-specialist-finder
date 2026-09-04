@@ -17,11 +17,12 @@ def analyze_symptoms(symptoms: str, api_key: str):
         "2. 'reasoning': string providing a 1-2 sentence explanation."
     )
 
-    # Models to attempt in order of preference
+    # Active Groq models list
     models_to_try = [
         "llama-3.3-70b-versatile",
         "llama-3.1-8b-instant",
-        "llama3-8b-8192"
+        "mixtral-8x7b-32768",
+        "gemma2-9b-it"
     ]
 
     last_error = None

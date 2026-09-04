@@ -17,10 +17,12 @@ def analyze_symptoms(symptoms: str, api_key: str):
         "2. 'reasoning': string providing a 1-2 sentence explanation."
     )
 
-    # Active free-tier Groq models
+    # Active models available on your Groq dashboard
     models_to_try = [
-        "llama-3.3-70b-versatile",
-        "llama-3.1-8b-instant"
+        "gpt-oss-120b",
+        "gpt-oss-20b",
+        "qwen-3.6-27b",
+        "qwen-3.8-27b"
     ]
 
     last_error = None

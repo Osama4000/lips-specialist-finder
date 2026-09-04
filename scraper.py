@@ -1,40 +1,41 @@
 import json
 import re
-import urllib.request
+import requests
 from bs4 import BeautifulSoup
 
-LIPS_SPECIALISTS_URL = "https://lips.org.uk/our-specialists/"
+LIPS_SPECIALISTS_URL = "https://www.lips.org.uk/our-specialists/"
 
 def scrape_lips_doctors_live(output_file="doctors.json"):
     doctors = []
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
     
     try:
-        req = urllib.request.Request(LIPS_SPECIALISTS_URL, headers=headers)
-        with urllib.request.urlopen(req, timeout=15) as response:
-            html = response.read().decode('utf-8')
-            
-        soup = BeautifulSoup(html, "html.parser")
+        response = requests.get(LIPS_SPECIALISTS_URL, headers=headers, timeout=15)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
         
-        # Find all specialist links on the main directory page
         profile_links = set()
         for a in soup.find_all("a", href=True):
             href = a['href']
-            if "/our-specialists/" in href and href not in [LIPS_SPECIALISTS_URL, "https://lips.org.uk/our-specialists"]:
+            if "/our-specialists/" in href and href not in [
+                LIPS_SPECIALISTS_URL, 
+                "https://lips.org.uk/our-specialists", 
+                "https://www.lips.org.uk/our-specialists"
+            ]:
                 if href.startswith("/"):
-                    href = "https://lips.org.uk" + href
+                    href = "https://www.lips.org.uk" + href
                 clean_url = href.split('#')[0].split('?')[0]
                 if clean_url.endswith("/"):
                     profile_links.add(clean_url)
 
-        # Scrape each specialist profile directly from lips.org.uk
         for url in profile_links:
             try:
-                p_req = urllib.request.Request(url, headers=headers)
-                with urllib.request.urlopen(p_req, timeout=10) as p_res:
-                    p_html = p_res.read().decode('utf-8')
-                    
-                p_soup = BeautifulSoup(p_html, "html.parser")
+                p_res = requests.get(url, headers=headers, timeout=10)
+                if p_res.status_code != 200:
+                    continue
+                p_soup = BeautifulSoup(p_res.text, "html.parser")
                 
                 h1 = p_soup.find("h1")
                 name = h1.text.strip() if h1 else "Unknown Specialist"

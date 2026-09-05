@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LIPS Database Administration</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<main class="shell admin-shell">
+  <header class="hero"><div class="brand-mark">LIPS</div><div><p class="eyebrow">ADMINISTRATION</p><h1>LIPS Database Administration</h1><p class="sub">Update the local dataset from the public LIPS specialist directory.</p></div></header>
+  <section class="card">
+    <label for="password">Admin password</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="ADMIN_PASSWORD">
+    <div class="actions"><button class="secondary" id="refresh">Refresh</button><button class="primary" id="update">Update from LIPS</button></div>
+  </section>
+  <section class="card progress-card">
+    <div class="progress-head"><div><span class="metric-label">Update progress</span><strong id="stage">Idle</strong></div><strong id="progress-percent">0%</strong></div>
+    <progress id="progress-bar" max="100" value="0"></progress>
+    <div class="progress-stats">
+      <span>Processed <b id="processed">0 / 0</b></span>
+      <span>Successful <b id="successful">0</b></span>
+      <span>Current failures <b id="progress-failed">0</b></span>
+      <span>Retries <b id="retry-progress">0 / 0</b></span>
+    </div>
+    <p id="progress-message" class="progress-message">Ready.</p>
+  </section>
+  <section class="card admin-grid">
+    <div><span class="metric-label">Current specialists</span><strong id="count">—</strong></div>
+    <div><span class="metric-label">Last updated</span><strong id="updated">—</strong></div>
+    <div><span class="metric-label">Discovered</span><strong id="discovered">—</strong></div>
+    <div><span class="metric-label">Specialties</span><strong id="specialties">—</strong></div>
+    <div><span class="metric-label">Failed profiles</span><strong id="failed">—</strong></div>
+    <div><span class="metric-label">Coverage gate</span><strong id="gate">—</strong></div>
+    <div><span class="metric-label">Location verified</span><strong id="location-verified">—</strong></div>
+    <div><span class="metric-label">LIPS clinic specialists</span><strong id="lips-clinic">—</strong></div>
+  </section>
+  <section id="admin-status" class="status hidden"></section>
+  <footer class="disclaimer">Only public LIPS specialist pages are crawled. Public LIPS pages only. Coverage gates preserve the previous dataset if a crawl is unexpectedly incomplete.</footer>
+</main>
+<script src="/admin.js" defer></script>
+</body></html>

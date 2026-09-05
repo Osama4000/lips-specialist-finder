@@ -1,0 +1,53 @@
+services:
+  - type: web
+    name: lips-specialist-finder
+    runtime: node
+    plan: starter
+    region: frankfurt
+    buildCommand: npm install && npx playwright install --with-deps chromium
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATA_DIR
+        value: /var/data
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: AUTO_UPDATE_ON_START
+        value: 'true'
+      - key: AUTO_UPDATE_MIN_COUNT
+        value: '120'
+      - key: AUTO_UPDATE_MAX_AGE_DAYS
+        value: '7'
+      - key: MIN_UPDATE_RECORDS
+        value: '100'
+      - key: MIN_UPDATE_SPECIALTIES
+        value: '20'
+      - key: MIN_PREVIOUS_RETENTION_RATIO
+        value: '0.85'
+      - key: MAX_API_MATCHES
+        value: '40'
+      - key: SCRAPE_CONCURRENCY
+        value: '3'
+      - key: SCRAPE_RETRY_CONCURRENCY
+        value: '2'
+      - key: DISCOVERY_STABLE_ROUNDS
+        value: '4'
+      - key: DIRECTORY_MAX_ROUNDS
+        value: '28'
+      - key: PROFILE_NAV_TIMEOUT_MS
+        value: '30000'
+      - key: PROFILE_SETTLE_MS
+        value: '250'
+      - key: PREFER_LIPS_HEALTHCARE
+        value: 'true'
+      - key: REQUIRE_READY_DIRECTORY
+        value: 'true'
+      - key: NODE_ENV
+        value: production
+    disk:
+      name: lips-data
+      mountPath: /var/data
+      sizeGB: 1

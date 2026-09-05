@@ -27,3 +27,7 @@ English-only contact-centre routing from free-text symptoms to LIPS specialty, s
 - Worker-pool concurrency/failure isolation regression tests: PASS
 
 The included specialist JSON remains a bootstrap cache. Production use requires a successful live update and `/ready` HTTP 200.
+
+## v4.0.1 Render deployment fix
+- Render deployment now uses the official Playwright Docker image so Chromium and Linux browser dependencies are preinstalled.
+- Removed `playwright install --with-deps` from Render's native Node build, which requires privileged OS package installation and fails with `su: Authentication failure`.

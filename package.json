@@ -1,0 +1,25 @@
+{
+  "name": "lips-specialist-finder",
+  "version": "5.0.0",
+  "private": true,
+  "description": "Low-memory production/demo LIPS contact-centre routing assistant with out-of-process directory refresh.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "scrape": "node scraper/cli.js",
+    "test": "node --test tests/*.test.js",
+    "update": "node scraper/cli.js",
+    "check": "node --check server.js && node --check services/router.js && node --check services/store.js && node --check scraper/lipsScraper.js && node --check public/app.js && node --check public/admin.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "5.2.1",
+    "helmet": "8.3.0"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

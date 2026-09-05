@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: lips-specialist-finder
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: AUTO_UPDATE_ON_START
+        value: 'false'
+      - key: SERVER_SCRAPER_ENABLED
+        value: 'false'
+      - key: AUTO_UPDATE_MIN_COUNT
+        value: '120'
+      - key: MIN_UPDATE_SPECIALTIES
+        value: '20'
+      - key: MAX_API_MATCHES
+        value: '40'
+      - key: PREFER_LIPS_HEALTHCARE
+        value: 'true'
+      - key: REQUIRE_READY_DIRECTORY
+        value: 'true'
+      - key: NODE_ENV
+        value: production

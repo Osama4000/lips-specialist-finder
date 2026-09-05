@@ -1,17 +1,73 @@
 {
-  "schemaVersion": 4,
-  "lastUpdated": null,
-  "bootstrapAt": "2026-09-05T00:00:00.000Z",
-  "attemptedAt": null,
-  "discovered": 42,
-  "updated": 42,
-  "stored": 42,
-  "specialtyCount": 15,
-  "failed": 0,
-  "preservedPrevious": true,
-  "errors": [],
-  "source": "https://lips.org.uk/our-specialists",
-  "note": "Bootstrap cache only. Run a live LIPS update and require the production coverage gate to pass before operational use.",
-  "locationVerifiedCount": 0,
-  "lipsHealthcareSpecialistCount": 0
+  "schemaVersion": 5,
+  "scraperVersion": "5.0.0",
+  "startedAt": "2026-09-05T02:04:41.670Z",
+  "lastUpdated": "2026-09-05T02:21:24.336Z",
+  "attemptedAt": "2026-09-05T02:21:24.336Z",
+  "discovered": 155,
+  "updated": 135,
+  "stored": 135,
+  "specialtyCount": 32,
+  "extractedSpecialtyCount": 32,
+  "locationVerifiedCount": 1,
+  "lipsHealthcareSpecialistCount": 1,
+  "failed": 11,
+  "retried": 11,
+  "recoveredOnRetry": 0,
+  "preservedPrevious": false,
+  "lastAttemptPassedCoverageGate": true,
+  "minimumRecordsRequired": 100,
+  "minimumSpecialtiesRequired": 20,
+  "minimumPreviousRetentionRatio": 0.85,
+  "maxProfilePages": 400,
+  "scrapeConcurrency": 3,
+  "retryConcurrency": 2,
+  "errors": [
+    {
+      "url": "https://lips.org.uk/our-specialists/emergency-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/phlebotomy-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/private-breast-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/exroid-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/gastric-alimetry-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/gut-functional-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/radiology-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/sun-burn-in-children/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/heat-rash-in-children/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/colic-in-babies/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/agnes-nereah/",
+      "error": "Missing H1 / doctor name"
+    }
+  ],
+  "source": "https://lips.org.uk/our-specialists/",
+  "userAgent": "LIPS-Specialist-Finder/5.0 (+public-directory-indexer; respectful rate-limited crawling)"
 }

@@ -293,4 +293,7 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, start, directoryStatus };
+module.exports = app;
+module.exports.app = app;
+module.exports.start = start;
+module.exports.directoryStatus = directoryStatus;

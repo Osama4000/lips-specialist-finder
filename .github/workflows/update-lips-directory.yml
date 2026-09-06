@@ -1,0 +1,83 @@
+name: Update LIPS specialist directory
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lips-directory-update
+  cancel-in-progress: false
+
+jobs:
+  refresh-directory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      DATA_DIR: ./data
+      MIN_UPDATE_RECORDS: '100'
+      MIN_UPDATE_SPECIALTIES: '20'
+      MIN_PREVIOUS_RETENTION_RATIO: '0.85'
+      SCRAPE_CONCURRENCY: '3'
+      SCRAPE_RETRY_CONCURRENCY: '2'
+      DISCOVERY_STABLE_ROUNDS: '4'
+      DIRECTORY_MAX_ROUNDS: '28'
+      PROFILE_NAV_TIMEOUT_MS: '30000'
+      PROFILE_SETTLE_MS: '250'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run static checks
+        run: npm run check
+
+      - name: Run regression tests
+        run: npm test
+
+      - name: Refresh LIPS directory
+        run: npm run update
+
+      - name: Verify coverage gate
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const metadata = JSON.parse(fs.readFileSync('data/metadata.json', 'utf8'));
+          if (metadata.lastAttemptPassedCoverageGate !== true) {
+            console.error('Coverage gate did not pass. Refusing to publish this directory refresh.');
+            process.exit(1);
+          }
+          if ((metadata.stored || 0) < 100 || (metadata.specialtyCount || 0) < 20) {
+            console.error('Directory coverage is below the demo/production minimum.');
+            process.exit(1);
+          }
+          console.log(`Coverage OK: ${metadata.stored} specialists / ${metadata.specialtyCount} specialties`);
+          NODE
+
+      - name: Commit refreshed directory
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/specialists.json data/metadata.json
+          if git diff --cached --quiet; then
+            echo "No directory changes to commit."
+          else
+            git commit -m "chore: refresh LIPS specialist directory"
+            git push
+          fi

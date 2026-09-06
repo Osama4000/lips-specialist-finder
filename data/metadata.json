@@ -1,56 +1,28 @@
 {
-  "schemaVersion": 5,
-  "scraperVersion": "5.0.0",
-  "startedAt": "2026-09-06T08:39:56.417Z",
-  "lastUpdated": "2026-09-06T08:56:31.458Z",
-  "attemptedAt": "2026-09-06T08:56:31.458Z",
-  "discovered": 157,
-  "updated": 135,
-  "stored": 135,
+  "schemaVersion": 6,
+  "scraperVersion": "6.0.0",
+  "startedAt": "2026-09-06T09:26:12.935Z",
+  "lastUpdated": "2026-09-06T09:38:13.513Z",
+  "attemptedAt": "2026-09-06T09:38:13.513Z",
+  "discovered": 138,
+  "updated": 131,
+  "stored": 131,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
-  "locationVerifiedCount": 4,
-  "lipsHealthcareSpecialistCount": 4,
-  "failed": 13,
-  "retried": 13,
+  "locationVerifiedCount": 11,
+  "lipsHealthcareSpecialistCount": 11,
+  "failed": 4,
+  "retried": 4,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
-  "minimumRecordsRequired": 113,
+  "minimumRecordsRequired": 114,
   "minimumSpecialtiesRequired": 20,
   "minimumPreviousRetentionRatio": 0.85,
   "maxProfilePages": 400,
   "scrapeConcurrency": 3,
   "retryConcurrency": 2,
   "errors": [
-    {
-      "url": "https://lips.org.uk/our-specialists/emergency-clinic/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/phlebotomy-clinic/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/private-breast-clinic/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/exroid-clinic/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/gastric-alimetry-clinic/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/gut-functional-clinic/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/radiology-clinic/",
-      "error": "Missing H1 / doctor name"
-    },
     {
       "url": "https://lips.org.uk/our-specialists/sun-burn-in-children/",
       "error": "Missing H1 / doctor name"
@@ -66,16 +38,8 @@
     {
       "url": "https://lips.org.uk/our-specialists/agnes-nereah/",
       "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/bone-health-and-menopause/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/protein-muscle-and-menopause/",
-      "error": "Missing H1 / doctor name"
     }
   ],
   "source": "https://lips.org.uk/our-specialists/",
-  "userAgent": "LIPS-Specialist-Finder/5.0 (+public-directory-indexer; respectful rate-limited crawling)"
+  "userAgent": "LIPS-Specialist-Finder/6.0 (+public-directory-indexer; respectful rate-limited crawling)"
 }

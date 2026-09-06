@@ -44,6 +44,11 @@ REQUIRE_READY_DIRECTORY=true
 PREFER_LIPS_HEALTHCARE=true
 SERVER_SCRAPER_ENABLED=false
 AUTO_UPDATE_ON_START=false
+
+# Optional — only required for full cross-browser voice fallback
+OPENAI_API_KEY=<server-side secret>
+VOICE_TRANSCRIPTION_ENABLED=true
+OPENAI_TRANSCRIBE_MODEL=gpt-4o-mini-transcribe
 ```
 
 The last four also have safe code defaults for this architecture, but explicitly setting them makes the deployment intention clear.
@@ -59,7 +64,7 @@ Use the main page and verify:
 - `Lower back pain shooting down the right leg with tingling.` → spine/radicular pathway.
 - `Back pain has resolved. Current shoulder pain.` → shoulder drives current routing.
 - `Possible thyroid problem.` → uncertainty is shown.
-- Microphone: Chrome/Edge over the HTTPS Vercel URL should prompt for microphone access and place dictated English into the same note field.
+- Microphone: test native recognition where available. For Firefox / browsers without usable native recognition, add `OPENAI_API_KEY` in Vercel and verify the recorder fallback transcribes after Stop. On iPhone, test Safari over HTTPS and confirm either native recognition or the configured recorder fallback works.
 
 ## If Vercel shows an old UI after deployment
 

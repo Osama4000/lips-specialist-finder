@@ -44,7 +44,9 @@ Clinical governance must review the wording, supported patterns and organisation
 
 ## 7. Voice
 
-Voice is optional input convenience only. Browser speech recognition can depend on browser/OS/vendor services and enterprise policy. The app does not persist audio; staff must review the transcript before routing because speech recognition can mis-hear clinical terms and negations.
+Voice remains optional input convenience only. v6.1 first uses native browser speech recognition and can fall back to `MediaRecorder` plus server-side speech-to-text when `OPENAI_API_KEY` is configured. This is the path for Firefox and other browsers without usable native `SpeechRecognition`, and it also provides a fallback when a Chromium/Safari implementation is blocked or unavailable.
+
+The app does not persist audio to disk. The server forwards a short in-memory recording to the configured provider and returns text. For real patient calls, complete privacy / DPA / information-governance review before enabling the provider. Staff must review every transcript, especially negations and medication/condition names.
 
 ## 8. Privacy
 

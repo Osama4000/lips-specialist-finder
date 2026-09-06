@@ -7,14 +7,23 @@ const statusBox = $('status');
 const results = $('results');
 const micBtn = $('mic-btn');
 const micStatus = $('mic-status');
+const voiceCleanup = window.LipsVoiceCleanup || { cleanTranscript: value => String(value || ''), cleanTranscriptDetailed: value => ({ text: String(value || ''), changed: false, removedFillers: 0, collapsedRepeats: 0 }) };
 
 let currentMatches = [];
 let visible = 5;
 let currentClarification = null;
 let recognition = null;
 let listening = false;
+let voiceMode = 'none';
+let serverVoiceAvailable = false;
+let voiceCapabilities = { maxRecordingSeconds: 90 };
 let dictationBase = '';
 let dictationFinal = '';
+let mediaRecorder = null;
+let mediaStream = null;
+let audioChunks = [];
+let recordingTimer = null;
+let transcriptionPending = false;
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
   '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
@@ -194,62 +203,223 @@ async function run(){
   finally{ analyze.disabled = false; clear.disabled = false; analyze.textContent = 'Find Specialist'; }
 }
 
-function setMicState(active, message=''){
+function setMicState(active, message='', mode=voiceMode){
   listening = active;
   micBtn.classList.toggle('listening', active);
+  micBtn.classList.toggle('transcribing', transcriptionPending);
   micBtn.setAttribute('aria-label', active ? 'Stop voice dictation' : 'Start voice dictation');
-  micBtn.querySelector('span').textContent = active ? 'Stop' : 'Dictate';
+  const label = micBtn.querySelector('span');
+  if(label) label.textContent = transcriptionPending ? 'Transcribing…' : (active ? 'Stop' : 'Dictate');
+  micBtn.disabled = transcriptionPending || mode === 'none';
+  if(analyze) analyze.disabled = active || transcriptionPending;
   if(message){ micStatus.textContent = message; micStatus.className = `mic-status ${active ? 'active' : ''}`; }
   else micStatus.className = 'mic-status hidden';
 }
 
-function initSpeechRecognition(){
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition){
-    micBtn.disabled = true;
-    micBtn.title = 'Voice dictation is not supported by this browser. Use Chrome or Edge, or type the note.';
-    micBtn.classList.add('unsupported');
-    return;
-  }
+function appendDictation(text, { final=true } = {}){
+  const detail = voiceCleanup.cleanTranscriptDetailed(text);
+  const cleaned = detail.text.trim();
+  if(!cleaned) return detail;
+  if(final) dictationFinal += `${dictationFinal ? ' ' : ''}${cleaned}`;
+  const parts = [dictationBase, dictationFinal].map(x => x.trim()).filter(Boolean);
+  symptoms.value = parts.join(parts.length > 1 && dictationBase ? '\n' : ' ').slice(0,4000);
+  updateCount();
+  return detail;
+}
+
+function renderNativeTranscript(interim=''){
+  const cleanInterim = voiceCleanup.cleanTranscript(interim).trim();
+  const parts = [dictationBase, dictationFinal, cleanInterim].map(x => x.trim()).filter(Boolean);
+  symptoms.value = parts.join(parts.length > 1 && dictationBase ? '\n' : ' ').slice(0,4000);
+  updateCount();
+}
+
+function nativeRecognitionConstructor(){ return window.SpeechRecognition || window.webkitSpeechRecognition || null; }
+function mediaRecordingSupported(){ return Boolean(navigator.mediaDevices?.getUserMedia && window.MediaRecorder); }
+
+function chooseAudioMimeType(){
+  if(!window.MediaRecorder?.isTypeSupported) return '';
+  return [
+    'audio/webm;codecs=opus',
+    'audio/mp4;codecs=mp4a.40.2',
+    'audio/mp4',
+    'audio/ogg;codecs=opus',
+    'audio/webm'
+  ].find(type => MediaRecorder.isTypeSupported(type)) || '';
+}
+
+function extensionForMime(mime){
+  const type = String(mime || '').split(';')[0].toLowerCase();
+  if(type === 'audio/mp4') return 'mp4';
+  if(type === 'audio/ogg') return 'ogg';
+  if(type === 'audio/mpeg') return 'mp3';
+  if(type === 'audio/wav') return 'wav';
+  return 'webm';
+}
+
+function initNativeRecognition(SpeechRecognition){
   recognition = new SpeechRecognition();
   recognition.lang = 'en-GB';
   recognition.continuous = true;
   recognition.interimResults = true;
   recognition.maxAlternatives = 1;
 
-  recognition.onstart = () => setMicState(true, 'Listening… speak naturally, then press Stop.');
+  recognition.onstart = () => setMicState(true, 'Listening… speak naturally. Repeated words and fillers such as “um” are cleaned automatically.');
   recognition.onresult = event => {
     let interim = '';
     for(let i = event.resultIndex; i < event.results.length; i++){
       const transcript = String(event.results[i][0]?.transcript || '').trim();
       if(!transcript) continue;
-      if(event.results[i].isFinal) dictationFinal += `${dictationFinal ? ' ' : ''}${transcript}`;
+      if(event.results[i].isFinal) appendDictation(transcript);
       else interim += `${interim ? ' ' : ''}${transcript}`;
     }
-    const parts = [dictationBase, dictationFinal, interim].map(x => x.trim()).filter(Boolean);
-    symptoms.value = parts.join(parts.length > 1 && dictationBase ? '\n' : ' ').slice(0,4000);
-    updateCount();
+    renderNativeTranscript(interim);
   };
   recognition.onerror = event => {
     const map = {
-      'not-allowed':'Microphone permission was blocked. Allow microphone access in the browser and try again.',
-      'service-not-allowed':'Speech recognition is blocked by the browser or organisation policy.',
+      'not-allowed':'Microphone permission was blocked. Allow microphone access and try again.',
+      'service-not-allowed':'This browser blocked its native speech-recognition service.',
       'no-speech':'No speech was detected. Try again or type the note.',
-      'network':'The browser speech-recognition service could not be reached.'
+      'network':'The browser speech-recognition service could not be reached.',
+      'language-not-supported':'English speech recognition is not available in this browser.'
     };
+    listening = false;
+    if(serverVoiceAvailable && mediaRecordingSupported() && ['network','service-not-allowed','language-not-supported'].includes(event.error)){
+      voiceMode = 'recorder';
+      setMicState(false, `${map[event.error]} The next dictation will use the cross-browser transcription fallback.`);
+      return;
+    }
     setMicState(false, map[event.error] || 'Voice dictation stopped. You can continue typing.');
   };
-  recognition.onend = () => { if(listening) setMicState(false, 'Dictation stopped. Review the note, then find a specialist.'); };
+  recognition.onend = () => {
+    if(listening) setMicState(false, 'Dictation stopped. Review the cleaned note, then find a specialist.');
+  };
 }
 
-function startDictation(){
+async function loadVoiceCapabilities(){
+  try{
+    const res = await fetch('/api/voice/capabilities', { cache: 'no-store' });
+    if(res.ok){
+      voiceCapabilities = await res.json();
+      serverVoiceAvailable = Boolean(voiceCapabilities.serverTranscription);
+    }
+  }catch{}
+}
+
+async function initVoice(){
+  await loadVoiceCapabilities();
+  const SpeechRecognition = nativeRecognitionConstructor();
+  if(SpeechRecognition){
+    voiceMode = 'native';
+    initNativeRecognition(SpeechRecognition);
+    micBtn.title = 'Dictate note. Speech hesitations and immediate repeated words are cleaned automatically.';
+    setMicState(false, 'Voice ready. Speak naturally — fillers and repeated words are cleaned automatically.');
+    return;
+  }
+  if(serverVoiceAvailable && mediaRecordingSupported()){
+    voiceMode = 'recorder';
+    micBtn.title = 'Record a short voice note for secure transcription.';
+    setMicState(false, 'Cross-browser voice mode ready. Audio is transcribed after you press Stop and is not stored by this app.');
+    return;
+  }
+  voiceMode = 'none';
+  micBtn.classList.add('unsupported');
+  micBtn.title = 'This browser has no native speech recognition and server transcription is not configured.';
+  setMicState(false, /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    ? 'Voice transcription is unavailable in this browser. You can still use the microphone on the iPhone keyboard to dictate into the note field.'
+    : 'Voice transcription is unavailable in this browser. Type the note, or configure the optional cross-browser speech-to-text fallback.');
+}
+
+function startNativeDictation(){
   if(!recognition || listening) return;
   dictationBase = symptoms.value.trim();
   dictationFinal = '';
   try{ recognition.start(); }
-  catch{ setMicState(false, 'Could not start dictation. Try again in a moment.'); }
+  catch{ setMicState(false, 'Could not start native dictation. Try again in a moment.'); }
 }
-function stopDictation(){ if(recognition && listening){ listening = false; try{ recognition.stop(); }catch{} setMicState(false, 'Dictation stopped. Review the note, then find a specialist.'); } }
+
+async function startRecorderDictation(){
+  if(listening || transcriptionPending || !serverVoiceAvailable) return;
+  try{
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false });
+    const mimeType = chooseAudioMimeType();
+    mediaRecorder = mimeType ? new MediaRecorder(mediaStream, { mimeType, audioBitsPerSecond: 48000 }) : new MediaRecorder(mediaStream, { audioBitsPerSecond: 48000 });
+    audioChunks = [];
+    dictationBase = symptoms.value.trim();
+    dictationFinal = '';
+    mediaRecorder.ondataavailable = event => { if(event.data?.size) audioChunks.push(event.data); };
+    mediaRecorder.onerror = () => setMicState(false, 'The browser could not record this voice note. You can continue typing.');
+    mediaRecorder.onstop = () => { void finishRecordedDictation(); };
+    mediaRecorder.start(1000);
+    setMicState(true, 'Recording… speak naturally, then press Stop. Repeated words and fillers will be cleaned after transcription.');
+    const seconds = Number(voiceCapabilities.maxRecordingSeconds || 90);
+    recordingTimer = setTimeout(() => { if(listening) stopRecorderDictation(true); }, seconds * 1000);
+  }catch(err){
+    cleanupMediaStream();
+    const blocked = err?.name === 'NotAllowedError' || err?.name === 'SecurityError';
+    setMicState(false, blocked ? 'Microphone permission was blocked. Allow microphone access and try again.' : 'Could not access the microphone in this browser.');
+  }
+}
+
+function cleanupMediaStream(){
+  if(recordingTimer){ clearTimeout(recordingTimer); recordingTimer = null; }
+  if(mediaStream){ mediaStream.getTracks().forEach(track => track.stop()); mediaStream = null; }
+}
+
+function stopRecorderDictation(auto=false){
+  if(!mediaRecorder || mediaRecorder.state === 'inactive') return;
+  listening = false;
+  if(recordingTimer){ clearTimeout(recordingTimer); recordingTimer = null; }
+  setMicState(false, auto ? 'Maximum voice-note length reached. Transcribing…' : 'Transcribing voice note…');
+  try{ mediaRecorder.stop(); }catch{ cleanupMediaStream(); }
+}
+
+async function finishRecordedDictation(){
+  const recorder = mediaRecorder;
+  mediaRecorder = null;
+  const mimeType = recorder?.mimeType || audioChunks[0]?.type || 'audio/webm';
+  const blob = new Blob(audioChunks, { type: mimeType });
+  audioChunks = [];
+  cleanupMediaStream();
+  if(!blob.size){ setMicState(false, 'No audio was captured. Try again or type the note.'); return; }
+  transcriptionPending = true;
+  setMicState(false, 'Transcribing voice note…');
+  try{
+    const ext = extensionForMime(mimeType);
+    const res = await fetch('/api/transcribe', {
+      method: 'POST',
+      headers: { 'Content-Type': mimeType || 'application/octet-stream', 'X-Audio-Filename': `dictation.${ext}` },
+      body: blob
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.error || 'Unable to transcribe this voice note.');
+    const detail = appendDictation(data.text || '');
+    const cleanupBits = [];
+    if(detail.removedFillers) cleanupBits.push(`${detail.removedFillers} filler${detail.removedFillers === 1 ? '' : 's'}`);
+    if(detail.collapsedRepeats) cleanupBits.push(`${detail.collapsedRepeats} repeated phrase${detail.collapsedRepeats === 1 ? '' : 's'}`);
+    setMicState(false, cleanupBits.length ? `Dictation added. Cleaned ${cleanupBits.join(' and ')}.` : 'Dictation added. Review the note, then find a specialist.');
+  }catch(err){
+    setMicState(false, err.message || 'Unable to transcribe this voice note. You can continue typing.');
+  }finally{
+    transcriptionPending = false;
+    setMicState(false, micStatus.textContent);
+  }
+}
+
+function startDictation(){
+  if(voiceMode === 'native') startNativeDictation();
+  else if(voiceMode === 'recorder') void startRecorderDictation();
+}
+
+function stopDictation(){
+  if(voiceMode === 'native' && recognition && listening){
+    listening = false;
+    try{ recognition.stop(); }catch{}
+    setMicState(false, 'Dictation stopped. Review the cleaned note, then find a specialist.');
+  } else if(voiceMode === 'recorder' && listening){
+    stopRecorderDictation(false);
+  }
+}
 
 symptoms.addEventListener('input', updateCount);
 analyze.addEventListener('click', run);
@@ -257,5 +427,5 @@ clear.addEventListener('click', () => { if(listening) stopDictation(); symptoms.
 micBtn.addEventListener('click', () => listening ? stopDictation() : startDictation());
 symptoms.addEventListener('keydown', e => { if((e.ctrlKey || e.metaKey) && e.key === 'Enter') run(); });
 
-initSpeechRecognition();
+void initVoice();
 updateCount();

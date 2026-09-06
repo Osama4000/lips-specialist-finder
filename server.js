@@ -6,6 +6,7 @@ const { getSpecialists, getMetadata, ensureDataDir } = require('./services/store
 const { routeSymptoms, rankDoctorsForRouting, canonicalSpecialty } = require('./services/router');
 const { runScrape } = require('./scraper/lipsScraper');
 const { concepts: clinicalConcepts, knowledgeSchemaVersion } = require('./services/clinicalKnowledge');
+const { transcribeAudio, capabilities: voiceCapabilities, MAX_AUDIO_BYTES } = require('./services/transcription');
 
 const app = express();
 const PORT = Number(process.env.PORT || 10000);
@@ -18,6 +19,8 @@ const READY_MIN_SPECIALTIES = Number(process.env.MIN_UPDATE_SPECIALTIES || 20);
 const MAX_API_MATCHES = Math.max(5, Math.min(100, Number(process.env.MAX_API_MATCHES || 40)));
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000);
 const RATE_LIMIT_MAX = Number(process.env.RATE_LIMIT_MAX || 120);
+const VOICE_RATE_LIMIT_MAX = Math.max(3, Math.min(100, Number(process.env.VOICE_RATE_LIMIT_MAX || 30)));
+const VOICE_RATE_LIMIT_WINDOW_MS = Number(process.env.VOICE_RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000);
 const PREFER_LIPS_HEALTHCARE = !/^(0|false|no)$/i.test(process.env.PREFER_LIPS_HEALTHCARE || 'true');
 const REQUIRE_READY_DIRECTORY = !/^(0|false|no)$/i.test(process.env.REQUIRE_READY_DIRECTORY || (process.env.NODE_ENV === 'production' ? 'true' : 'false'));
 const SERVER_SCRAPER_ENABLED = /^(1|true|yes)$/i.test(process.env.SERVER_SCRAPER_ENABLED || 'false');
@@ -30,6 +33,7 @@ function setUpdateProgress(progress) {
   updateProgress = { ...updateProgress, ...progress, updatedAt: new Date().toISOString() };
 }
 const rateBuckets = new Map();
+const voiceRateBuckets = new Map();
 
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
@@ -87,9 +91,26 @@ function apiRateLimit(req, res, next) {
   next();
 }
 
+function voiceRateLimit(req, res, next) {
+  const now = Date.now();
+  const key = req.ip || req.socket.remoteAddress || 'unknown';
+  const current = voiceRateBuckets.get(key);
+  if (!current || current.resetAt <= now) {
+    voiceRateBuckets.set(key, { count: 1, resetAt: now + VOICE_RATE_LIMIT_WINDOW_MS });
+    return next();
+  }
+  current.count += 1;
+  if (current.count > VOICE_RATE_LIMIT_MAX) {
+    res.setHeader('Retry-After', String(Math.ceil((current.resetAt - now) / 1000)));
+    return res.status(429).json({ error: 'Too many voice transcription requests. Please try again shortly.', requestId: req.requestId });
+  }
+  next();
+}
+
 setInterval(() => {
   const now = Date.now();
   for (const [key, bucket] of rateBuckets) if (bucket.resetAt <= now) rateBuckets.delete(key);
+  for (const [key, bucket] of voiceRateBuckets) if (bucket.resetAt <= now) voiceRateBuckets.delete(key);
 }, Math.min(RATE_LIMIT_WINDOW_MS, 60_000)).unref();
 
 app.use(express.static(path.join(__dirname, 'public'), {
@@ -134,6 +155,44 @@ app.get('/ready', async (_req, res, next) => {
     const ready = status.specialists >= AUTO_UPDATE_MIN_COUNT && status.specialties >= READY_MIN_SPECIALTIES && Boolean(status.lastUpdated);
     res.status(ready ? 200 : 503).json({ ready, ...status });
   } catch (err) { next(err); }
+});
+
+
+app.get('/api/voice/capabilities', (_req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({
+    ...voiceCapabilities(),
+    nativeSpeechRecognitionMayBeAvailable: true,
+    note: 'The browser first tries native speech recognition. Server transcription is used only as a fallback when configured.'
+  });
+});
+
+app.post('/api/transcribe', voiceRateLimit, express.raw({
+  type: ['audio/*', 'application/octet-stream'],
+  limit: `${Math.ceil(MAX_AUDIO_BYTES / 1_000_000)}mb`
+}), async (req, res, next) => {
+  try {
+    const caps = voiceCapabilities();
+    if (!caps.serverTranscription) {
+      return res.status(503).json({
+        code: 'VOICE_TRANSCRIPTION_NOT_CONFIGURED',
+        error: 'Cross-browser voice transcription is not configured on this deployment. Use browser/device dictation or type the note.',
+        requestId: req.requestId
+      });
+    }
+    const audio = Buffer.isBuffer(req.body) ? req.body : Buffer.alloc(0);
+    if (!audio.length) return res.status(400).json({ error: 'No audio was received.', requestId: req.requestId });
+    const mimeType = String(req.get('content-type') || 'application/octet-stream').slice(0, 100);
+    const filename = String(req.get('x-audio-filename') || '').slice(0, 120);
+    const result = await transcribeAudio(audio, { mimeType, filename });
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({ text: result.text, provider: result.provider, model: result.model, requestId: req.requestId });
+  } catch (err) {
+    if (err.code === 'AUDIO_TOO_LARGE') return res.status(413).json({ error: err.message, code: err.code, requestId: req.requestId });
+    if (err.code === 'NO_TRANSCRIPT' || err.code === 'EMPTY_AUDIO') return res.status(422).json({ error: err.message, code: err.code, requestId: req.requestId });
+    if (err.code === 'TRANSCRIPTION_PROVIDER_ERROR') return res.status(502).json({ error: 'Voice transcription service is temporarily unavailable.', code: err.code, requestId: req.requestId });
+    next(err);
+  }
 });
 
 app.post('/api/analyze', apiRateLimit, async (req, res, next) => {

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>LIPS Specialist Finder</title>
-  <link rel="stylesheet" href="/style.css?v=6.0.0">
+  <link rel="stylesheet" href="/style.css?v=6.1.0">
 </head>
 <body>
   <main class="shell">
@@ -37,7 +37,7 @@
         <span id="char-count">0 / 4,000</span>
         <div class="actions"><button class="secondary" id="clear-btn" type="button">Clear</button><button class="primary" id="analyze-btn" type="button">Find Specialist</button></div>
       </div>
-      <p class="privacy"><b>Privacy:</b> do not enter names, phone numbers, dates of birth or record numbers. Voice dictation uses the browser/OS speech-recognition service when available; this app does not store an audio recording.</p>
+      <p class="privacy"><b>Privacy:</b> do not enter names, phone numbers, dates of birth or record numbers. Voice dictation uses native browser/OS speech recognition when available. On browsers without it, an optional server speech-to-text fallback can be enabled. This app does not persist audio; review the cleaned transcript before routing.</p>
     </section>
 
     <section id="status" class="status hidden" role="status"></section>
@@ -45,6 +45,7 @@
 
     <footer class="disclaimer">Routing support only — not diagnosis. Urgent flags must follow the organisation's approved emergency and clinical escalation protocols.</footer>
   </main>
-  <script src="/app.js?v=6.0.0" defer></script>
+  <script src="/voice-cleanup.js?v=6.1.0" defer></script>
+  <script src="/app.js?v=6.1.0" defer></script>
 </body>
 </html>

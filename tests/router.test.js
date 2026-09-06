@@ -385,13 +385,14 @@ test('anatomically incompatible orthopaedic subspecialty is pushed behind a knee
   assert.equal(ranked.at(-1).scopeMismatch,true);
 });
 
-test('voice dictation UI uses browser speech recognition with UK English and graceful fallback',()=>{
+test('voice dictation UI uses UK English recognition with a cross-browser recorder fallback',()=>{
   const html=fs.readFileSync(path.join(__dirname,'..','public','index.html'),'utf8');
   const js=fs.readFileSync(path.join(__dirname,'..','public','app.js'),'utf8');
   assert.match(html,/id="mic-btn"/);
   assert.match(js,/SpeechRecognition|webkitSpeechRecognition/);
   assert.match(js,/recognition\.lang = 'en-GB'/);
-  assert.match(js,/Voice dictation is not supported by this browser/);
+  assert.match(js,/MediaRecorder/);
+  assert.match(js,/cross-browser transcription fallback|Cross-browser voice mode ready/);
 });
 
 test('frontend exposes context categories and click-to-refine clarification options',()=>{

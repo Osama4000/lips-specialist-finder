@@ -10,7 +10,7 @@ The product has one job: turn a short **English** call note into a clinically se
 - **101+ curated clinical concepts and common-language synonyms** supplement the terminology published on LIPS, so wording such as `lower back pain`, `heart racing`, `buzzing in the ear` and `pain shooting down my leg` can be understood even when the exact phrase is not a directory filter.
 - **Live LIPS evidence remains authoritative for consultant selection.** Every directory refresh indexes specialty, secondary specialties, sub-specialties, public conditions, expertise, biography and clinician locations. Terms found on live LIPS profiles can participate in routing without waiting for a code release.
 - **Profile enrichment** maps common-language concepts found in LIPS biographies to structured conditions/expertise, improving doctor-level evidence.
-- **Voice dictation option** beside the text box using the browser speech-recognition API (`en-GB`). Typing remains fully supported and the UI gracefully falls back when dictation is unavailable.
+- **Resilient voice dictation** beside the text box. Native `en-GB` speech recognition is used when available; an optional MediaRecorder + server speech-to-text fallback supports browsers that do not expose native recognition. Spoken fillers and immediate repeated words are conservatively cleaned before routing.
 - **Anatomical scope protection.** A knee specialist is not pushed below a foot/ankle specialist merely because both are Orthopaedics; similar separation exists for spine, ENT regions and GI areas.
 - **LIPS Healthcare preference remains a safe tie-breaker.** Clinical fit comes first; the clinic preference only separates clinically equivalent choices.
 - **One-question clarification** can appear when the note is ambiguous, e.g. generic back pain without enough information to distinguish a spine/radicular pathway.
@@ -66,9 +66,14 @@ The knowledge layer is separate from `data/specialists.json`, so a LIPS website 
 
 ## Voice dictation
 
-The microphone button uses `window.SpeechRecognition` / `window.webkitSpeechRecognition` where the browser provides it. It is configured for UK English and works best in current Chromium-based browsers over HTTPS.
+v6.1 uses a two-layer voice path:
 
-The application itself does **not** save audio. Browser/OS speech-recognition services can have their own processing and enterprise-policy behaviour, so dictation is optional and the typed workflow always remains available.
+1. **Native recognition first:** `window.SpeechRecognition` / `window.webkitSpeechRecognition` in UK English when the browser exposes it.
+2. **Cross-browser fallback:** if native recognition is unavailable or blocked, the app can record a short audio note with `MediaRecorder` and send it to the same-origin `/api/transcribe` endpoint. The current optional server adapter uses OpenAI speech-to-text when `OPENAI_API_KEY` is configured.
+
+The transcript then passes through a conservative disfluency cleaner before routing. It removes standalone fillers such as `um` / `uh` / `erm` and collapses immediate repetitions such as `he he he has` or `and and`, while retaining clinically important wording such as `no chest pain`.
+
+The application does **not persist audio files**. Native recognition or a configured transcription provider may process audio outside the app, so production use with real patient calls requires the organisation's privacy, information-governance and supplier approval. Staff must always review the transcript before routing.
 
 ## Live directory updates
 

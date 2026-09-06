@@ -480,3 +480,62 @@ test('doctor evidence labels are deduplicated case-insensitively', () => {
   const tail = profileReason.replace('Profile evidence:', '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
   assert.equal(new Set(tail).size, tail.length);
 });
+
+test('clinical typo correction routes a misspelled palpitation note without changing the original note',()=>{
+  const r=routeSymptoms('Recurrent palpatations and heart fluttering.',doctors);
+  assert.equal(r.specialty,'Cardiology');
+  assert.ok(r.inputUnderstanding.corrections.some(x => x.from.toLowerCase()==='palpatations' && x.to==='palpitations'));
+});
+
+test('typo correction preserves negation scope',()=>{
+  const r=routeSymptoms('No palpatations. No chest pain.',doctors);
+  assert.notEqual(r.specialty,'Cardiology');
+  assert.ok(r.contextSummary.negated.includes('Palpitations'));
+});
+
+test('medical phrase normalisation exposes common patient wording transparently',()=>{
+  const r=routeSymptoms('My heart keeps racing.',doctors);
+  assert.equal(r.specialty,'Cardiology');
+  assert.ok(r.inputUnderstanding.normalisations.some(x => /heart.*racing/i.test(x.from) && x.to==='Palpitations'));
+});
+
+test('fuzzy typo correction recognises sciatica misspelling',()=>{
+  const spineDoctors=[
+    {name:'Spine',specialty:'Neurosurgery',subSpecialties:['Spinal Surgery'],expertise:['sciatica','slipped disc'],conditions:['back pain']},
+    ...doctors
+  ];
+  const r=routeSymptoms('Low back pain with sciatca going down the leg.',spineDoctors);
+  assert.equal(r.specialty,'Neurosurgery');
+  assert.ok(r.inputUnderstanding.corrections.some(x => x.to==='sciatica'));
+});
+
+test('smart clarification is offered when breathlessness remains clinically ambiguous',()=>{
+  const live=[
+    ...doctors,
+    {name:'Resp',specialty:'Respiratory Medicine',subSpecialties:['General Respiratory'],expertise:['breathlessness','wheeze']}
+  ];
+  const r=routeSymptoms('Shortness of breath.',live);
+  assert.ok(r.clarification);
+  assert.match(r.clarification.question,/shortness of breath/i);
+  assert.equal(r.clarification.trigger,'ambiguity');
+});
+
+test('doctor ranking returns structured why-this-doctor evidence',()=>{
+  const r=rankDoctors([{
+    name:'Rhythm specialist',specialty:'Cardiology',subSpecialties:['Arrhythmia'],
+    conditions:['Palpitations','Atrial fibrillation'],expertise:['Electrophysiology'],worksAtLipsHealthcare:true
+  }],'Cardiology','Arrhythmia','palpitations');
+  assert.equal(r[0].matchEvidence.exactSubSpecialty,true);
+  assert.ok(r[0].matchEvidence.conditions.includes('Palpitations'));
+  assert.equal(r[0].matchEvidence.lipsHealthcare,true);
+});
+
+test('frontend includes keyboard-first shortcuts and smart interpretation transparency',()=>{
+  const app = fs.readFileSync(path.join(__dirname,'..','public','app.js'),'utf8');
+  const html = fs.readFileSync(path.join(__dirname,'..','public','index.html'),'utf8');
+  assert.match(app,/handleKeyboardShortcut/);
+  assert.match(app,/openDoctorShortcut/);
+  assert.match(app,/Medical phrase normalisation/);
+  assert.match(html,/Alt<\/kbd> \+ <kbd>1–3/);
+  assert.match(html,/Ctrl<\/kbd> \+ <kbd>Enter/);
+});

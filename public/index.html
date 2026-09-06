@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>LIPS Specialist Finder</title>
-  <link rel="stylesheet" href="/style.css?v=6.1.0">
+  <link rel="stylesheet" href="/style.css?v=6.2.0">
 </head>
 <body>
   <main class="shell">
@@ -25,17 +25,18 @@
 
       <div class="note-composer">
         <textarea id="symptoms" maxlength="4000" spellcheck="true" placeholder="Example: Lower back pain shooting down the right leg with tingling. No bladder problems. Previous shoulder pain has resolved."></textarea>
-        <button id="mic-btn" class="mic-btn" type="button" aria-label="Start voice dictation" title="Dictate note">
+        <button id="mic-btn" class="mic-btn" type="button" aria-keyshortcuts="Alt+V" aria-label="Start voice dictation" title="Dictate note">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14.25a3.75 3.75 0 0 0 3.75-3.75V5.75a3.75 3.75 0 1 0-7.5 0v4.75A3.75 3.75 0 0 0 12 14.25Zm6-4a.75.75 0 0 0-1.5 0 4.5 4.5 0 0 1-9 0 .75.75 0 0 0-1.5 0 6.01 6.01 0 0 0 5.25 5.96v2.29H8.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-2.75v-2.29A6.01 6.01 0 0 0 18 10.25Z"/></svg>
           <span>Dictate</span>
         </button>
       </div>
       <div id="mic-status" class="mic-status hidden" role="status"></div>
 
-      <p class="input-help">Use natural English. The engine separates current symptoms from phrases such as <b>“no chest pain”</b>, <b>“history of…”</b>, <b>“mother had…”</b>, <b>“possible…”</b> and <b>“resolved”</b>.</p>
+      <p class="input-help">Use natural English. The engine separates current symptoms from phrases such as <b>“no chest pain”</b>, <b>“history of…”</b>, <b>“mother had…”</b>, <b>“possible…”</b> and <b>“resolved”</b>. Common clinical typos and everyday phrases are interpreted without changing the original note.</p>
+      <div class="shortcut-strip" aria-label="Keyboard shortcuts"><span><kbd>/</kbd> Focus note</span><span><kbd>Ctrl</kbd> + <kbd>Enter</kbd> Find specialist</span><span><kbd>Alt</kbd> + <kbd>V</kbd> Dictate</span><span><kbd>Alt</kbd> + <kbd>1–3</kbd> Open top profiles</span></div>
       <div class="input-row">
         <span id="char-count">0 / 4,000</span>
-        <div class="actions"><button class="secondary" id="clear-btn" type="button">Clear</button><button class="primary" id="analyze-btn" type="button">Find Specialist</button></div>
+        <div class="actions"><button class="secondary" id="clear-btn" type="button" aria-keyshortcuts="Alt+C">Clear</button><button class="primary" id="analyze-btn" type="button" aria-keyshortcuts="Control+Enter Meta+Enter">Find Specialist</button></div>
       </div>
       <p class="privacy"><b>Privacy:</b> do not enter names, phone numbers, dates of birth or record numbers. Voice dictation uses native browser/OS speech recognition when available. On browsers without it, an optional server speech-to-text fallback can be enabled. This app does not persist audio; review the cleaned transcript before routing.</p>
     </section>
@@ -45,7 +46,7 @@
 
     <footer class="disclaimer">Routing support only — not diagnosis. Urgent flags must follow the organisation's approved emergency and clinical escalation protocols.</footer>
   </main>
-  <script src="/voice-cleanup.js?v=6.1.0" defer></script>
-  <script src="/app.js?v=6.1.0" defer></script>
+  <script src="/voice-cleanup.js?v=6.2.0" defer></script>
+  <script src="/app.js?v=6.2.0" defer></script>
 </body>
 </html>

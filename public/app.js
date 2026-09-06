@@ -42,6 +42,16 @@ function showStatus(msg, error=false){ statusBox.className = `status ${error ? '
 function hideStatus(){ statusBox.className = 'status hidden'; statusBox.textContent = ''; }
 function chips(items, css='chip'){ return (items || []).filter(Boolean).map(x => `<span class="${css}">${esc(x)}</span>`).join(''); }
 
+
+function inputUnderstandingPanel(info){
+  const corrections = Array.isArray(info?.corrections) ? info.corrections : [];
+  const normalisations = Array.isArray(info?.normalisations) ? info.normalisations.filter(x => ['present','uncertain'].includes(x.state)) : [];
+  if(!corrections.length && !normalisations.length) return '';
+  const correctionRows = corrections.map(x => `<span><b>${esc(x.from)}</b> → ${esc(x.to)}</span>`).join('');
+  const normalRows = normalisations.map(x => `<span><b>${esc(x.from)}</b> → ${esc(x.to)}</span>`).join('');
+  return `<div class="interpretation-panel"><div class="interpretation-head"><b>Smart interpretation</b><span>The original note is unchanged</span></div>${corrections.length ? `<div class="interpretation-row"><strong>Typo correction</strong><div>${correctionRows}</div></div>` : ''}${normalisations.length ? `<div class="interpretation-row"><strong>Medical phrase normalisation</strong><div>${normalRows}</div></div>` : ''}</div>`;
+}
+
 function doctorCard(d, index){
   const secondarySpecialties = (d.specialties || [])
     .filter(Boolean)
@@ -54,15 +64,22 @@ function doctorCard(d, index){
     .filter((v, i, a) => a.indexOf(v) === i)
     .slice(0, 6);
   const reasons = (d.matchReasons || []).slice(0, 4);
+  const evidence = d.matchEvidence || {};
   const url = safeProfileUrl(d.profileUrl);
   const lipsLocation = (d.locations || []).find(x => /lips healthcare/i.test(x?.name || ''));
   const priorityBadge = d.worksAtLipsHealthcare === true ? '<span class="badge lips-badge">LIPS Healthcare</span>' : '';
   const bestBadge = index === 0 && !d.scopeMismatch ? '<span class="badge best-badge">Best match</span>' : '';
   const broaderBadge = d.scopeMismatch ? '<span class="badge broader-badge">Broader specialty match</span>' : '';
   const routeLine = d.routeSpecialty && d.routeSpecialty !== d.specialty ? `<div class="route-line">Matched via ${esc(d.routeSpecialty)}</div>` : '';
+  const whyRows = [];
+  if(evidence.route) whyRows.push(`<div class="why-row"><span>Route fit</span><strong>${esc(evidence.route)}</strong></div>`);
+  if(evidence.conditions?.length) whyRows.push(`<div class="why-row"><span>Conditions treated</span><strong>${esc(evidence.conditions.slice(0,3).join(' • '))}</strong></div>`);
+  if(evidence.expertise?.length) whyRows.push(`<div class="why-row"><span>Profile expertise</span><strong>${esc(evidence.expertise.slice(0,3).join(' • '))}</strong></div>`);
+  if(!evidence.conditions?.length && evidence.concepts?.length) whyRows.push(`<div class="why-row"><span>Patient-note match</span><strong>${esc(evidence.concepts.slice(0,3).join(' • '))}</strong></div>`);
+  if(evidence.lipsHealthcare) whyRows.push(`<div class="why-row"><span>Clinic</span><strong>Consults at LIPS Healthcare</strong></div>`);
 
   return `
-    <article class="doctor ${index === 0 && !d.scopeMismatch ? 'doctor-top' : ''} ${d.scopeMismatch ? 'doctor-broader' : ''}">
+    <article class="doctor ${index === 0 && !d.scopeMismatch ? 'doctor-top' : ''} ${d.scopeMismatch ? 'doctor-broader' : ''}" data-doctor-card="${index}">
       <div class="doctor-head">
         <div>
           <div class="badges">${bestBadge}${priorityBadge}${broaderBadge}</div>
@@ -77,8 +94,8 @@ function doctorCard(d, index){
         ${tags.length ? `<div class="tag-row">${chips(tags)}</div>` : ''}
         ${lipsLocation?.name ? `<div class="clinic-line">Consults at ${esc(lipsLocation.name)}</div>` : ''}
       </div>
-      ${reasons.length ? `<div class="match-why"><b>Why this doctor</b>${reasons.map(x => `<span>${esc(x)}</span>`).join('')}</div>` : ''}
-      ${url !== '#' ? `<a class="primary" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open LIPS Profile</a>` : ''}
+      ${whyRows.length ? `<div class="match-why stronger-why"><div class="why-title"><b>Why this doctor</b><span>Evidence from the LIPS profile</span></div>${whyRows.join('')}</div>` : (reasons.length ? `<div class="match-why"><b>Why this doctor</b>${reasons.map(x => `<span>${esc(x)}</span>`).join('')}</div>` : '')}
+      ${url !== '#' ? `<a class="primary doctor-profile-link" data-doctor-index="${index}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open LIPS Profile</a>` : ''}
     </article>`;
 }
 
@@ -101,7 +118,7 @@ function contextPanel(summary){
 
 function clarificationCard(c){
   if(!c?.question || !Array.isArray(c.options) || !c.options.length) return '';
-  return `<div class="clarify-card"><div><p class="eyebrow">ONE QUICK QUESTION</p><strong>${esc(c.question)}</strong><p>Choose an answer to add it to the note and refine the ranking.</p></div><div class="clarify-options">${c.options.map((o,i)=>`<button type="button" class="clarify-option" data-clarify-index="${i}">${esc(o.label)}</button>`).join('')}</div></div>`;
+  return `<div class="clarify-card"><div><p class="eyebrow">ONE QUICK QUESTION</p><strong>${esc(c.question)}</strong><p>One answer can remove ambiguity and re-rank the shortlist immediately.</p></div><div class="clarify-options">${c.options.map((o,i)=>`<button type="button" class="clarify-option" data-clarify-index="${i}">${esc(o.label)}</button>`).join('')}</div></div>`;
 }
 
 function render(data){
@@ -124,6 +141,7 @@ function render(data){
         <div class="metric"><span class="label">Suggested sub-specialty</span><span class="value">${esc(r.subSpecialty || 'Not clearly identified')}</span></div>
         <div class="metric"><span class="label">Confidence</span><span class="value confidence-${String(r.confidence||'low').toLowerCase()}">${esc(r.confidence || 'Low')}</span></div>
       </div>
+      ${inputUnderstandingPanel(r.inputUnderstanding)}
       ${contextPanel(r.contextSummary)}
       ${r.alternatives?.length ? `<div class="alternatives"><b>Other plausible specialty routes</b><div class="tag-row">${chips(r.alternatives,'chip specialty-chip')}</div></div>` : ''}`;
 
@@ -421,11 +439,63 @@ function stopDictation(){
   }
 }
 
+function clearNote(){
+  if(listening) stopDictation();
+  symptoms.value = '';
+  updateCount();
+  results.className = 'results hidden';
+  hideStatus();
+  symptoms.focus();
+}
+
+function typingTarget(target){
+  return Boolean(target && (target.matches?.('textarea,input,select,[contenteditable="true"]') || target.closest?.('[contenteditable="true"]')));
+}
+
+function openDoctorShortcut(index){
+  const link = results.querySelector(`[data-doctor-index="${index}"]`);
+  if(!link){ showStatus(`Specialist ${index + 1} is not currently shown.`, true); return; }
+  window.open(link.href, '_blank', 'noopener,noreferrer');
+}
+
+function handleKeyboardShortcut(e){
+  const key = String(e.key || '').toLowerCase();
+  if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
+    e.preventDefault();
+    void run();
+    return;
+  }
+  if(e.key === 'Escape' && listening){
+    e.preventDefault();
+    stopDictation();
+    return;
+  }
+  if(!e.ctrlKey && !e.metaKey && !e.altKey && e.key === '/' && !typingTarget(e.target)){
+    e.preventDefault();
+    symptoms.focus();
+    return;
+  }
+  if(e.altKey && !e.ctrlKey && !e.metaKey && key === 'v'){
+    e.preventDefault();
+    listening ? stopDictation() : startDictation();
+    return;
+  }
+  if(e.altKey && !e.ctrlKey && !e.metaKey && key === 'c'){
+    e.preventDefault();
+    clearNote();
+    return;
+  }
+  if(e.altKey && !e.ctrlKey && !e.metaKey && ['1','2','3'].includes(key) && !typingTarget(e.target)){
+    e.preventDefault();
+    openDoctorShortcut(Number(key) - 1);
+  }
+}
+
 symptoms.addEventListener('input', updateCount);
 analyze.addEventListener('click', run);
-clear.addEventListener('click', () => { if(listening) stopDictation(); symptoms.value = ''; updateCount(); results.className = 'results hidden'; hideStatus(); symptoms.focus(); });
+clear.addEventListener('click', clearNote);
 micBtn.addEventListener('click', () => listening ? stopDictation() : startDictation());
-symptoms.addEventListener('keydown', e => { if((e.ctrlKey || e.metaKey) && e.key === 'Enter') run(); });
+document.addEventListener('keydown', handleKeyboardShortcut);
 
 void initVoice();
 updateCount();

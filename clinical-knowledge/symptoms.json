@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 7,
   "concepts": [
     {
       "id": "back_pain",
@@ -344,7 +344,10 @@
         "irregular heartbeat",
         "heart skipping beats",
         "heart pounding",
-        "pounding heartbeat"
+        "pounding heartbeat",
+        "heart keeps racing",
+        "heart is racing",
+        "heart feels like it is racing"
       ],
       "specialtyWeights": {
         "Cardiology": 13
@@ -358,7 +361,24 @@
       "sources": [
         "NHS public symptom/condition guidance",
         "LIPS public specialist/service pages"
-      ]
+      ],
+      "clarification": {
+        "question": "Do the palpitations come with fainting/blackout or significant breathlessness?",
+        "options": [
+          {
+            "label": "Palpitations only",
+            "append": "The main problem is palpitations without fainting or significant breathlessness."
+          },
+          {
+            "label": "With fainting / blackout",
+            "append": "The palpitations are associated with fainting or blackout."
+          },
+          {
+            "label": "With breathlessness",
+            "append": "The palpitations are associated with significant shortness of breath."
+          }
+        ]
+      }
     },
     {
       "id": "chest_pain",
@@ -463,7 +483,24 @@
       "subSpecialtyWeights": {},
       "sources": [
         "NHS public symptom/condition guidance"
-      ]
+      ],
+      "clarification": {
+        "question": "What comes with the shortness of breath?",
+        "options": [
+          {
+            "label": "Wheeze / cough",
+            "append": "The shortness of breath comes with wheeze or cough."
+          },
+          {
+            "label": "Palpitations / ankle swelling",
+            "append": "The shortness of breath comes with palpitations or ankle swelling."
+          },
+          {
+            "label": "No clear associated symptom",
+            "append": "No clear associated wheeze, cough, palpitations or ankle swelling was reported."
+          }
+        ]
+      }
     },
     {
       "id": "ankle_swelling",
@@ -1399,7 +1436,24 @@
       },
       "sources": [
         "NHS public symptom/condition guidance"
-      ]
+      ],
+      "clarification": {
+        "question": "Is the main eye problem pain, a change in vision, or both?",
+        "options": [
+          {
+            "label": "Eye pain mainly",
+            "append": "The main eye problem is eye pain."
+          },
+          {
+            "label": "Vision change mainly",
+            "append": "The main eye problem is blurred or changed vision."
+          },
+          {
+            "label": "Both",
+            "append": "There is eye pain together with blurred or changed vision."
+          }
+        ]
+      }
     },
     {
       "id": "cataract_glaucoma",
@@ -1588,7 +1642,24 @@
       "sources": [
         "NHS public symptom/condition guidance",
         "LIPS public specialist/service pages"
-      ]
+      ],
+      "clarification": {
+        "question": "What is the main associated ear symptom?",
+        "options": [
+          {
+            "label": "Hearing loss only",
+            "append": "The main issue is hearing loss without dizziness or tinnitus."
+          },
+          {
+            "label": "Ringing / tinnitus too",
+            "append": "There is tinnitus or ringing in the ear as well."
+          },
+          {
+            "label": "Dizziness / balance too",
+            "append": "There is dizziness or a balance problem as well."
+          }
+        ]
+      }
     },
     {
       "id": "tinnitus",

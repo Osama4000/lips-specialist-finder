@@ -20,6 +20,142 @@ const TOKEN_STOPWORDS = new Set([
   'left','right','bilateral','both'
 ]);
 
+
+// Conservative typo correction is deliberately limited to clinical vocabulary. It never
+// rewrites short/common English words or assertion cues such as "no" and "not".
+const COMMON_INPUT_WORDS = new Set([
+  ...TOKEN_STOPWORDS,
+  'after','before','during','while','when','where','which','what','main','mostly','usually','sometimes','always',
+  'started','starting','worse','better','improved','improving','getting','feels','feeling','feel','felt','comes','goes',
+  'week','weeks','month','months','year','years','day','days','hour','hours','morning','evening','night','time',
+  'male','female','woman','women','man','men','child','adult','older','young','mother','father','sister','brother',
+  'taking','takes','medication','medications','tablet','tablets','doctor','consultant','appointment','review'
+]);
+
+const KNOWN_CLINICAL_TYPOS = new Map(Object.entries({
+  palpatation: 'palpitation',
+  palpatations: 'palpitations',
+  palpitationns: 'palpitations',
+  sciatca: 'sciatica',
+  sciattica: 'sciatica',
+  arthritus: 'arthritis',
+  migrene: 'migraine',
+  migrane: 'migraine',
+  dizzyness: 'dizziness',
+  numbnes: 'numbness',
+  breathlesness: 'breathlessness',
+  breathlessnesss: 'breathlessness',
+  swolen: 'swollen',
+  haemorroids: 'haemorrhoids',
+  hemorroids: 'haemorrhoids',
+  diarrhoea: 'diarrhoea',
+  diarhoea: 'diarrhoea'
+}));
+
+function clinicalVocabularyTokens() {
+  const out = new Set();
+  for (const concept of concepts) {
+    for (const phrase of [concept.label, ...(concept.synonyms || [])]) {
+      const normalized = normalizeText(phrase);
+      for (const token of normalized.split(/\s+/)) {
+        if (/^[a-z][a-z'-]+$/.test(token) && token.length >= 5 && !COMMON_INPUT_WORDS.has(token)) out.add(token);
+      }
+    }
+  }
+  return out;
+}
+
+const MEDICAL_VOCABULARY = clinicalVocabularyTokens();
+const MEDICAL_VOCABULARY_BY_INITIAL = new Map();
+for (const token of MEDICAL_VOCABULARY) {
+  const key = token[0];
+  if (!MEDICAL_VOCABULARY_BY_INITIAL.has(key)) MEDICAL_VOCABULARY_BY_INITIAL.set(key, []);
+  MEDICAL_VOCABULARY_BY_INITIAL.get(key).push(token);
+}
+
+function damerauLevenshtein(a, b, maxDistance = Infinity) {
+  const left = String(a || '');
+  const right = String(b || '');
+  if (left === right) return 0;
+  if (!left.length) return right.length;
+  if (!right.length) return left.length;
+  if (Math.abs(left.length - right.length) > maxDistance) return maxDistance + 1;
+  const rows = Array.from({ length: left.length + 1 }, () => new Array(right.length + 1).fill(0));
+  for (let i = 0; i <= left.length; i++) rows[i][0] = i;
+  for (let j = 0; j <= right.length; j++) rows[0][j] = j;
+  for (let i = 1; i <= left.length; i++) {
+    let rowMin = Infinity;
+    for (let j = 1; j <= right.length; j++) {
+      const cost = left[i - 1] === right[j - 1] ? 0 : 1;
+      rows[i][j] = Math.min(rows[i - 1][j] + 1, rows[i][j - 1] + 1, rows[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && left[i - 1] === right[j - 2] && left[i - 2] === right[j - 1]) {
+        rows[i][j] = Math.min(rows[i][j], rows[i - 2][j - 2] + 1);
+      }
+      rowMin = Math.min(rowMin, rows[i][j]);
+    }
+    if (rowMin > maxDistance) return maxDistance + 1;
+  }
+  return rows[left.length][right.length];
+}
+
+function correctClinicalTypos(text) {
+  const corrections = [];
+  const correctedText = String(text || '').replace(/\b[A-Za-z][A-Za-z'-]{4,}\b/g, raw => {
+    const token = normalizeText(raw);
+    if (!token || COMMON_INPUT_WORDS.has(token) || MEDICAL_VOCABULARY.has(token)) return raw;
+    const known = KNOWN_CLINICAL_TYPOS.get(token);
+    if (known) {
+      corrections.push({ from: raw, to: known, distance: damerauLevenshtein(token, known, 3) });
+      return known;
+    }
+    const candidates = MEDICAL_VOCABULARY_BY_INITIAL.get(token[0]) || [];
+    const maxDistance = token.length >= 8 ? 2 : 1;
+    let best = null;
+    let bestDistance = maxDistance + 1;
+    let ties = 0;
+    for (const candidate of candidates) {
+      if (Math.abs(candidate.length - token.length) > maxDistance) continue;
+      const distance = damerauLevenshtein(token, candidate, maxDistance);
+      if (distance < bestDistance) { best = candidate; bestDistance = distance; ties = 1; }
+      else if (distance === bestDistance) ties += 1;
+    }
+    if (!best || bestDistance > maxDistance || ties !== 1) return raw;
+    const similarity = 1 - bestDistance / Math.max(token.length, best.length);
+    if (similarity < 0.78) return raw;
+    corrections.push({ from: raw, to: best, distance: bestDistance });
+    return best;
+  });
+  return { text: correctedText, corrections: corrections.slice(0, 12) };
+}
+
+function medicalPhraseNormalisations(conceptMatches) {
+  const out = [];
+  const seen = new Set();
+  for (const match of conceptMatches || []) {
+    const canonical = String(match.label || '').trim();
+    if (!canonical) continue;
+    const phrases = [...(match.matchedPhrases || [])].sort((a,b) => String(b).length - String(a).length);
+    const phrase = phrases.find(x => normalizeText(x) && normalizeText(x) !== normalizeText(canonical));
+    if (!phrase) continue;
+    const key = `${normalizeText(phrase)}|${normalizeText(canonical)}|${match.state}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ from: phrase, to: canonical, state: match.state, conceptId: match.id });
+  }
+  return out.slice(0, 12);
+}
+
+function prepareClinicalInput(text) {
+  const corrected = correctClinicalTypos(text);
+  const conceptMatches = extractClinicalConcepts(corrected.text);
+  return {
+    text: corrected.text,
+    corrections: corrected.corrections,
+    normalisations: medicalPhraseNormalisations(conceptMatches),
+    conceptMatches
+  };
+}
+
 function uniqueStrings(values) {
   return [...new Set((values || []).map(x => String(x || '').trim()).filter(Boolean))];
 }
@@ -198,15 +334,35 @@ function detectRedFlags(text, conceptMatches = []) {
   return { urgent: matches.some(x => x.severity === 'emergency'), matches, ignoredNegated: uniqueStrings(ignored) };
 }
 
-function chooseClarification(conceptMatches, specialtyCandidates = []) {
+function chooseClarification(conceptMatches, specialtyCandidates = [], options = {}) {
   const active = (conceptMatches || []).filter(x => ['present','uncertain'].includes(x.state) && x.clarification);
   if (!active.length) return null;
-  const top = specialtyCandidates[0]?.score || 0;
-  const second = specialtyCandidates[1]?.score || 0;
-  const ambiguous = !top || second > 0 && top - second < 4;
+  const top = Number(specialtyCandidates[0]?.score || 0);
+  const second = Number(specialtyCandidates[1]?.score || 0);
+  const ambiguous = !top || (second > 0 && top - second < 4.5);
   const uncertain = active.some(x => x.state === 'uncertain');
-  if (!ambiguous && !uncertain) return null;
-  return active[0].clarification;
+  const needsSubSpecialty = Boolean(options.subSpecialtyMissing);
+  if (!ambiguous && !uncertain && !needsSubSpecialty) return null;
+
+  const topSpecialty = specialtyCandidates[0]?.specialty || '';
+  const secondSpecialty = specialtyCandidates[1]?.specialty || '';
+  const scored = active.map(match => {
+    const weights = match.specialtyWeights || {};
+    const firstWeight = Number(weights[topSpecialty] || 0);
+    const secondWeight = Number(weights[secondSpecialty] || 0);
+    const spreadsAcrossTopRoutes = topSpecialty && secondSpecialty && firstWeight > 0 && secondWeight > 0;
+    let score = 0;
+    if (match.state === 'uncertain') score += 6;
+    if (spreadsAcrossTopRoutes) score += 5 - Math.min(4, Math.abs(firstWeight - secondWeight));
+    if (Object.keys(match.subSpecialtyWeights || {}).length) score += 2.5;
+    if (needsSubSpecialty) score += 2;
+    score += Math.max(0, ...Object.values(weights).map(Number)) / 10;
+    return { match, score };
+  }).sort((a,b) => b.score - a.score || String(a.match.label).localeCompare(String(b.match.label)));
+
+  const selected = scored[0]?.match;
+  if (!selected?.clarification) return null;
+  return { ...selected.clarification, conceptId: selected.id, trigger: selected.state === 'uncertain' ? 'uncertainty' : (ambiguous ? 'ambiguity' : 'sub-specialty') };
 }
 
 function contextSummary(conceptMatches) {
@@ -230,6 +386,9 @@ module.exports = {
   detectRedFlags,
   chooseClarification,
   contextSummary,
+  prepareClinicalInput,
+  correctClinicalTypos,
+  medicalPhraseNormalisations,
   inferPatientContext,
   normalizeText
 };

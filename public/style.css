@@ -20,3 +20,11 @@
 
 /* v6.1 resilient voice UX */
 .mic-btn.transcribing{background:#eef6ff;border-color:#b9d5ef;color:#275e8a;cursor:wait}.mic-btn.unsupported{opacity:.55}.mic-status:not(.hidden){border:1px solid #e0e8ed}.mic-status.active{border-color:#ecc7c7}
+
+/* v6.2 smart routing UX */
+.shortcut-strip{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;padding:10px 12px;border:1px solid #e2e9ed;border-radius:13px;background:#fbfdfe;color:#647580;font-size:11px}
+.shortcut-strip span{display:inline-flex;align-items:center;gap:5px}
+kbd{font:inherit;font-weight:800;color:#36535c;background:#fff;border:1px solid #ccd8dd;border-bottom-width:2px;border-radius:6px;padding:2px 6px;box-shadow:0 1px 0 rgba(24,49,58,.04)}
+.interpretation-panel{margin-top:14px;border:1px solid #d8e7ea;border-radius:16px;background:#f7fbfc;padding:14px 15px}.interpretation-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.interpretation-head b{color:#24555b}.interpretation-head span{font-size:11px;color:var(--muted)}.interpretation-row{display:grid;grid-template-columns:170px 1fr;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid #e4eef0;font-size:12px}.interpretation-row>strong{color:#516975}.interpretation-row>div{display:flex;flex-wrap:wrap;gap:7px}.interpretation-row>div>span{background:#fff;border:1px solid #dbe6e9;border-radius:999px;padding:5px 8px;color:#314b53}
+.stronger-why{padding:0;overflow:hidden;background:#f8fbfc;border:1px solid #e0e9ed}.why-title{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:11px 12px;background:#f0f6f7;border-bottom:1px solid #e0e9ed}.why-title b{margin:0}.why-title span{font-size:10px;color:var(--muted)}.why-row{display:grid;grid-template-columns:120px 1fr;gap:10px;padding:9px 12px;border-bottom:1px solid #e9eff2}.why-row:last-child{border-bottom:0}.why-row>span{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#73848d;font-weight:800}.why-row>strong{font-size:12px;line-height:1.45;color:#314b53}.doctor-profile-link{margin-top:14px}
+@media(max-width:760px){.shortcut-strip{display:none}.interpretation-head{align-items:flex-start;flex-direction:column}.interpretation-row{grid-template-columns:1fr;gap:6px}.why-title{align-items:flex-start;flex-direction:column}.why-row{grid-template-columns:1fr;gap:4px}}

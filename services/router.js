@@ -817,15 +817,21 @@ function bestSubSpecialty(text, route, specialists, knowledgeSubScores = new Map
 }
 
 function routeSymptoms(symptomText, specialists = []) {
-  const text = String(symptomText || '').trim();
-  if (!text) return { empty: true };
+  const rawText = String(symptomText || '').trim();
+  if (!rawText) return { empty: true };
+  const preparedInput = clinical.prepareClinicalInput(rawText);
+  const text = preparedInput.text;
+  const inputUnderstanding = {
+    corrections: preparedInput.corrections || [],
+    normalisations: preparedInput.normalisations || []
+  };
 
   const availableCanonicals = new Set((specialists || []).flatMap(s => [
     s.specialty,
     ...(Array.isArray(s.specialties) ? s.specialties : [])
   ]).map(canonicalSpecialty).filter(Boolean));
 
-  const clinicalConcepts = clinical.extractClinicalConcepts(text);
+  const clinicalConcepts = preparedInput.conceptMatches || clinical.extractClinicalConcepts(text);
   const conceptScoring = clinical.scoreConcepts(clinicalConcepts);
   const activeConceptIds = new Set(clinicalConcepts.filter(x => x.state === 'present').map(x => x.id));
   // Interaction rule: back/neck pain plus radicular sensory symptoms should stay on a spine pathway
@@ -904,6 +910,7 @@ function routeSymptoms(symptomText, specialists = []) {
       clinicalConcepts,
       contextSummary,
       directoryEvidence: directoryKnowledge.evidence,
+      inputUnderstanding,
       clarification,
       patientContext,
       urgency
@@ -921,7 +928,7 @@ function routeSymptoms(symptomText, specialists = []) {
   }
   const subSpecialty = bestSubSpecialty(text, top.route, specialists, mergedSubScores);
   const alternatives = scores.slice(1, 4).filter(x => x.score >= 5 && top.score - x.score <= 7).map(x => x.route.specialty);
-  const clarification = clinical.chooseClarification(clinicalConcepts, candidatePayload);
+  const clarification = clinical.chooseClarification(clinicalConcepts, candidatePayload, { subSpecialtyMissing: !subSpecialty });
 
   const conceptTerms = clinicalConcepts
     .filter(x => x.state === 'present')
@@ -942,6 +949,7 @@ function routeSymptoms(symptomText, specialists = []) {
     clinicalConcepts,
     contextSummary,
     directoryEvidence: directoryKnowledge.evidence,
+    inputUnderstanding,
     clarification,
     patientContext,
     urgency
@@ -1023,45 +1031,81 @@ function rankDoctors(doctors, specialty, subSpecialty, queryText = '', options =
       }
     }
 
-    const structured = normalizeText([
-      ...(doctor.specialties || []),
-      ...(doctor.subSpecialties || []),
-      ...(doctor.expertise || []),
-      ...(doctor.conditions || []),
-      doctor.role || ''
-    ].join(' '));
+    const conditionItems = Array.isArray(doctor.conditions) ? doctor.conditions.filter(Boolean) : [];
+    const expertiseItems = Array.isArray(doctor.expertise) ? doctor.expertise.filter(Boolean) : [];
+    const roleItems = [doctor.role || ''].filter(Boolean);
     const bio = normalizeText(doctor.biography || '');
-    const evidence = [];
-    let evidenceScore = 0;
+    const activeConcepts = (options.routing?.clinicalConcepts || []).filter(x => ['present','uncertain'].includes(x.state));
 
-    for (const token of qTokens) {
-      if (phraseIn(structured, token)) {
-        evidenceScore += token.length >= 7 ? 4 : 2.5;
-        evidence.push(token);
-      } else if (bio && phraseIn(bio, token)) {
-        evidenceScore += 0.5;
-        evidence.push(token);
+    const matchItems = (items, baseWeight) => {
+      const matches = [];
+      let score = 0;
+      for (const item of items) {
+        const searchable = normalizeText(item);
+        if (!searchable) continue;
+        let hit = false;
+        for (const token of qTokens) {
+          if (phraseIn(searchable, token)) { hit = true; break; }
+        }
+        if (!hit) {
+          for (const concept of activeConcepts) {
+            const conceptDef = clinical.conceptById.get(concept.id);
+            const phrases = [concept.label, ...(conceptDef?.synonyms || []), ...(concept.matchedPhrases || [])].filter(Boolean);
+            if (phrases.some(phrase => phraseIn(searchable, phrase))) { hit = true; break; }
+          }
+        }
+        if (hit) {
+          matches.push(item);
+          score += baseWeight;
+        }
       }
-    }
+      return { matches: [...new Set(matches)].slice(0, 4), score };
+    };
 
-    const conceptEvidence = clinical.doctorConceptEvidence(doctor, options.routing?.clinicalConcepts || []);
-    for (const item of conceptEvidence) {
-      evidenceScore += item.state === 'present' ? 5 : 2;
-      evidence.push(item.label);
-    }
+    const conditionEvidence = matchItems(conditionItems, 6);
+    const expertiseEvidence = matchItems(expertiseItems, 5);
+    const roleEvidence = matchItems(roleItems, 2);
+    let evidenceScore = conditionEvidence.score + expertiseEvidence.score + roleEvidence.score;
 
-    const seenEvidence = new Set();
-    const uniqueEvidence = evidence.filter(item => {
-      const key = normalizeText(item);
-      if (!key || seenEvidence.has(key)) return false;
-      seenEvidence.add(key);
-      return true;
-    }).slice(0, 5);
-    if (uniqueEvidence.length >= 2 && clinicalTier < 2) clinicalTier = 2;
-    if (uniqueEvidence.length) reasons.push(`Profile evidence: ${uniqueEvidence.join(', ')}`);
-    if (!subMatch && canonicalTarget) reasons.unshift(`Specialty: ${canonicalTarget}`);
+    const conceptEvidence = clinical.doctorConceptEvidence(doctor, activeConcepts);
+    const conceptLabels = [...new Set(conceptEvidence.map(x => x.label).filter(Boolean))].slice(0, 5);
+    evidenceScore += conceptEvidence.reduce((sum, item) => sum + (item.state === 'present' ? 5 : 2), 0);
+
+    const biographyMatches = [];
+    for (const token of qTokens) {
+      if (bio && phraseIn(bio, token)) biographyMatches.push(token);
+    }
+    const uniqueBiographyMatches = [...new Set(biographyMatches)].slice(0, 3);
+    evidenceScore += uniqueBiographyMatches.length * 0.5;
+
+    const uniqueEvidence = [...new Set([
+      ...conceptLabels,
+      ...conditionEvidence.matches,
+      ...expertiseEvidence.matches,
+      ...uniqueBiographyMatches
+    ].map(x => String(x || '').trim()).filter(Boolean))].slice(0, 7);
+    if ((conditionEvidence.matches.length + expertiseEvidence.matches.length + conceptLabels.length) >= 2 && clinicalTier < 2) clinicalTier = 2;
+
+    const routeReason = subMatch
+      ? `${clinicalTier >= 3 ? 'Exact' : 'Related'} route: ${canonicalTarget} → ${subMatch}`
+      : `Specialty route: ${canonicalTarget}`;
+    reasons.push(routeReason);
+    if (conditionEvidence.matches.length) reasons.push(`Treats: ${conditionEvidence.matches.join(', ')}`);
+    if (expertiseEvidence.matches.length) reasons.push(`Expertise: ${expertiseEvidence.matches.join(', ')}`);
+    if (conceptLabels.length && !conditionEvidence.matches.length) reasons.push(`Patient-note match: ${conceptLabels.join(', ')}`);
+    if (uniqueBiographyMatches.length && reasons.length < 4) reasons.push(`Profile wording: ${uniqueBiographyMatches.join(', ')}`);
 
     const lipsPriority = preferLipsHealthcare && doctor.worksAtLipsHealthcare === true ? 1 : 0;
+    const matchEvidence = {
+      route: routeReason,
+      subSpecialty: subMatch || null,
+      exactSubSpecialty: Boolean(subMatch && clinicalTier >= 3),
+      conditions: conditionEvidence.matches,
+      expertise: expertiseEvidence.matches,
+      concepts: conceptLabels,
+      biography: uniqueBiographyMatches,
+      lipsHealthcare: doctor.worksAtLipsHealthcare === true
+    };
     const matchLevel = clinicalTier >= 3
       ? 'Exact sub-specialty match'
       : clinicalTier === 2
@@ -1074,6 +1118,7 @@ function rankDoctors(doctors, specialty, subSpecialty, queryText = '', options =
       matchLevel,
       scopeMismatch,
       conceptEvidence,
+      matchEvidence,
       matchScore: Math.round((clinicalTier * 100 + lipsPriority * 10 + Math.min(evidenceScore, 24.9) - (scopeMismatch ? 80 : 0)) * 10) / 10,
       matchReasons: reasons
     };

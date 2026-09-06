@@ -1,8 +1,8 @@
 {
   "name": "lips-specialist-finder",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "private": true,
-  "description": "Context-aware LIPS specialist routing assistant with cleaned voice dictation and cross-browser speech-to-text fallback.",
+  "description": "Context-aware LIPS specialist routing assistant with smart clarification, conservative typo correction, medical phrase normalisation, keyboard-first workflow and resilient cross-browser voice dictation.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

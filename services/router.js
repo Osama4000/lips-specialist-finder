@@ -1,3 +1,5 @@
+const clinical = require('./clinicalKnowledge');
+const { phraseContext: contextualPhraseContext } = require('./context');
 const SPECIALTY_ALIASES = [
   ['Trauma & Orthopaedics', ['trauma and orthopaedics', 'trauma & orthopaedics', 'orthopaedics', 'orthopedics', 'orthopaedic surgery', 'orthopedic surgery']],
   ['Cardiology', ['cardiology', 'cardiovascular medicine']],
@@ -643,16 +645,19 @@ function phraseIn(text, term) {
 function findAssertionMatches(text, terms) {
   const affirmed = [];
   const negated = [];
+  const ignored = [];
   const seen = new Set();
   for (const [term, weight] of Object.entries(terms || {})) {
     const normalizedTerm = normalizeText(term);
     if (!normalizedTerm || seen.has(normalizedTerm)) continue;
     seen.add(normalizedTerm);
-    const state = phraseAssertion(text, term);
-    if (state.affirmed) affirmed.push({ term, weight });
-    else if (state.negated) negated.push({ term, weight });
+    const context = contextualPhraseContext(text, term);
+    if (context.state === 'present') affirmed.push({ term, weight, state: 'present' });
+    else if (context.state === 'uncertain') affirmed.push({ term, weight: Number(weight || 0) * 0.42, state: 'uncertain' });
+    else if (context.state === 'negated') negated.push({ term, weight, state: 'negated' });
+    else if (context.found) ignored.push({ term, weight, state: context.state });
   }
-  return { affirmed, negated };
+  return { affirmed, negated, ignored };
 }
 
 function findMatches(text, terms) {
@@ -687,25 +692,20 @@ function subSpecialtyEquivalent(a, b) {
   return normalizeText(canonicalSubSpecialty(a)) === normalizeText(canonicalSubSpecialty(b));
 }
 
-function detectUrgency(text) {
-  const terms = Object.fromEntries(URGENT.map(([term, score]) => [term, score]));
-  const assertions = findAssertionMatches(text, terms);
-  const score = assertions.affirmed.reduce((n, x) => n + x.weight, 0);
+function detectUrgency(text, conceptMatches = null) {
+  const concepts = conceptMatches || clinical.extractClinicalConcepts(text);
+  const detected = clinical.detectRedFlags(text, concepts);
   return {
-    urgent: score >= 12,
-    matches: assertions.affirmed.map(x => x.term),
-    ignoredNegated: assertions.negated.map(x => x.term),
-    score
+    urgent: detected.urgent,
+    matches: detected.matches.map(x => x.label),
+    rules: detected.matches,
+    ignoredNegated: detected.ignoredNegated,
+    score: detected.urgent ? 16 : 0
   };
 }
 
 function queryTokens(text) {
-  return assertionTokens(text)
-    .filter(x => !x.negated && !x.cue)
-    .map(x => x.token)
-    .filter(Boolean)
-    .filter(tok => tok.length >= 3)
-    .filter(tok => !STOPWORDS.has(tok));
+  return clinical.activeQueryTokens(text);
 }
 
 function doctorSearchText(doctor, includeBiography = false) {
@@ -768,14 +768,13 @@ function availableSubSpecialties(specialists, specialty) {
   return [...out];
 }
 
-function bestSubSpecialty(text, route, specialists) {
+function bestSubSpecialty(text, route, specialists, knowledgeSubScores = new Map()) {
   const available = availableSubSpecialties(specialists, route.specialty);
   const candidates = new Map();
 
   for (const [name, terms] of Object.entries(route.subRules || {})) {
     let score = 0;
     for (const term of terms) if (phraseIn(text, term)) score += normalizeText(term).includes(' ') ? 3 : 2;
-    if (score) score += Number(route.subPriorities?.[name] || 0);
     if (score) candidates.set(name, score);
   }
 
@@ -787,6 +786,15 @@ function bestSubSpecialty(text, route, specialists) {
     if (phraseIn(text, sub)) score += 7;
     for (const token of tokens) if (phraseIn(n, token)) score += 2;
     if (score) candidates.set(sub, Math.max(candidates.get(sub) || 0, score));
+  }
+
+  for (const [name, score] of knowledgeSubScores || []) {
+    if (Number(score || 0) <= 0) continue;
+    const existing = candidates.get(name) || 0;
+    candidates.set(name, Math.max(existing, Number(score)));
+  }
+  for (const [name, score] of [...candidates.entries()]) {
+    candidates.set(name, score + Number(route.subPriorities?.[name] || 0));
   }
 
   const sorted = [...candidates.entries()].sort((a, b) => b[1] - a[1]);
@@ -816,71 +824,126 @@ function routeSymptoms(symptomText, specialists = []) {
     s.specialty,
     ...(Array.isArray(s.specialties) ? s.specialties : [])
   ]).map(canonicalSpecialty).filter(Boolean));
+
+  const clinicalConcepts = clinical.extractClinicalConcepts(text);
+  const conceptScoring = clinical.scoreConcepts(clinicalConcepts);
+  const activeConceptIds = new Set(clinicalConcepts.filter(x => x.state === 'present').map(x => x.id));
+  // Interaction rule: back/neck pain plus radicular sensory symptoms should stay on a spine pathway
+  // rather than letting a generic tingling/numbness token pull the case to General Neurology.
+  if (activeConceptIds.has('sciatica') || (activeConceptIds.has('back_pain') && activeConceptIds.has('numbness_tingling'))) {
+    conceptScoring.specialtyScores.set('Neurosurgery', (conceptScoring.specialtyScores.get('Neurosurgery') || 0) + 12);
+    conceptScoring.specialtyScores.set('Trauma & Orthopaedics', (conceptScoring.specialtyScores.get('Trauma & Orthopaedics') || 0) + 9);
+    conceptScoring.specialtyScores.set('Neurology', Math.max(0, (conceptScoring.specialtyScores.get('Neurology') || 0) - 6));
+    conceptScoring.subSpecialtyScores.set('Spinal Surgery', (conceptScoring.subSpecialtyScores.get('Spinal Surgery') || 0) + 10);
+    conceptScoring.subSpecialtyScores.set('Spinal Disorders', (conceptScoring.subSpecialtyScores.get('Spinal Disorders') || 0) + 8);
+  }
+  const directoryKnowledge = clinical.directoryEvidenceScores(text, specialists);
   const dataScores = dataDrivenSpecialtyScores(text, specialists);
   const allNegatedTerms = new Set();
+  const ignoredContextTerms = [];
 
   const scores = ROUTES.map(route => {
     const assertions = findAssertionMatches(text, route.terms);
     assertions.negated.forEach(x => allNegatedTerms.add(x.term));
-    let score = assertions.affirmed.reduce((n, m) => n + m.weight, 0);
+    for (const x of assertions.ignored || []) ignoredContextTerms.push({ term: x.term, state: x.state });
+    let score = assertions.affirmed.reduce((n, m) => n + Number(m.weight || 0), 0);
+    score += conceptScoring.specialtyScores.get(route.specialty) || 0;
+    score += directoryKnowledge.specialtyScores.get(route.specialty) || 0;
     score += dataScores.get(route.specialty) || 0;
     if (score > 0 && (availableCanonicals.size === 0 || availableCanonicals.has(route.specialty))) score += 1;
     return { route, score, matches: assertions.affirmed, negated: assertions.negated };
   });
 
-  // Support a live LIPS specialty that is present in the directory but not yet covered by a curated route.
-  for (const [specialty, score] of dataScores) {
-    if (ROUTES.some(r => r.specialty === specialty) || score <= 0) continue;
+  const liveSpecialties = new Set([
+    ...conceptScoring.specialtyScores.keys(),
+    ...directoryKnowledge.specialtyScores.keys(),
+    ...dataScores.keys()
+  ]);
+  for (const specialtyRaw of liveSpecialties) {
+    const specialty = canonicalSpecialty(specialtyRaw);
+    if (!specialty || ROUTES.some(r => r.specialty === specialty)) continue;
+    const score = (conceptScoring.specialtyScores.get(specialtyRaw) || 0) +
+      (directoryKnowledge.specialtyScores.get(specialtyRaw) || 0) +
+      (dataScores.get(specialtyRaw) || 0);
+    if (score <= 0) continue;
     scores.push({
-      route: {
-        specialty,
-        reason: 'The wording matches expertise and sub-speciality terms in the current LIPS specialist directory.',
-        subRules: {}
-      },
-      score,
-      matches: [],
-      negated: []
+      route: { specialty, reason: 'The wording matches current LIPS directory expertise plus the routing knowledge base.', subRules: {} },
+      score, matches: [], negated: []
     });
   }
 
   scores.sort((a, b) => b.score - a.score);
-  const urgency = detectUrgency(text);
+  const urgency = detectUrgency(text, clinicalConcepts);
   urgency.ignoredNegated.forEach(x => allNegatedTerms.add(x));
   const top = scores[0];
   const second = scores[1];
+  const contextSummary = clinical.contextSummary(clinicalConcepts);
+  const patientContext = clinical.inferPatientContext(text);
+
+  const candidatePayload = scores.filter(x => x.score > 0).slice(0, 5).map(x => ({
+    specialty: x.route.specialty,
+    score: Math.round(x.score * 10) / 10
+  }));
 
   if (!top || top.score < 5) {
-    const onlyNegated = allNegatedTerms.size > 0 && scores.every(x => x.matches.length === 0);
+    const recognisedButInactive = clinicalConcepts.some(x => ['negated','historical','resolved','family'].includes(x.state));
+    const clarification = clinical.chooseClarification(clinicalConcepts, candidatePayload);
     return {
       uncertain: true,
       specialty: null,
       subSpecialty: null,
       confidence: 'Low',
       alternatives: [],
-      candidates: scores.filter(x => x.score > 0).slice(0, 3).map(x => ({ specialty: x.route.specialty, score: Math.round(x.score * 10) / 10 })),
-      reason: onlyNegated
-        ? 'The recognised symptoms were stated as absent or denied, so they were excluded from routing.'
-        : 'The description is too broad to route safely to one specialist. Use clinical or GP triage instead of forcing a specialty.',
+      candidates: candidatePayload,
+      reason: recognisedButInactive
+        ? 'Recognised symptoms were historical, resolved, family-history or explicitly denied, so they were not treated as the patient’s current complaint.'
+        : 'The description is too broad to route safely to one specialist. Add the main current symptom, body area and relevant associated symptoms.',
       matchedTerms: [],
       negatedTerms: [...allNegatedTerms].slice(0, 12),
+      ignoredContextTerms: ignoredContextTerms.slice(0, 12),
+      clinicalConcepts,
+      contextSummary,
+      directoryEvidence: directoryKnowledge.evidence,
+      clarification,
+      patientContext,
       urgency
     };
   }
 
   const confidence = confidenceFromScores(scores);
-  const uncertain = confidence === 'Low' || Boolean(second && top.score - second.score < 2);
-  const subSpecialty = bestSubSpecialty(text, top.route, specialists);
+  const gap = second ? top.score - second.score : top.score;
+  const hasOnlyUncertainClinicalConcepts = clinicalConcepts.some(x => x.state === 'uncertain') && !clinicalConcepts.some(x => x.state === 'present');
+  const uncertain = confidence === 'Low' || Boolean(second && gap < 3) || hasOnlyUncertainClinicalConcepts;
+
+  const mergedSubScores = new Map(conceptScoring.subSpecialtyScores);
+  for (const [sub, score] of directoryKnowledge.subSpecialtyScores) {
+    mergedSubScores.set(sub, Math.max(mergedSubScores.get(sub) || 0, score));
+  }
+  const subSpecialty = bestSubSpecialty(text, top.route, specialists, mergedSubScores);
+  const alternatives = scores.slice(1, 4).filter(x => x.score >= 5 && top.score - x.score <= 7).map(x => x.route.specialty);
+  const clarification = clinical.chooseClarification(clinicalConcepts, candidatePayload);
+
+  const conceptTerms = clinicalConcepts
+    .filter(x => x.state === 'present')
+    .map(x => x.label);
+  const routeTerms = top.matches.map(x => x.term);
 
   return {
     uncertain,
     specialty: top.route.specialty,
     subSpecialty,
     confidence,
-    alternatives: scores.slice(1, 3).filter(x => x.score >= 5).map(x => x.route.specialty),
-    candidates: scores.filter(x => x.score > 0).slice(0, 3).map(x => ({ specialty: x.route.specialty, score: Math.round(x.score * 10) / 10 })),
+    alternatives,
+    candidates: candidatePayload,
     reason: top.route.reason,
-    matchedTerms: top.matches.map(x => x.term),
-    negatedTerms: [...allNegatedTerms].filter(x => !top.matches.some(m => normalizeText(m.term) === normalizeText(x))).slice(0, 12),
+    matchedTerms: [...new Set([...conceptTerms, ...routeTerms])].slice(0, 14),
+    negatedTerms: [...new Set([...allNegatedTerms, ...contextSummary.negated])].slice(0, 12),
+    ignoredContextTerms: ignoredContextTerms.slice(0, 12),
+    clinicalConcepts,
+    contextSummary,
+    directoryEvidence: directoryKnowledge.evidence,
+    clarification,
+    patientContext,
     urgency
   };
 }
@@ -900,6 +963,32 @@ function relatedSubSpecialty(subs, target) {
   return bestOverlap > 0 ? best : null;
 }
 
+const EXCLUSIVE_SUBSPECIALTY_GROUPS = [
+  ['knee'],
+  ['hip'],
+  ['upper limb','shoulder','elbow','wrist','hand'],
+  ['foot and ankle','foot & ankle','ankle','foot'],
+  ['spinal disorders','spinal surgery','back surgery','spine'],
+  ['ear and balance','ear & balance','otology'],
+  ['nose and sinus','nose & sinus','sinus'],
+  ['throat','laryngology'],
+  ['upper gi'],
+  ['lower gi','colorectal'],
+  ['hepatology','liver']
+];
+
+function exclusiveScopeMismatch(subs, target) {
+  if (!target || !Array.isArray(subs) || !subs.length) return false;
+  const targetN = normalizeText(canonicalSubSpecialty(target));
+  const targetGroup = EXCLUSIVE_SUBSPECIALTY_GROUPS.find(group => group.some(x => targetN.includes(normalizeText(x))));
+  if (!targetGroup) return false;
+  const doctorNorm = subs.map(x => normalizeText(canonicalSubSpecialty(x)));
+  if (doctorNorm.some(s => targetGroup.some(x => s.includes(normalizeText(x)) || normalizeText(x).includes(s)))) return false;
+  return EXCLUSIVE_SUBSPECIALTY_GROUPS
+    .filter(group => group !== targetGroup)
+    .some(group => doctorNorm.some(s => group.some(x => s.includes(normalizeText(x)))));
+}
+
 function rankDoctors(doctors, specialty, subSpecialty, queryText = '', options = {}) {
   const preferLipsHealthcare = options.preferLipsHealthcare !== false;
   const qTokens = [...new Set(queryTokens(queryText))].slice(0, 24);
@@ -914,6 +1003,7 @@ function rankDoctors(doctors, specialty, subSpecialty, queryText = '', options =
 
     const reasons = [];
     const subs = Array.isArray(doctor.subSpecialties) ? doctor.subSpecialties : [];
+    const scopeMismatch = exclusiveScopeMismatch(subs, subSpecialty);
     let clinicalTier = 1;
     let subMatch = null;
 
@@ -954,7 +1044,19 @@ function rankDoctors(doctors, specialty, subSpecialty, queryText = '', options =
       }
     }
 
-    const uniqueEvidence = [...new Set(evidence)].slice(0, 4);
+    const conceptEvidence = clinical.doctorConceptEvidence(doctor, options.routing?.clinicalConcepts || []);
+    for (const item of conceptEvidence) {
+      evidenceScore += item.state === 'present' ? 5 : 2;
+      evidence.push(item.label);
+    }
+
+    const seenEvidence = new Set();
+    const uniqueEvidence = evidence.filter(item => {
+      const key = normalizeText(item);
+      if (!key || seenEvidence.has(key)) return false;
+      seenEvidence.add(key);
+      return true;
+    }).slice(0, 5);
     if (uniqueEvidence.length >= 2 && clinicalTier < 2) clinicalTier = 2;
     if (uniqueEvidence.length) reasons.push(`Profile evidence: ${uniqueEvidence.join(', ')}`);
     if (!subMatch && canonicalTarget) reasons.unshift(`Specialty: ${canonicalTarget}`);
@@ -970,17 +1072,55 @@ function rankDoctors(doctors, specialty, subSpecialty, queryText = '', options =
       ...doctor,
       clinicalTier,
       matchLevel,
-      matchScore: Math.round((clinicalTier * 100 + lipsPriority * 10 + Math.min(evidenceScore, 9.9)) * 10) / 10,
+      scopeMismatch,
+      conceptEvidence,
+      matchScore: Math.round((clinicalTier * 100 + lipsPriority * 10 + Math.min(evidenceScore, 24.9) - (scopeMismatch ? 80 : 0)) * 10) / 10,
       matchReasons: reasons
     };
   })
     .filter(Boolean)
     .sort((a, b) =>
+      Number(a.scopeMismatch) - Number(b.scopeMismatch) ||
       b.clinicalTier - a.clinicalTier ||
-      Number(preferLipsHealthcare && b.worksAtLipsHealthcare === true) - Number(preferLipsHealthcare && a.worksAtLipsHealthcare === true) ||
       b.matchScore - a.matchScore ||
+      Number(preferLipsHealthcare && b.worksAtLipsHealthcare === true) - Number(preferLipsHealthcare && a.worksAtLipsHealthcare === true) ||
       String(a.name).localeCompare(String(b.name))
     );
+}
+
+function rankDoctorsForRouting(doctors, routing, queryText = '', options = {}) {
+  if (!routing?.specialty) return [];
+  const candidates = Array.isArray(routing.candidates) ? routing.candidates : [];
+  const topScore = candidates[0]?.score || 0;
+  let specialties = [routing.specialty];
+  if (routing.uncertain) {
+    specialties = candidates
+      .filter(x => x.score >= 5 && topScore - x.score <= 4.5)
+      .slice(0, 3)
+      .map(x => x.specialty);
+    if (!specialties.includes(routing.specialty)) specialties.unshift(routing.specialty);
+  }
+
+  const candidateScore = new Map(candidates.map(x => [canonicalSpecialty(x.specialty), Number(x.score || 0)]));
+  const merged = new Map();
+  for (const specialty of [...new Set(specialties)]) {
+    const ranked = rankDoctors(doctors, specialty, routing.subSpecialty, queryText, { ...options, routing });
+    for (const doctor of ranked) {
+      const key = normalizeText(doctor.profileUrl || doctor.name);
+      const routeScore = candidateScore.get(canonicalSpecialty(specialty)) || 0;
+      const row = { ...doctor, routeSpecialty: specialty, routeScore };
+      const previous = merged.get(key);
+      if (!previous || row.matchScore + routeScore > previous.matchScore + previous.routeScore) merged.set(key, row);
+    }
+  }
+
+  return [...merged.values()].sort((a,b) =>
+    Number(a.scopeMismatch) - Number(b.scopeMismatch) ||
+    b.clinicalTier - a.clinicalTier ||
+    (b.routeScore + b.matchScore / 50) - (a.routeScore + a.matchScore / 50) ||
+    Number(options.preferLipsHealthcare !== false && b.worksAtLipsHealthcare === true) - Number(options.preferLipsHealthcare !== false && a.worksAtLipsHealthcare === true) ||
+    String(a.name).localeCompare(String(b.name))
+  );
 }
 
 module.exports = {
@@ -988,6 +1128,7 @@ module.exports = {
   SPECIALTY_ALIASES,
   routeSymptoms,
   rankDoctors,
+  rankDoctorsForRouting,
   detectUrgency,
   normalizeText,
   canonicalSpecialty,

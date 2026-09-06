@@ -1,49 +1,63 @@
-# Go-Live QA Checklist
+# Go-Live QA Checklist — v6
 
 ## Automated
 
-- [ ] `npm test` passes.
+- [ ] `npm test` passes (release build: 83/83).
 - [ ] `npm run check` passes.
 - [ ] `/health` returns 200.
-- [ ] `/ready` returns 200 after a live directory update.
+- [ ] `/ready` returns 200 after the GitHub directory refresh.
 
-## Updater
+## Directory / crawler
 
-- [ ] Admin progress moves through discovery → profiles → retry (if needed) → validating → completed/preserved.
-- [ ] `Processed` reaches `total` without the server becoming unresponsive.
-- [ ] A failed profile does not abort other profile workers.
-- [ ] A deliberately incomplete crawl preserves the previous healthy dataset.
-
-## Directory
-
-- [ ] Specialist count is credible against the current LIPS directory.
-- [ ] Specialty count is credible.
+- [ ] GitHub Action `Update LIPS specialist directory` passes.
 - [ ] Coverage gate is `PASSED`.
-- [ ] Randomly open 10 profiles and compare specialty/sub-specialty with stored data.
-- [ ] Randomly open 10 profiles and compare `worksAtLipsHealthcare` with the clinician `Locations` section.
-- [ ] Confirm a profile whose footer shows LIPS but whose clinician locations do not include LIPS is stored as `worksAtLipsHealthcare=false` or unverified.
+- [ ] Specialist and specialty counts are credible against current LIPS.
+- [ ] Randomly compare 10 stored profiles with LIPS specialty/sub-specialty/conditions.
+- [ ] Randomly compare clinician Locations for LIPS Healthcare badges.
+- [ ] Confirm global footer text never creates a false LIPS clinician-location flag.
+- [ ] Confirm ontology-enriched profile evidence does not create a top-level specialty the doctor is not actually listed under.
 
-## Routing smoke tests
+## Context routing
 
 - [ ] `No chest pain.` does not route to Cardiology.
-- [ ] `No chest pain. Persistent knee pain and swelling.` routes to Trauma & Orthopaedics → Knee.
-- [ ] `Denies chest pain and reports palpitations.` routes to Cardiology / Arrhythmia.
-- [ ] `Denies chest pain, palpitations and shortness of breath, but reports acid reflux.` routes to Gastroenterology.
-- [ ] `No improvement in chest pain.` still recognises chest pain as present.
-- [ ] `No chest pain with palpitations.` ignores chest pain and still routes palpitations to Cardiology.
+- [ ] `No chest pain with recurrent palpitations.` routes from palpitations.
+- [ ] `History of chest pain last year but currently acid reflux.` routes to current GI complaint.
+- [ ] `Mother had breast cancer. Patient has knee pain.` ignores family context for current patient routing.
+- [ ] `Back pain has resolved. Current shoulder pain.` routes from current shoulder complaint.
+- [ ] `Possible thyroid problem.` is surfaced as uncertain/down-weighted.
+- [ ] `No improvement in chest pain.` still recognises active chest pain.
 - [ ] `No pain with urination.` does not force Urology.
-- [ ] `Type 2 diabetes with poor blood sugar control.` routes to Diabetes.
-- [ ] `Thyroid nodule with hyperthyroidism.` routes to Endocrinology.
-- [ ] `Older adult with frailty and recurrent falls.` routes to Geriatrics.
-- [ ] A dual-listed Diabetes + Endocrinology consultant can appear on an Endocrinology route.
-- [ ] `Severe chest pain and difficulty breathing.` triggers the urgent guardrail.
-- [ ] Exact non-LIPS sub-specialist ranks above a general LIPS-clinic doctor.
-- [ ] Clinically equivalent LIPS-clinic doctor ranks above an equivalent non-LIPS doctor.
 
-## Contact-centre UX
+## Expanded symptom layer
 
-- [ ] Top specialty and sub-specialty are visible without scrolling on normal desktop resolution.
-- [ ] Negated symptoms are shown as ignored.
-- [ ] LIPS Healthcare clinic badge appears only on verified profiles.
-- [ ] Opening a profile always goes to `https://lips.org.uk/...`.
-- [ ] No patient-identifying data is requested by the UI.
+- [ ] `Lower back pain shooting down the right leg with tingling.` reaches a spine/radicular route.
+- [ ] generic back pain can offer the configured one-question clarification when needed.
+- [ ] `heart racing` is recognised as palpitations.
+- [ ] `buzzing in the ear` is recognised as tinnitus/ENT evidence.
+- [ ] a term present in the live LIPS profile directory can participate in routing even without a dedicated static route.
+
+## Doctor shortlist
+
+- [ ] Exact sub-specialty beats specialty-only.
+- [ ] Anatomically incompatible narrow specialists are pushed down.
+- [ ] Clinically equivalent LIPS Healthcare consultant ranks above an equivalent non-LIPS consultant when preference is enabled.
+- [ ] LIPS preference never overrides a superior clinical/sub-specialty fit.
+- [ ] Multi-specialty doctors remain eligible on verified secondary specialties.
+- [ ] `Why this doctor` evidence corresponds to public profile/taxonomy data.
+
+## Voice
+
+- [ ] On Vercel HTTPS in current Chrome/Edge, Dictate requests microphone permission.
+- [ ] Interim/final transcript appears in the same note field.
+- [ ] Stop leaves the transcript editable before search.
+- [ ] Blocking microphone permission produces a clear fallback message.
+- [ ] Unsupported browser leaves typing fully functional.
+- [ ] Staff are instructed to review dictation, especially negative words such as `no` / `denies`.
+
+## Safety / governance
+
+- [ ] Severe configured red-flag example hides routine consultant cards.
+- [ ] Negated urgent phrases do not trigger an emergency flag.
+- [ ] Red-flag rule content has written clinical-governance approval before staff use.
+- [ ] Low-confidence cases can be manually reviewed instead of forcing a doctor.
+- [ ] No patient identifiers are requested or written to application logs.

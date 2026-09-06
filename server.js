@@ -3,8 +3,9 @@ const crypto = require('node:crypto');
 const express = require('express');
 const helmet = require('helmet');
 const { getSpecialists, getMetadata, ensureDataDir } = require('./services/store');
-const { routeSymptoms, rankDoctors, canonicalSpecialty } = require('./services/router');
+const { routeSymptoms, rankDoctorsForRouting, canonicalSpecialty } = require('./services/router');
 const { runScrape } = require('./scraper/lipsScraper');
+const { concepts: clinicalConcepts, knowledgeSchemaVersion } = require('./services/clinicalKnowledge');
 
 const app = express();
 const PORT = Number(process.env.PORT || 10000);
@@ -46,6 +47,12 @@ app.use(helmet({
     }
   }
 }));
+app.use((req, res, next) => {
+  // Allow the optional browser dictation control on our own HTTPS origin only.
+  res.setHeader('Permissions-Policy', 'microphone=(self)');
+  next();
+});
+
 app.use(express.json({ limit: '12kb' }));
 app.use(express.urlencoded({ extended: false, limit: '12kb' }));
 
@@ -108,7 +115,9 @@ async function directoryStatus() {
     preservedPrevious: Boolean(metadata?.preservedPrevious),
     updateRunning,
     updateProgress,
-    serverScraperEnabled: SERVER_SCRAPER_ENABLED
+    serverScraperEnabled: SERVER_SCRAPER_ENABLED,
+    clinicalConcepts: clinicalConcepts.length,
+    knowledgeSchemaVersion
   };
 }
 
@@ -165,7 +174,7 @@ app.post('/api/analyze', apiRateLimit, async (req, res, next) => {
 
     const routing = routeSymptoms(symptomText, specialists);
     const matches = routing.specialty
-      ? rankDoctors(specialists, routing.specialty, routing.subSpecialty, symptomText, { preferLipsHealthcare: PREFER_LIPS_HEALTHCARE }).slice(0, MAX_API_MATCHES)
+      ? rankDoctorsForRouting(specialists, routing, symptomText, { preferLipsHealthcare: PREFER_LIPS_HEALTHCARE }).slice(0, MAX_API_MATCHES)
       : [];
     res.setHeader('Cache-Control', 'no-store');
     res.json({
@@ -208,7 +217,7 @@ app.get('/api/admin/status', adminAuth, async (_req, res, next) => {
     const specialists = await getSpecialists();
     const metadata = await getMetadata();
     res.setHeader('Cache-Control', 'no-store');
-    res.json({ count: specialists.length, metadata, updateRunning, updateProgress, lastUpdateResult, serverScraperEnabled: SERVER_SCRAPER_ENABLED });
+    res.json({ count: specialists.length, metadata, updateRunning, updateProgress, lastUpdateResult, serverScraperEnabled: SERVER_SCRAPER_ENABLED, clinicalConcepts: clinicalConcepts.length, knowledgeSchemaVersion });
   } catch (err) { next(err); }
 });
 

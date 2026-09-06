@@ -49,6 +49,7 @@ async function refresh(){
     $('lips-clinic').textContent = d.metadata?.lipsHealthcareSpecialistCount ?? '—';
     const scraperEnabled = d.serverScraperEnabled !== false;
     $('refresh-mode').textContent = scraperEnabled ? 'Server' : 'GitHub Actions / local';
+    $('clinical-concepts').textContent = d.clinicalConcepts ?? '—';
     $('update-mode-note').textContent = scraperEnabled
       ? 'Server-side directory refresh is enabled.'
       : 'Low-memory mode: refresh the directory from GitHub Actions (Update LIPS specialist directory) or locally, then deploy. The web service stays focused on routing.';

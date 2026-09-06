@@ -4,32 +4,47 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>LIPS Specialist Finder</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.css?v=6.0.0">
 </head>
 <body>
   <main class="shell">
     <header class="hero">
       <div class="brand-mark">LIPS</div>
       <div>
-        <p class="eyebrow">CONTACT-CENTRE ROUTING ASSISTANT</p>
+        <p class="eyebrow">CONTACT-CENTRE CLINICAL ROUTING</p>
         <h1>LIPS Specialist Finder</h1>
-        <p class="sub">Describe the patient's symptoms in English. The tool identifies the most appropriate specialty and sub-specialty, then ranks matching LIPS directory specialists.</p>
+        <p class="sub">Type or dictate a short call note. The routing engine understands current symptoms, denials, history, uncertainty and common patient wording, then narrows the LIPS directory to the most relevant specialty, sub-specialty and consultants.</p>
       </div>
     </header>
 
     <section class="card intake" aria-labelledby="intake-title">
-      <div class="section-head"><div><p class="eyebrow">PATIENT SYMPTOMS</p><h2 id="intake-title">What is the patient describing?</h2></div></div>
-      <textarea id="symptoms" maxlength="4000" spellcheck="true" placeholder="Example: Recurrent palpitations for two weeks, no chest pain and no shortness of breath."></textarea>
-      <p class="input-help">Include what the patient <b>has</b> and what they explicitly <b>deny</b>. Negated symptoms such as “no chest pain” are excluded from matching.</p>
-      <div class="input-row"><span id="char-count">0 / 4,000</span><div class="actions"><button class="secondary" id="clear-btn" type="button">Clear</button><button class="primary" id="analyze-btn" type="button">Find Specialist</button></div></div>
-      <p class="privacy">Do not enter patient-identifying information such as name, phone number, medical record number or date of birth.</p>
+      <div class="section-head">
+        <div><p class="eyebrow">PATIENT NOTE</p><h2 id="intake-title">What is the patient describing?</h2></div>
+        <span class="engine-badge">Context-aware routing</span>
+      </div>
+
+      <div class="note-composer">
+        <textarea id="symptoms" maxlength="4000" spellcheck="true" placeholder="Example: Lower back pain shooting down the right leg with tingling. No bladder problems. Previous shoulder pain has resolved."></textarea>
+        <button id="mic-btn" class="mic-btn" type="button" aria-label="Start voice dictation" title="Dictate note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14.25a3.75 3.75 0 0 0 3.75-3.75V5.75a3.75 3.75 0 1 0-7.5 0v4.75A3.75 3.75 0 0 0 12 14.25Zm6-4a.75.75 0 0 0-1.5 0 4.5 4.5 0 0 1-9 0 .75.75 0 0 0-1.5 0 6.01 6.01 0 0 0 5.25 5.96v2.29H8.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-2.75v-2.29A6.01 6.01 0 0 0 18 10.25Z"/></svg>
+          <span>Dictate</span>
+        </button>
+      </div>
+      <div id="mic-status" class="mic-status hidden" role="status"></div>
+
+      <p class="input-help">Use natural English. The engine separates current symptoms from phrases such as <b>“no chest pain”</b>, <b>“history of…”</b>, <b>“mother had…”</b>, <b>“possible…”</b> and <b>“resolved”</b>.</p>
+      <div class="input-row">
+        <span id="char-count">0 / 4,000</span>
+        <div class="actions"><button class="secondary" id="clear-btn" type="button">Clear</button><button class="primary" id="analyze-btn" type="button">Find Specialist</button></div>
+      </div>
+      <p class="privacy"><b>Privacy:</b> do not enter names, phone numbers, dates of birth or record numbers. Voice dictation uses the browser/OS speech-recognition service when available; this app does not store an audio recording.</p>
     </section>
 
     <section id="status" class="status hidden" role="status"></section>
     <section id="results" class="results hidden" aria-live="polite"></section>
 
-    <footer class="disclaimer">Specialty-routing support only. This tool does not diagnose patients and does not replace clinical or emergency protocols.</footer>
+    <footer class="disclaimer">Routing support only — not diagnosis. Urgent flags must follow the organisation's approved emergency and clinical escalation protocols.</footer>
   </main>
-  <script src="/app.js" defer></script>
+  <script src="/app.js?v=6.0.0" defer></script>
 </body>
 </html>

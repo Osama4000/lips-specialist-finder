@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "stroke-fast",
+      "label": "Possible stroke/TIA symptoms",
+      "severity": "emergency",
+      "anyPhrases": [
+        "sudden facial droop",
+        "sudden face weakness",
+        "sudden arm weakness",
+        "sudden one sided weakness",
+        "sudden speech problem",
+        "slurred speech",
+        "stroke symptoms"
+      ],
+      "message": "Follow the organisation's emergency stroke/TIA pathway immediately.",
+      "sources": [
+        "https://www.nhs.uk/conditions/stroke/symptoms/",
+        "https://www.nice.org.uk/guidance/ng127"
+      ]
+    },
+    {
+      "id": "severe-chest",
+      "label": "Severe chest pain / possible acute cardiac symptoms",
+      "severity": "emergency",
+      "anyPhrases": [
+        "severe chest pain",
+        "crushing chest pain",
+        "squeezing chest pain",
+        "chest pain spreading to arm",
+        "chest pain spreading to jaw",
+        "chest pain spreading to neck"
+      ],
+      "message": "Follow the organisation's emergency chest-pain pathway immediately.",
+      "sources": [
+        "https://www.nhs.uk/conditions/heart-attack/"
+      ]
+    },
+    {
+      "id": "severe-breathing",
+      "label": "Severe breathing difficulty",
+      "severity": "emergency",
+      "anyPhrases": [
+        "severe difficulty breathing",
+        "cannot breathe",
+        "cant breathe",
+        "gasping for air",
+        "choking and cannot breathe",
+        "unable to speak because of breathlessness"
+      ],
+      "message": "Follow the organisation's emergency breathing pathway immediately.",
+      "sources": [
+        "https://www.nhs.uk/conditions/heart-attack/",
+        "https://www.nhs.uk/conditions/anaphylaxis/"
+      ]
+    },
+    {
+      "id": "anaphylaxis",
+      "label": "Possible anaphylaxis",
+      "severity": "emergency",
+      "anyPhrases": [
+        "anaphylaxis",
+        "severe allergic reaction",
+        "throat swelling and difficulty breathing",
+        "tongue swelling and difficulty breathing",
+        "lips swollen and struggling to breathe"
+      ],
+      "message": "Follow the organisation's emergency anaphylaxis pathway immediately.",
+      "sources": [
+        "https://www.nhs.uk/conditions/anaphylaxis/"
+      ]
+    },
+    {
+      "id": "ongoing-seizure",
+      "label": "Ongoing or prolonged seizure",
+      "severity": "emergency",
+      "anyPhrases": [
+        "ongoing seizure",
+        "seizure lasting more than 5 minutes",
+        "seizure over 5 minutes",
+        "repeated seizures without recovery"
+      ],
+      "message": "Follow the organisation's emergency seizure pathway immediately.",
+      "sources": [
+        "https://www.nhs.uk/conditions/epilepsy/"
+      ]
+    },
+    {
+      "id": "cauda-equina",
+      "label": "Possible cauda equina syndrome",
+      "severity": "emergency",
+      "requiresConceptGroups": [
+        [
+          "back_pain",
+          "sciatica"
+        ],
+        [
+          "bladder_bowel_redflag",
+          "perineal_numbness"
+        ]
+      ],
+      "message": "Severe back/radicular symptoms with new bladder, bowel, sexual-function or perineal sensory change require immediate assessment under the approved pathway.",
+      "sources": [
+        "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16"
+      ]
+    },
+    {
+      "id": "suicidal-risk",
+      "label": "Suicidal thoughts / immediate mental-health risk",
+      "severity": "emergency",
+      "anyPhrases": [
+        "suicidal thoughts",
+        "suicidal ideation",
+        "wants to die",
+        "plans to kill himself",
+        "plans to kill herself",
+        "suicide plan"
+      ],
+      "message": "Follow the organisation's urgent mental-health/safeguarding protocol immediately.",
+      "sources": [
+        "https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/behaviours/self-harm/getting-help/"
+      ]
+    }
+  ],
+  "supportingConcepts": {
+    "bladder_bowel_redflag": [
+      "new bladder problem",
+      "new bowel problem",
+      "loss of bladder control",
+      "loss of bowel control",
+      "difficulty passing urine",
+      "cannot pass urine",
+      "new sexual dysfunction",
+      "new bladder problems",
+      "new bowel problems",
+      "bladder control changed",
+      "bowel control changed"
+    ],
+    "perineal_numbness": [
+      "perineal numbness",
+      "saddle numbness",
+      "numbness around groin",
+      "numbness around genitals",
+      "numbness around anus"
+    ]
+  }
+}

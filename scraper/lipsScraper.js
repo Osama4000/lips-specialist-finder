@@ -1,5 +1,6 @@
 const { saveDataset, getSpecialists, getMetadata } = require('../services/store');
 const { ROUTES, normalizeText, canonicalSpecialty } = require('../services/router');
+const symptomKnowledge = require('../clinical-knowledge/symptoms.json');
 
 const BASE = 'https://lips.org.uk';
 const DIRECTORY = `${BASE}/our-specialists/`;
@@ -10,7 +11,7 @@ const ENTRY_POINTS = [
   `${BASE}/specialties/`,
   BASE
 ];
-const USER_AGENT = 'LIPS-Specialist-Finder/5.0 (+public-directory-indexer; respectful rate-limited crawling)';
+const USER_AGENT = 'LIPS-Specialist-Finder/6.0 (+public-directory-indexer; respectful rate-limited crawling)';
 const PROFILE_RE = /(?:https?:\/\/lips\.org\.uk)?\/our-specialists\/([a-z0-9][a-z0-9-]*)(?:\/)?/gi;
 const SPECIALITY_PATH_RE = /^\/(?:specialit(?:y|ies)|specialt(?:y|ies))\/(?!$)[^?#]+\/?$/i;
 const PROFILE_PATH_RE = /^\/our-specialists\/[^/?#]+\/?$/i;
@@ -54,6 +55,10 @@ function canonicalUrl(href) {
     u.pathname = u.pathname.replace(/\/+/g, '/');
     if (!u.pathname.endsWith('/')) u.pathname += '/';
     if (!PROFILE_PATH_RE.test(u.pathname)) return null;
+    const slug = (u.pathname.match(/^\/our-specialists\/([^/]+)\/?$/i) || [,''])[1];
+    // LIPS also exposes service/clinic landing pages under /our-specialists/. They are
+    // not clinicians and should never consume profile workers or become failed doctors.
+    if (/(?:^|-)clinic$/i.test(slug)) return null;
     return `${BASE}${u.pathname}`;
   } catch { return null; }
 }
@@ -157,6 +162,25 @@ function textToKeywords(text) {
     const needle = normalizeText(k);
     return needle && lower.includes(` ${needle} `);
   });
+}
+
+
+const ONTOLOGY_CONCEPTS = Array.isArray(symptomKnowledge.concepts) ? symptomKnowledge.concepts : [];
+function textContainsNormalizedPhrase(normalizedText, phrase) {
+  const needle = normalizeText(phrase);
+  if (!needle) return false;
+  return ` ${normalizedText} `.includes(` ${needle} `);
+}
+
+function extractOntologyTerms(text) {
+  const normalized = normalizeText(text);
+  if (!normalized) return [];
+  const found = [];
+  for (const concept of ONTOLOGY_CONCEPTS) {
+    const phrases = [concept.label, ...(concept.synonyms || [])].filter(Boolean).sort((a,b) => b.length - a.length);
+    if (phrases.some(p => textContainsNormalizedPhrase(normalized, p))) found.push(concept.label);
+  }
+  return uniq(found);
 }
 
 const ROLE_SPECIALTY_PATTERNS = [
@@ -402,15 +426,18 @@ function extractStructured(text, h1) {
   ]);
   const conditionItems = extractSectionItems(lines, [/^conditions? treated$/i, /^conditions?$/i]);
 
+  const ontologyTerms = extractOntologyTerms(`${headerText} ${biography} ${interestItems.join(' ')} ${conditionItems.join(' ')}`);
   const expertise = uniq([
     ...subSpecialties,
     ...interestItems,
-    ...textToKeywords(`${headerText} ${biography}`)
-  ]).slice(0, 40);
+    ...textToKeywords(`${headerText} ${biography}`),
+    ...ontologyTerms
+  ]).slice(0, 60);
   const conditions = uniq([
     ...conditionItems,
-    ...textToKeywords(`${headerText} ${biography}`)
-  ]).slice(0, 40);
+    ...textToKeywords(`${headerText} ${biography}`),
+    ...ontologyTerms
+  ]).slice(0, 60);
   const locationData = extractLocationsFromLines(lines);
 
   return {
@@ -918,8 +945,8 @@ async function runScrape({ logger = console, onProgress } = {}) {
       });
     }
     const metadata = {
-      schemaVersion: 5,
-      scraperVersion: '5.0.0',
+      schemaVersion: 6,
+      scraperVersion: '6.0.0',
       startedAt: started,
       lastUpdated: safeToReplace ? finished : (previousMetadata?.lastUpdated || null),
       attemptedAt: finished,
@@ -979,6 +1006,7 @@ module.exports = {
   extractProfileUrls,
   SPECIALISTS: DIRECTORY,
   USER_AGENT,
+  extractOntologyTerms,
   MIN_VALID_RECORDS,
   MIN_VALID_SPECIALTIES,
   MIN_PREVIOUS_RETENTION_RATIO,

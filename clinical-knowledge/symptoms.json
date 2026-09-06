@@ -1,0 +1,2269 @@
+{
+  "schemaVersion": 1,
+  "concepts": [
+    {
+      "id": "back_pain",
+      "label": "Back pain",
+      "synonyms": [
+        "back pain",
+        "lower back pain",
+        "low back pain",
+        "lower back ache",
+        "low back ache",
+        "lumbar pain",
+        "pain in lower back",
+        "back ache"
+      ],
+      "specialtyWeights": {
+        "Trauma & Orthopaedics": 8,
+        "Neurosurgery": 8,
+        "Physiotherapy": 5,
+        "Pain Management": 4
+      },
+      "subSpecialtyWeights": {
+        "Spinal Disorders": 10,
+        "Spinal Surgery": 10,
+        "Back Surgery": 9
+      },
+      "clarification": {
+        "question": "Does the back pain travel into a leg or come with numbness, tingling or weakness?",
+        "options": [
+          {
+            "label": "Pain travels down the leg",
+            "append": "Pain radiates down the leg."
+          },
+          {
+            "label": "Numbness / tingling / weakness",
+            "append": "There is numbness, tingling or weakness in the leg."
+          },
+          {
+            "label": "Back pain only",
+            "append": "The pain is limited to the back with no leg symptoms."
+          }
+        ]
+      },
+      "sources": [
+        "LIPS public specialist/service pages",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "sciatica",
+      "label": "Sciatica / radicular pain",
+      "synonyms": [
+        "sciatica",
+        "sciatic pain",
+        "pain shooting down leg",
+        "shooting pain down the leg",
+        "back pain going down leg",
+        "back pain radiating down leg",
+        "pain radiating into leg",
+        "electric pain down leg",
+        "pain shooting down the leg",
+        "pain shooting down the right leg",
+        "pain shooting down the left leg",
+        "back pain shooting down the leg",
+        "back pain shooting down the right leg",
+        "back pain shooting down the left leg",
+        "pain radiating down the leg",
+        "pain radiating down the right leg",
+        "pain radiating down the left leg"
+      ],
+      "specialtyWeights": {
+        "Neurosurgery": 13,
+        "Trauma & Orthopaedics": 10,
+        "Pain Management": 5
+      },
+      "subSpecialtyWeights": {
+        "Spinal Surgery": 13,
+        "Spinal Disorders": 11,
+        "Back Surgery": 9
+      },
+      "sources": [
+        "LIPS public specialist/service pages",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "slipped_disc",
+      "label": "Slipped / herniated disc",
+      "synonyms": [
+        "slipped disc",
+        "herniated disc",
+        "herniated disk",
+        "disc prolapse",
+        "prolapsed disc",
+        "disc problem",
+        "slipped discs",
+        "herniated discs",
+        "herniated disks",
+        "disc prolapses"
+      ],
+      "specialtyWeights": {
+        "Neurosurgery": 13,
+        "Trauma & Orthopaedics": 9
+      },
+      "subSpecialtyWeights": {
+        "Spinal Surgery": 13,
+        "Spinal Disorders": 11,
+        "Back Surgery": 10
+      },
+      "sources": [
+        "LIPS public specialist/service pages",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "neck_pain",
+      "label": "Neck pain",
+      "synonyms": [
+        "neck pain",
+        "neck ache",
+        "cervical pain",
+        "stiff painful neck"
+      ],
+      "specialtyWeights": {
+        "Trauma & Orthopaedics": 8,
+        "Neurosurgery": 8,
+        "Physiotherapy": 5,
+        "Pain Management": 4
+      },
+      "subSpecialtyWeights": {
+        "Spinal Disorders": 10,
+        "Spinal Surgery": 10
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "knee_pain",
+      "label": "Knee pain",
+      "synonyms": [
+        "knee pain",
+        "pain in knee",
+        "sore knee",
+        "knee locking",
+        "locked knee",
+        "knee giving way",
+        "knee swelling",
+        "swollen knee",
+        "knee locks",
+        "knee catches",
+        "knee clicking",
+        "clicking knee",
+        "right knee pain",
+        "left knee pain"
+      ],
+      "specialtyWeights": {
+        "Trauma & Orthopaedics": 13,
+        "Sports & Exercise Medicine": 7,
+        "Physiotherapy": 5
+      },
+      "subSpecialtyWeights": {
+        "Knee": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "shoulder_pain",
+      "label": "Shoulder pain",
+      "synonyms": [
+        "shoulder pain",
+        "pain in shoulder",
+        "shoulder stiffness",
+        "cannot raise arm",
+        "cant raise arm",
+        "frozen shoulder"
+      ],
+      "specialtyWeights": {
+        "Trauma & Orthopaedics": 12,
+        "Sports & Exercise Medicine": 6,
+        "Physiotherapy": 5
+      },
+      "subSpecialtyWeights": {
+        "Upper Limb": 12,
+        "Shoulder": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "hip_pain",
+      "label": "Hip pain",
+      "synonyms": [
+        "hip pain",
+        "pain in hip",
+        "groin pain from hip",
+        "hip stiffness"
+      ],
+      "specialtyWeights": {
+        "Trauma & Orthopaedics": 12,
+        "Physiotherapy": 5
+      },
+      "subSpecialtyWeights": {
+        "Hip": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "foot_ankle_pain",
+      "label": "Foot / ankle pain",
+      "synonyms": [
+        "ankle pain",
+        "foot pain",
+        "heel pain",
+        "achilles pain",
+        "ankle swelling after injury",
+        "sprained ankle"
+      ],
+      "specialtyWeights": {
+        "Trauma & Orthopaedics": 11,
+        "Sports & Exercise Medicine": 7,
+        "Physiotherapy": 5
+      },
+      "subSpecialtyWeights": {
+        "Foot & Ankle": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "sports_injury",
+      "label": "Sports injury",
+      "synonyms": [
+        "sports injury",
+        "football injury",
+        "running injury",
+        "gym injury",
+        "training injury",
+        "injured playing sport"
+      ],
+      "specialtyWeights": {
+        "Sports & Exercise Medicine": 11,
+        "Trauma & Orthopaedics": 9,
+        "Physiotherapy": 7
+      },
+      "subSpecialtyWeights": {
+        "Sports Injury": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "fracture_trauma",
+      "label": "Fracture / traumatic injury",
+      "synonyms": [
+        "fracture",
+        "broken bone",
+        "broken arm",
+        "broken leg",
+        "orthopaedic trauma",
+        "traumatic injury",
+        "after accident"
+      ],
+      "specialtyWeights": {
+        "Trauma & Orthopaedics": 13
+      },
+      "subSpecialtyWeights": {
+        "Traumatic Injuries": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "joint_swelling",
+      "label": "Joint pain / swelling",
+      "synonyms": [
+        "joint swelling",
+        "swollen joint",
+        "joint pain",
+        "painful joints"
+      ],
+      "specialtyWeights": {
+        "Rheumatology": 9,
+        "Trauma & Orthopaedics": 7
+      },
+      "subSpecialtyWeights": {},
+      "clarification": {
+        "question": "Is one specific joint affected, or are several joints painful/swollen?",
+        "options": [
+          {
+            "label": "One joint",
+            "append": "One specific joint is affected."
+          },
+          {
+            "label": "Several joints",
+            "append": "Several joints are painful or swollen."
+          },
+          {
+            "label": "Morning stiffness too",
+            "append": "There is prolonged morning stiffness as well."
+          }
+        ]
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "morning_stiffness",
+      "label": "Prolonged morning stiffness",
+      "synonyms": [
+        "morning stiffness",
+        "stiff in the morning",
+        "joints stiff in morning",
+        "prolonged morning stiffness"
+      ],
+      "specialtyWeights": {
+        "Rheumatology": 12
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "palpitations",
+      "label": "Palpitations",
+      "synonyms": [
+        "palpitations",
+        "heart racing",
+        "racing heartbeat",
+        "heart fluttering",
+        "fluttering heartbeat",
+        "irregular heartbeat",
+        "heart skipping beats",
+        "heart pounding",
+        "pounding heartbeat"
+      ],
+      "specialtyWeights": {
+        "Cardiology": 13
+      },
+      "subSpecialtyWeights": {
+        "Arrhythmia": 13,
+        "Arrythmia": 13,
+        "Electrophysiology": 10,
+        "Cardiac Electrophysiology": 10
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "chest_pain",
+      "label": "Chest pain / pressure",
+      "synonyms": [
+        "chest pain",
+        "chest discomfort",
+        "chest pressure",
+        "tight chest",
+        "chest tightness",
+        "pressure in chest",
+        "squeezing chest pain"
+      ],
+      "specialtyWeights": {
+        "Cardiology": 11,
+        "Respiratory Medicine": 4
+      },
+      "subSpecialtyWeights": {
+        "General Cardiology": 8
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "hypertension",
+      "label": "High blood pressure",
+      "synonyms": [
+        "high blood pressure",
+        "hypertension",
+        "raised blood pressure",
+        "blood pressure high"
+      ],
+      "specialtyWeights": {
+        "Cardiology": 12
+      },
+      "subSpecialtyWeights": {
+        "Preventive Cardiology": 12
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "syncope",
+      "label": "Fainting / blackout",
+      "synonyms": [
+        "fainting",
+        "fainted",
+        "blackout",
+        "blacked out",
+        "loss of consciousness",
+        "passed out",
+        "near fainting",
+        "presyncope",
+        "pre syncope"
+      ],
+      "specialtyWeights": {
+        "Cardiology": 8,
+        "Neurology": 8,
+        "Geriatrics": 4
+      },
+      "subSpecialtyWeights": {},
+      "clarification": {
+        "question": "Was this a true blackout/faint, or mainly spinning dizziness?",
+        "options": [
+          {
+            "label": "Blackout / faint",
+            "append": "There was a true blackout or faint."
+          },
+          {
+            "label": "Spinning sensation",
+            "append": "The main symptom is a spinning sensation without blackout."
+          },
+          {
+            "label": "Lightheaded only",
+            "append": "The patient feels lightheaded but has not blacked out."
+          }
+        ]
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "breathlessness",
+      "label": "Shortness of breath",
+      "synonyms": [
+        "shortness of breath",
+        "breathless",
+        "breathlessness",
+        "difficulty breathing",
+        "out of breath",
+        "cant catch breath",
+        "cannot catch breath"
+      ],
+      "specialtyWeights": {
+        "Respiratory Medicine": 10,
+        "Cardiology": 8
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "ankle_swelling",
+      "label": "Ankle / leg swelling",
+      "synonyms": [
+        "swollen ankles",
+        "ankle swelling",
+        "swollen feet",
+        "leg swelling",
+        "oedema",
+        "edema"
+      ],
+      "specialtyWeights": {
+        "Cardiology": 7,
+        "Vascular Surgery": 6
+      },
+      "subSpecialtyWeights": {
+        "Heart Failure": 9
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "heart_murmur",
+      "label": "Heart murmur / valve concern",
+      "synonyms": [
+        "heart murmur",
+        "murmur",
+        "valve problem",
+        "heart valve problem"
+      ],
+      "specialtyWeights": {
+        "Cardiology": 11
+      },
+      "subSpecialtyWeights": {
+        "Echocardiography": 10,
+        "General Cardiology": 7
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "cough",
+      "label": "Cough",
+      "synonyms": [
+        "cough",
+        "persistent cough",
+        "chronic cough",
+        "dry cough"
+      ],
+      "specialtyWeights": {
+        "Respiratory Medicine": 9,
+        "General Practice": 3
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "wheeze",
+      "label": "Wheeze",
+      "synonyms": [
+        "wheeze",
+        "wheezing",
+        "whistling breathing"
+      ],
+      "specialtyWeights": {
+        "Respiratory Medicine": 12
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "asthma",
+      "label": "Asthma",
+      "synonyms": [
+        "asthma",
+        "asthma flare",
+        "asthmatic"
+      ],
+      "specialtyWeights": {
+        "Respiratory Medicine": 13
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "sleep_apnoea",
+      "label": "Sleep apnoea / snoring",
+      "synonyms": [
+        "sleep apnoea",
+        "sleep apnea",
+        "stops breathing at night",
+        "loud snoring",
+        "snoring and choking"
+      ],
+      "specialtyWeights": {
+        "Respiratory Medicine": 12,
+        "ENT": 5
+      },
+      "subSpecialtyWeights": {
+        "Sleep Apnoea": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "headache",
+      "label": "Headache",
+      "synonyms": [
+        "headache",
+        "head pain",
+        "persistent headache",
+        "severe headache"
+      ],
+      "specialtyWeights": {
+        "Neurology": 10,
+        "General Practice": 4
+      },
+      "subSpecialtyWeights": {
+        "Headache": 11
+      },
+      "clarification": {
+        "question": "Is this mainly a recurrent migraine-type headache, or a new/sudden unusual headache?",
+        "options": [
+          {
+            "label": "Recurrent migraine pattern",
+            "append": "This is a recurrent migraine-type headache."
+          },
+          {
+            "label": "New / sudden unusual headache",
+            "append": "This is a new or sudden unusual headache."
+          },
+          {
+            "label": "Headache with neurological symptoms",
+            "append": "The headache is accompanied by weakness, numbness, vision or speech symptoms."
+          }
+        ]
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "migraine",
+      "label": "Migraine",
+      "synonyms": [
+        "migraine",
+        "migraines",
+        "migraine aura",
+        "visual aura"
+      ],
+      "specialtyWeights": {
+        "Neurology": 13
+      },
+      "subSpecialtyWeights": {
+        "Headache": 13
+      },
+      "sources": [
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "seizure",
+      "label": "Seizure / epilepsy",
+      "synonyms": [
+        "seizure",
+        "seizures",
+        "epilepsy",
+        "fit",
+        "fits",
+        "convulsion",
+        "convulsions"
+      ],
+      "specialtyWeights": {
+        "Neurology": 13,
+        "Neurosurgery": 5
+      },
+      "subSpecialtyWeights": {
+        "Seizures": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "NICE referral/management guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "tremor",
+      "label": "Tremor",
+      "synonyms": [
+        "tremor",
+        "shaking hands",
+        "involuntary shaking"
+      ],
+      "specialtyWeights": {
+        "Neurology": 11
+      },
+      "subSpecialtyWeights": {
+        "Movement Disorders": 11
+      },
+      "sources": [
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "weakness",
+      "label": "Weakness",
+      "synonyms": [
+        "limb weakness",
+        "arm weakness",
+        "leg weakness",
+        "muscle weakness",
+        "weak arm",
+        "weak leg",
+        "one sided weakness"
+      ],
+      "specialtyWeights": {
+        "Neurology": 10,
+        "Neurosurgery": 6
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "numbness_tingling",
+      "label": "Numbness / tingling",
+      "synonyms": [
+        "numbness",
+        "tingling",
+        "pins and needles",
+        "pins needles",
+        "altered sensation",
+        "paraesthesia",
+        "paresthesia"
+      ],
+      "specialtyWeights": {
+        "Neurology": 9,
+        "Neurosurgery": 7
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NICE referral/management guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "memory_loss",
+      "label": "Memory / cognitive problems",
+      "synonyms": [
+        "memory loss",
+        "memory problems",
+        "forgetfulness",
+        "cognitive decline",
+        "confusion getting worse",
+        "dementia concern"
+      ],
+      "specialtyWeights": {
+        "Geriatrics": 11,
+        "Neurology": 10
+      },
+      "subSpecialtyWeights": {
+        "Dementia": 11
+      },
+      "sources": [
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "dizziness",
+      "label": "Dizziness / vertigo",
+      "synonyms": [
+        "dizziness",
+        "dizzy",
+        "lightheaded",
+        "light headed",
+        "off balance",
+        "off-balance",
+        "giddy",
+        "vertigo",
+        "room spinning",
+        "spinning sensation"
+      ],
+      "specialtyWeights": {
+        "ENT": 7,
+        "Neurology": 6,
+        "Cardiology": 5,
+        "Geriatrics": 3
+      },
+      "subSpecialtyWeights": {
+        "Ear & Balance": 9
+      },
+      "clarification": {
+        "question": "Which best describes the dizziness?",
+        "options": [
+          {
+            "label": "Room spinning / vertigo",
+            "append": "The dizziness feels like the room or surroundings are spinning."
+          },
+          {
+            "label": "Lightheaded / might faint",
+            "append": "The dizziness is mainly lightheadedness or feeling faint."
+          },
+          {
+            "label": "Off-balance with ear symptoms",
+            "append": "There is imbalance with hearing, tinnitus or another ear symptom."
+          }
+        ]
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "balance_problem",
+      "label": "Balance / walking problem",
+      "synonyms": [
+        "balance problem",
+        "loss of balance",
+        "unsteady walking",
+        "difficulty walking",
+        "gait problem",
+        "coordination problem"
+      ],
+      "specialtyWeights": {
+        "Neurology": 8,
+        "Geriatrics": 7,
+        "ENT": 5,
+        "Neurosurgery": 5
+      },
+      "subSpecialtyWeights": {
+        "Ear & Balance": 6
+      },
+      "sources": [
+        "NICE referral/management guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "facial_droop",
+      "label": "Facial droop",
+      "synonyms": [
+        "facial droop",
+        "face drooping",
+        "one side of face drooping",
+        "facial weakness"
+      ],
+      "specialtyWeights": {
+        "Neurology": 12
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "rash",
+      "label": "Rash",
+      "synonyms": [
+        "rash",
+        "skin rash",
+        "red rash",
+        "skin eruption"
+      ],
+      "specialtyWeights": {
+        "Dermatology": 13
+      },
+      "subSpecialtyWeights": {
+        "General Dermatology": 10
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "itch",
+      "label": "Itching",
+      "synonyms": [
+        "itching",
+        "itchy skin",
+        "pruritus"
+      ],
+      "specialtyWeights": {
+        "Dermatology": 10
+      },
+      "subSpecialtyWeights": {
+        "General Dermatology": 8
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "eczema_psoriasis",
+      "label": "Eczema / psoriasis",
+      "synonyms": [
+        "eczema",
+        "psoriasis",
+        "dry scaly skin",
+        "scaly plaques"
+      ],
+      "specialtyWeights": {
+        "Dermatology": 13
+      },
+      "subSpecialtyWeights": {
+        "General Dermatology": 11
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "acne",
+      "label": "Acne / rosacea",
+      "synonyms": [
+        "acne",
+        "spots on face",
+        "rosacea"
+      ],
+      "specialtyWeights": {
+        "Dermatology": 12,
+        "Aesthetics": 4
+      },
+      "subSpecialtyWeights": {
+        "General Dermatology": 10
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "mole_lesion",
+      "label": "Changing mole / skin lesion",
+      "synonyms": [
+        "changing mole",
+        "suspicious mole",
+        "new mole changing",
+        "skin lesion",
+        "melanoma concern",
+        "mole check"
+      ],
+      "specialtyWeights": {
+        "Dermatology": 13,
+        "Plastic Surgery": 4
+      },
+      "subSpecialtyWeights": {
+        "Skin Cancer": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "hair_loss",
+      "label": "Hair loss",
+      "synonyms": [
+        "hair loss",
+        "alopecia",
+        "thinning hair",
+        "hair falling out"
+      ],
+      "specialtyWeights": {
+        "Dermatology": 11
+      },
+      "subSpecialtyWeights": {
+        "Hair Loss": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "abdominal_pain",
+      "label": "Abdominal pain",
+      "synonyms": [
+        "abdominal pain",
+        "stomach pain",
+        "tummy pain",
+        "belly pain",
+        "pain in abdomen"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 10,
+        "General Surgery": 5,
+        "Colorectal Surgery": 4
+      },
+      "subSpecialtyWeights": {},
+      "clarification": {
+        "question": "Where is the abdominal pain mainly located?",
+        "options": [
+          {
+            "label": "Upper abdomen / after meals",
+            "append": "The pain is mainly in the upper abdomen or related to meals."
+          },
+          {
+            "label": "Lower abdomen / bowel symptoms",
+            "append": "The pain is mainly lower abdominal with bowel symptoms."
+          },
+          {
+            "label": "Right upper abdomen",
+            "append": "The pain is mainly in the right upper abdomen."
+          }
+        ]
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "reflux",
+      "label": "Reflux / heartburn",
+      "synonyms": [
+        "acid reflux",
+        "reflux",
+        "heartburn",
+        "burning after meals",
+        "acid coming up",
+        "indigestion with burning"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 13
+      },
+      "subSpecialtyWeights": {
+        "Upper GI": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "bloating",
+      "label": "Bloating",
+      "synonyms": [
+        "bloating",
+        "bloated",
+        "abdominal bloating"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 8,
+        "Dietetics": 4
+      },
+      "subSpecialtyWeights": {
+        "Lower GI": 5
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "diarrhoea",
+      "label": "Diarrhoea",
+      "synonyms": [
+        "diarrhoea",
+        "diarrhea",
+        "loose stools",
+        "frequent loose stool"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 10,
+        "Colorectal Surgery": 3
+      },
+      "subSpecialtyWeights": {
+        "Lower GI": 9
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "constipation",
+      "label": "Constipation",
+      "synonyms": [
+        "constipation",
+        "constipated",
+        "difficulty opening bowels",
+        "hard stools"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 9,
+        "Colorectal Surgery": 4
+      },
+      "subSpecialtyWeights": {
+        "Lower GI": 8
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "dysphagia",
+      "label": "Difficulty swallowing",
+      "synonyms": [
+        "difficulty swallowing",
+        "trouble swallowing",
+        "dysphagia",
+        "food sticking when swallowing"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 10,
+        "ENT": 8,
+        "Maxillofacial": 3
+      },
+      "subSpecialtyWeights": {
+        "Upper GI": 9,
+        "Throat": 8
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "liver_jaundice",
+      "label": "Liver / jaundice",
+      "synonyms": [
+        "jaundice",
+        "yellow skin",
+        "yellow eyes",
+        "liver problem",
+        "abnormal liver tests",
+        "fatty liver",
+        "hepatitis",
+        "cirrhosis"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 13
+      },
+      "subSpecialtyWeights": {
+        "Hepatology": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "ibd",
+      "label": "Inflammatory bowel disease",
+      "synonyms": [
+        "crohns",
+        "crohn disease",
+        "crohns disease",
+        "ulcerative colitis",
+        "colitis",
+        "ibd",
+        "inflammatory bowel disease"
+      ],
+      "specialtyWeights": {
+        "Gastroenterology": 13
+      },
+      "subSpecialtyWeights": {
+        "Inflammatory Bowel Disease": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "rectal_bleeding",
+      "label": "Rectal bleeding",
+      "synonyms": [
+        "rectal bleeding",
+        "blood from rectum",
+        "blood in stool",
+        "blood in poo",
+        "bleeding from bottom"
+      ],
+      "specialtyWeights": {
+        "Colorectal Surgery": 12,
+        "Gastroenterology": 8
+      },
+      "subSpecialtyWeights": {
+        "Colorectal Surgery": 10,
+        "Lower GI": 7
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "haemorrhoids",
+      "label": "Haemorrhoids / piles",
+      "synonyms": [
+        "haemorrhoids",
+        "hemorrhoids",
+        "piles",
+        "anal fissure",
+        "fissure",
+        "anal fistula",
+        "fistula"
+      ],
+      "specialtyWeights": {
+        "Colorectal Surgery": 13
+      },
+      "subSpecialtyWeights": {
+        "Colorectal Surgery": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "pelvic_pain",
+      "label": "Pelvic pain",
+      "synonyms": [
+        "pelvic pain",
+        "lower pelvic pain",
+        "pain in pelvis"
+      ],
+      "specialtyWeights": {
+        "Gynaecology & Obstetrics": 11,
+        "Urology & Andrology": 3
+      },
+      "subSpecialtyWeights": {
+        "General Gynaecology": 10
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "heavy_periods",
+      "label": "Heavy periods",
+      "synonyms": [
+        "heavy periods",
+        "heavy menstrual bleeding",
+        "very heavy period",
+        "menorrhagia"
+      ],
+      "specialtyWeights": {
+        "Gynaecology & Obstetrics": 13
+      },
+      "subSpecialtyWeights": {
+        "General Gynaecology": 11
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "irregular_periods",
+      "label": "Irregular periods",
+      "synonyms": [
+        "irregular periods",
+        "missed periods",
+        "periods irregular",
+        "menstrual irregularity"
+      ],
+      "specialtyWeights": {
+        "Gynaecology & Obstetrics": 11,
+        "Endocrinology": 4
+      },
+      "subSpecialtyWeights": {
+        "General Gynaecology": 10
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "endometriosis",
+      "label": "Endometriosis",
+      "synonyms": [
+        "endometriosis",
+        "suspected endometriosis"
+      ],
+      "specialtyWeights": {
+        "Gynaecology & Obstetrics": 13
+      },
+      "subSpecialtyWeights": {
+        "General Gynaecology": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "pregnancy",
+      "label": "Pregnancy-related problem",
+      "synonyms": [
+        "pregnant",
+        "pregnancy",
+        "antenatal",
+        "postnatal",
+        "pregnancy related"
+      ],
+      "specialtyWeights": {
+        "Gynaecology & Obstetrics": 13
+      },
+      "subSpecialtyWeights": {
+        "Obstetrics": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "fertility",
+      "label": "Fertility concern",
+      "synonyms": [
+        "fertility",
+        "infertility",
+        "trying to conceive",
+        "difficulty conceiving",
+        "ivf"
+      ],
+      "specialtyWeights": {
+        "Gynaecology & Obstetrics": 13
+      },
+      "subSpecialtyWeights": {
+        "Fertility": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "menopause",
+      "label": "Menopause / perimenopause",
+      "synonyms": [
+        "menopause",
+        "perimenopause",
+        "hot flushes",
+        "hot flashes"
+      ],
+      "specialtyWeights": {
+        "Gynaecology & Obstetrics": 11,
+        "Endocrinology": 3
+      },
+      "subSpecialtyWeights": {
+        "Menopause": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "blurred_vision",
+      "label": "Blurred / double vision",
+      "synonyms": [
+        "blurred vision",
+        "blurry vision",
+        "double vision",
+        "vision blurry",
+        "vision changes"
+      ],
+      "specialtyWeights": {
+        "Ophthalmology": 11,
+        "Neurology": 5
+      },
+      "subSpecialtyWeights": {
+        "General Ophthalmology": 9
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "vision_loss",
+      "label": "Vision loss",
+      "synonyms": [
+        "vision loss",
+        "loss of vision",
+        "loss of sight",
+        "sudden loss of sight"
+      ],
+      "specialtyWeights": {
+        "Ophthalmology": 13,
+        "Neurology": 6
+      },
+      "subSpecialtyWeights": {
+        "Retina": 9
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "floaters",
+      "label": "Floaters / flashes",
+      "synonyms": [
+        "floaters",
+        "flashing lights",
+        "flashes in vision",
+        "new floaters"
+      ],
+      "specialtyWeights": {
+        "Ophthalmology": 13
+      },
+      "subSpecialtyWeights": {
+        "Retina": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "eye_pain",
+      "label": "Eye pain",
+      "synonyms": [
+        "eye pain",
+        "painful eye",
+        "red painful eye"
+      ],
+      "specialtyWeights": {
+        "Ophthalmology": 12
+      },
+      "subSpecialtyWeights": {
+        "General Ophthalmology": 10
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "cataract_glaucoma",
+      "label": "Cataract / glaucoma",
+      "synonyms": [
+        "cataract",
+        "cataracts",
+        "glaucoma"
+      ],
+      "specialtyWeights": {
+        "Ophthalmology": 13
+      },
+      "subSpecialtyWeights": {
+        "Cataract": 12,
+        "General Ophthalmology": 8
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "urinary_symptoms",
+      "label": "Urinary symptoms",
+      "synonyms": [
+        "urinary symptoms",
+        "difficulty urinating",
+        "difficulty passing urine",
+        "weak urine stream",
+        "frequent urination",
+        "urinating often",
+        "urgency to urinate",
+        "bladder symptoms"
+      ],
+      "specialtyWeights": {
+        "Urology & Andrology": 11
+      },
+      "subSpecialtyWeights": {
+        "General Urology": 10
+      },
+      "clarification": {
+        "question": "What is the main urinary problem?",
+        "options": [
+          {
+            "label": "Pain / burning",
+            "append": "There is pain or burning when passing urine."
+          },
+          {
+            "label": "Blood in urine",
+            "append": "There is visible blood in the urine."
+          },
+          {
+            "label": "Flow / frequency problem",
+            "append": "The main problem is urinary flow, frequency or urgency."
+          }
+        ]
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "dysuria",
+      "label": "Pain / burning passing urine",
+      "synonyms": [
+        "painful urination",
+        "pain when urinating",
+        "burning urine",
+        "burning when urinating",
+        "dysuria"
+      ],
+      "specialtyWeights": {
+        "Urology & Andrology": 11,
+        "General Practice": 4
+      },
+      "subSpecialtyWeights": {
+        "General Urology": 8
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "haematuria",
+      "label": "Blood in urine",
+      "synonyms": [
+        "blood in urine",
+        "blood in pee",
+        "haematuria",
+        "hematuria"
+      ],
+      "specialtyWeights": {
+        "Urology & Andrology": 13
+      },
+      "subSpecialtyWeights": {
+        "General Urology": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "kidney_stone",
+      "label": "Kidney stone",
+      "synonyms": [
+        "kidney stone",
+        "kidney stones",
+        "renal stone",
+        "flank pain with stone",
+        "stone disease"
+      ],
+      "specialtyWeights": {
+        "Urology & Andrology": 13
+      },
+      "subSpecialtyWeights": {
+        "Kidney Stones": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "prostate",
+      "label": "Prostate symptoms",
+      "synonyms": [
+        "prostate problem",
+        "enlarged prostate",
+        "high psa",
+        "raised psa",
+        "prostate cancer concern"
+      ],
+      "specialtyWeights": {
+        "Urology & Andrology": 13
+      },
+      "subSpecialtyWeights": {
+        "General Urology": 10,
+        "Men's Health": 7
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "male_genital",
+      "label": "Male genital / sexual symptoms",
+      "synonyms": [
+        "testicular pain",
+        "testicle pain",
+        "testicular lump",
+        "penis problem",
+        "erectile dysfunction",
+        "erection problem",
+        "male fertility"
+      ],
+      "specialtyWeights": {
+        "Urology & Andrology": 12,
+        "Sexual Health": 6
+      },
+      "subSpecialtyWeights": {
+        "Men's Health": 12,
+        "Andrology": 11
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "hearing_loss",
+      "label": "Hearing loss",
+      "synonyms": [
+        "hearing loss",
+        "loss of hearing",
+        "reduced hearing",
+        "cant hear well",
+        "cannot hear well"
+      ],
+      "specialtyWeights": {
+        "ENT": 13
+      },
+      "subSpecialtyWeights": {
+        "Ear & Balance": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "tinnitus",
+      "label": "Tinnitus",
+      "synonyms": [
+        "tinnitus",
+        "ringing in ears",
+        "ringing in ear",
+        "buzzing in ear",
+        "buzzing in ears",
+        "buzzing in the ear",
+        "buzzing in the ears",
+        "ringing in the ear",
+        "ringing in the ears"
+      ],
+      "specialtyWeights": {
+        "ENT": 13
+      },
+      "subSpecialtyWeights": {
+        "Ear & Balance": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "sinus",
+      "label": "Sinus problem",
+      "synonyms": [
+        "sinusitis",
+        "sinus pain",
+        "sinus pressure",
+        "facial pressure with blocked nose",
+        "sinus problem"
+      ],
+      "specialtyWeights": {
+        "ENT": 13
+      },
+      "subSpecialtyWeights": {
+        "Nose & Sinus": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "blocked_nose",
+      "label": "Blocked nose / nasal problem",
+      "synonyms": [
+        "blocked nose",
+        "nasal blockage",
+        "stuffy nose",
+        "nasal obstruction",
+        "deviated septum"
+      ],
+      "specialtyWeights": {
+        "ENT": 12
+      },
+      "subSpecialtyWeights": {
+        "Nose & Sinus": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "sore_throat",
+      "label": "Throat / tonsil problem",
+      "synonyms": [
+        "sore throat",
+        "tonsillitis",
+        "tonsil problem",
+        "recurrent tonsillitis",
+        "throat pain"
+      ],
+      "specialtyWeights": {
+        "ENT": 11
+      },
+      "subSpecialtyWeights": {
+        "Throat": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "hoarseness",
+      "label": "Hoarse voice",
+      "synonyms": [
+        "hoarse",
+        "hoarseness",
+        "voice change",
+        "lost voice",
+        "persistent hoarse voice"
+      ],
+      "specialtyWeights": {
+        "ENT": 11
+      },
+      "subSpecialtyWeights": {
+        "Throat": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "diabetes",
+      "label": "Diabetes",
+      "synonyms": [
+        "diabetes",
+        "type 1 diabetes",
+        "type 2 diabetes",
+        "diabetic",
+        "poor diabetes control"
+      ],
+      "specialtyWeights": {
+        "Diabetes": 13
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "glucose_problem",
+      "label": "Blood sugar problem",
+      "synonyms": [
+        "high blood sugar",
+        "low blood sugar",
+        "blood sugar",
+        "hyperglycaemia",
+        "hyperglycemia",
+        "hypoglycaemia",
+        "hypoglycemia",
+        "insulin problem",
+        "cgm",
+        "continuous glucose monitor"
+      ],
+      "specialtyWeights": {
+        "Diabetes": 12
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "thyroid",
+      "label": "Thyroid problem",
+      "synonyms": [
+        "thyroid",
+        "thyroid nodule",
+        "underactive thyroid",
+        "overactive thyroid",
+        "hypothyroidism",
+        "hyperthyroidism",
+        "goitre",
+        "goiter"
+      ],
+      "specialtyWeights": {
+        "Endocrinology": 13
+      },
+      "subSpecialtyWeights": {
+        "Thyroid": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "endocrine_other",
+      "label": "Other endocrine problem",
+      "synonyms": [
+        "adrenal problem",
+        "pituitary problem",
+        "parathyroid problem",
+        "hormone disorder",
+        "hormonal disorder"
+      ],
+      "specialtyWeights": {
+        "Endocrinology": 12
+      },
+      "subSpecialtyWeights": {
+        "Endocrinology": 10
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "frailty_falls",
+      "label": "Frailty / recurrent falls",
+      "synonyms": [
+        "frailty",
+        "frail",
+        "recurrent falls",
+        "frequent falls",
+        "falling often",
+        "falls assessment"
+      ],
+      "specialtyWeights": {
+        "Geriatrics": 13
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NICE referral/management guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "depression_anxiety",
+      "label": "Depression / anxiety",
+      "synonyms": [
+        "depression",
+        "depressed",
+        "anxiety",
+        "anxious",
+        "panic attacks",
+        "panic attack",
+        "low mood"
+      ],
+      "specialtyWeights": {
+        "Psychiatry": 11,
+        "General Practice": 4
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "generic_fatigue",
+      "label": "Fatigue / non-specific symptoms",
+      "synonyms": [
+        "fatigue",
+        "tired all the time",
+        "persistent tiredness",
+        "unexplained tiredness",
+        "generally unwell"
+      ],
+      "specialtyWeights": {
+        "General Practice": 7,
+        "Geriatrics": 3
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "hernia",
+      "label": "Hernia",
+      "synonyms": [
+        "hernia",
+        "groin hernia",
+        "umbilical hernia",
+        "incisional hernia"
+      ],
+      "specialtyWeights": {
+        "General Surgery": 13
+      },
+      "subSpecialtyWeights": {
+        "Hernia": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "gallbladder",
+      "label": "Gallbladder / gallstones",
+      "synonyms": [
+        "gallstones",
+        "gallstone",
+        "gallbladder problem",
+        "biliary pain"
+      ],
+      "specialtyWeights": {
+        "General Surgery": 11,
+        "Gastroenterology": 5
+      },
+      "subSpecialtyWeights": {
+        "Upper GI": 4
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "anaemia",
+      "label": "Anaemia",
+      "synonyms": [
+        "anaemia",
+        "anemia",
+        "low haemoglobin",
+        "low hemoglobin",
+        "iron deficiency anaemia"
+      ],
+      "specialtyWeights": {
+        "Haematology": 10,
+        "General Practice": 4
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "blood_disorder",
+      "label": "Blood / clotting disorder",
+      "synonyms": [
+        "blood disorder",
+        "clotting disorder",
+        "bleeding disorder",
+        "abnormal blood count",
+        "low platelets",
+        "thrombocytopenia"
+      ],
+      "specialtyWeights": {
+        "Haematology": 12
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "varicose_veins",
+      "label": "Varicose veins",
+      "synonyms": [
+        "varicose veins",
+        "varicose vein",
+        "bulging veins"
+      ],
+      "specialtyWeights": {
+        "Vascular Surgery": 13
+      },
+      "subSpecialtyWeights": {
+        "Vascular Surgery": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "leg_ulcer_circulation",
+      "label": "Leg ulcer / poor circulation",
+      "synonyms": [
+        "leg ulcer",
+        "poor circulation",
+        "peripheral arterial disease",
+        "pain in calf when walking",
+        "claudication"
+      ],
+      "specialtyWeights": {
+        "Vascular Surgery": 12
+      },
+      "subSpecialtyWeights": {
+        "Vascular Surgery": 11
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "breast_lump",
+      "label": "Breast lump",
+      "synonyms": [
+        "breast lump",
+        "lump in breast",
+        "new breast lump"
+      ],
+      "specialtyWeights": {
+        "Breast Surgery": 13
+      },
+      "subSpecialtyWeights": {
+        "Breast Surgery": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "breast_symptom",
+      "label": "Other breast symptom",
+      "synonyms": [
+        "breast pain",
+        "nipple discharge",
+        "nipple change",
+        "breast skin change"
+      ],
+      "specialtyWeights": {
+        "Breast Surgery": 11
+      },
+      "subSpecialtyWeights": {
+        "Breast Surgery": 11
+      },
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "tooth_pain",
+      "label": "Tooth pain",
+      "synonyms": [
+        "toothache",
+        "tooth pain",
+        "painful tooth",
+        "broken tooth"
+      ],
+      "specialtyWeights": {
+        "Dentistry": 13
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "wisdom_tooth",
+      "label": "Wisdom tooth / oral surgery",
+      "synonyms": [
+        "wisdom tooth",
+        "impacted wisdom tooth",
+        "impacted tooth",
+        "oral surgery"
+      ],
+      "specialtyWeights": {
+        "Maxillofacial": 13,
+        "Dentistry": 8
+      },
+      "subSpecialtyWeights": {
+        "Oral Surgery": 13
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "jaw_facial",
+      "label": "Jaw / facial problem",
+      "synonyms": [
+        "jaw pain",
+        "jaw swelling",
+        "facial swelling",
+        "jaw fracture",
+        "tmj pain",
+        "temporomandibular"
+      ],
+      "specialtyWeights": {
+        "Maxillofacial": 12,
+        "Dentistry": 5
+      },
+      "subSpecialtyWeights": {
+        "Maxillofacial": 11
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "scar_reconstruction",
+      "label": "Scar / reconstructive concern",
+      "synonyms": [
+        "scar revision",
+        "problem scar",
+        "keloid",
+        "reconstructive surgery",
+        "skin reconstruction"
+      ],
+      "specialtyWeights": {
+        "Plastic Surgery": 12
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "cosmetic_aesthetic",
+      "label": "Cosmetic / aesthetic request",
+      "synonyms": [
+        "cosmetic treatment",
+        "aesthetic treatment",
+        "skin rejuvenation",
+        "wrinkle treatment",
+        "botox",
+        "filler",
+        "fillers",
+        "facial aesthetics"
+      ],
+      "specialtyWeights": {
+        "Aesthetics": 13,
+        "Plastic Surgery": 5
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "sti",
+      "label": "Sexual health / STI",
+      "synonyms": [
+        "sti",
+        "std",
+        "sexually transmitted infection",
+        "sexual health screening",
+        "hiv test",
+        "chlamydia",
+        "gonorrhoea"
+      ],
+      "specialtyWeights": {
+        "Sexual Health": 13
+      },
+      "subSpecialtyWeights": {
+        "Sexual Health": 12
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "sexual_dysfunction",
+      "label": "Sexual dysfunction",
+      "synonyms": [
+        "sexual dysfunction",
+        "loss of libido",
+        "low libido",
+        "sexual function problem"
+      ],
+      "specialtyWeights": {
+        "Sexual Health": 10,
+        "Urology & Andrology": 6
+      },
+      "subSpecialtyWeights": {
+        "Sexual Function": 12
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "chronic_pain",
+      "label": "Chronic / persistent pain",
+      "synonyms": [
+        "chronic pain",
+        "persistent pain",
+        "long term pain",
+        "long-term pain",
+        "pain clinic"
+      ],
+      "specialtyWeights": {
+        "Pain Management": 13,
+        "Physiotherapy": 4
+      },
+      "subSpecialtyWeights": {
+        "Pain Management": 12
+      },
+      "sources": [
+        "LIPS public specialist/service pages",
+        "NICE referral/management guidance"
+      ]
+    },
+    {
+      "id": "neuropathic_pain",
+      "label": "Nerve pain",
+      "synonyms": [
+        "nerve pain",
+        "neuropathic pain",
+        "burning nerve pain",
+        "electric shock pain"
+      ],
+      "specialtyWeights": {
+        "Pain Management": 11,
+        "Neurology": 6,
+        "Neurosurgery": 4
+      },
+      "subSpecialtyWeights": {
+        "Pain Management": 10
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "nutrition_weight",
+      "label": "Nutrition / weight concern",
+      "synonyms": [
+        "nutrition advice",
+        "diet advice",
+        "dietitian",
+        "weight management",
+        "weight loss support",
+        "malnutrition",
+        "poor appetite"
+      ],
+      "specialtyWeights": {
+        "Dietetics": 12,
+        "General Practice": 3
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "LIPS public specialist/service pages",
+        "NHS public symptom/condition guidance"
+      ]
+    },
+    {
+      "id": "physio_rehab",
+      "label": "Physiotherapy / rehabilitation",
+      "synonyms": [
+        "physiotherapy",
+        "physical therapy",
+        "rehabilitation",
+        "rehab after injury",
+        "post injury rehab"
+      ],
+      "specialtyWeights": {
+        "Physiotherapy": 13,
+        "Sports & Exercise Medicine": 4
+      },
+      "subSpecialtyWeights": {},
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "preop_anaesthetic",
+      "label": "Pre-operative anaesthetic assessment",
+      "synonyms": [
+        "anaesthetic assessment",
+        "anesthetic assessment",
+        "preoperative assessment",
+        "pre operative assessment",
+        "perioperative assessment"
+      ],
+      "specialtyWeights": {
+        "Anaesthetics": 13
+      },
+      "subSpecialtyWeights": {
+        "Anaesthetics": 12
+      },
+      "sources": [
+        "LIPS public specialist/service pages"
+      ]
+    },
+    {
+      "id": "breast_cancer",
+      "label": "Breast cancer concern",
+      "synonyms": [
+        "breast cancer",
+        "history of breast cancer",
+        "previous breast cancer"
+      ],
+      "specialtyWeights": {
+        "Breast Surgery": 13
+      },
+      "subSpecialtyWeights": {
+        "Breast Surgery": 13
+      },
+      "sources": [
+        "NHS public symptom/condition guidance",
+        "LIPS public specialist/service pages"
+      ]
+    }
+  ]
+}

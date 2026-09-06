@@ -5,6 +5,7 @@ const path = require('node:path');
 const {
   routeSymptoms,
   rankDoctors,
+  rankDoctorsForRouting,
   detectUrgency,
   phraseAssertion,
   subSpecialtyEquivalent
@@ -298,4 +299,183 @@ test('directory refresh is delegated to a GitHub Actions workflow',()=>{
   assert.match(workflow, /playwright install --with-deps chromium/);
   assert.match(workflow, /Verify coverage gate/);
   assert.match(workflow, /git push/);
+});
+
+test('family-history symptoms are not treated as the patient current complaint',()=>{
+  const r=routeSymptoms('Mother had breast cancer. Patient has persistent knee pain.',doctors);
+  assert.equal(r.specialty,'Trauma & Orthopaedics');
+  assert.ok(r.contextSummary.family.includes('Breast cancer concern'));
+});
+
+test('historical chest pain does not override a current reflux complaint',()=>{
+  const r=routeSymptoms('History of chest pain last year but currently has acid reflux and heartburn.',doctors);
+  assert.equal(r.specialty,'Gastroenterology');
+  assert.ok(r.contextSummary.historical.includes('Chest pain / pressure'));
+});
+
+test('resolved symptoms are ignored when a new current body area is described',()=>{
+  const r=routeSymptoms('Back pain has resolved. Current shoulder pain and stiffness.',doctors);
+  assert.equal(r.specialty,'Trauma & Orthopaedics');
+  assert.equal(r.subSpecialty,'Upper Limb');
+  assert.ok(r.contextSummary.resolved.includes('Back pain'));
+});
+
+test('uncertain wording is down-weighted and surfaced as uncertain',()=>{
+  const live=[...doctors,{name:'Endo',specialty:'Endocrinology',subSpecialties:['Thyroid'],expertise:['thyroid']}];
+  const r=routeSymptoms('Possible thyroid problem with a neck lump.',live);
+  assert.equal(r.specialty,'Endocrinology');
+  assert.equal(r.uncertain,true);
+  assert.ok(r.contextSummary.uncertain.includes('Thyroid problem'));
+});
+
+test('common-language radicular back pain routes to a spine pathway',()=>{
+  const live=[...doctors,{name:'Spine Neuro',specialty:'Neurosurgery',subSpecialties:['Spinal Surgery'],expertise:['back pain','sciatica']}];
+  const r=routeSymptoms('Lower back pain shooting down the right leg with tingling.',live);
+  assert.equal(r.specialty,'Neurosurgery');
+  assert.equal(r.subSpecialty,'Spinal Surgery');
+  assert.ok(r.contextSummary.present.includes('Sciatica / radicular pain'));
+});
+
+test('back pain with new bladder change triggers the cauda equina guardrail',()=>{
+  const r=routeSymptoms('Severe low back pain radiating down the leg with new bladder problems.',doctors);
+  assert.equal(r.urgency.urgent,true);
+  assert.ok(r.urgency.rules.some(x=>x.id==='cauda-equina'));
+});
+
+test('generic back pain can ask one targeted clarification question',()=>{
+  const r=routeSymptoms('Lower back ache for several weeks.',doctors);
+  assert.ok(r.clarification);
+  assert.match(r.clarification.question,/travel into a leg|numbness/i);
+  assert.ok(r.clarification.options.length>=3);
+});
+
+test('live LIPS profile terms can route a condition that is not hard-coded',()=>{
+  const live=[
+    ...doctors,
+    {name:'Vascular TOS',specialty:'Vascular Surgery',subSpecialties:['Vascular Surgery'],conditions:['thoracic outlet syndrome'],expertise:['thoracic outlet syndrome']}
+  ];
+  const r=routeSymptoms('Assessment for thoracic outlet syndrome.',live);
+  assert.equal(r.specialty,'Vascular Surgery');
+  assert.ok(r.directoryEvidence.some(x=>x.term==='thoracic outlet syndrome'));
+});
+
+test('concept synonyms can match canonical doctor-profile evidence',()=>{
+  const { rankDoctorsForRouting } = require('../services/router');
+  const live=[
+    {name:'Spine A',specialty:'Neurosurgery',subSpecialties:['Spinal Surgery'],conditions:['Back pain'],expertise:['Sciatica']},
+    {name:'General Neuro',specialty:'Neurosurgery',subSpecialties:[],conditions:['brain tumour'],expertise:['neuro-oncology']}
+  ];
+  const q='Lower back ache with pain shooting down the leg.';
+  const r=routeSymptoms(q,live);
+  const ranked=rankDoctorsForRouting(live,r,q,{preferLipsHealthcare:true});
+  assert.equal(ranked[0].name,'Spine A');
+  assert.ok(ranked[0].conceptEvidence.some(x=>x.id==='back_pain' || x.id==='sciatica'));
+});
+
+test('anatomically incompatible orthopaedic subspecialty is pushed behind a knee specialist',()=>{
+  const { rankDoctorsForRouting } = require('../services/router');
+  const live=[
+    {name:'Shoulder Only',specialty:'Trauma & Orthopaedics',subSpecialties:['Shoulder','Elbow'],expertise:['shoulder']},
+    {name:'Knee Expert',specialty:'Trauma & Orthopaedics',subSpecialties:['Knee'],expertise:['knee pain']}
+  ];
+  const q='Knee pain and locking.';
+  const r=routeSymptoms(q,live);
+  const ranked=rankDoctorsForRouting(live,r,q,{preferLipsHealthcare:true});
+  assert.equal(ranked[0].name,'Knee Expert');
+  assert.equal(ranked.at(-1).scopeMismatch,true);
+});
+
+test('voice dictation UI uses browser speech recognition with UK English and graceful fallback',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'..','public','index.html'),'utf8');
+  const js=fs.readFileSync(path.join(__dirname,'..','public','app.js'),'utf8');
+  assert.match(html,/id="mic-btn"/);
+  assert.match(js,/SpeechRecognition|webkitSpeechRecognition/);
+  assert.match(js,/recognition\.lang = 'en-GB'/);
+  assert.match(js,/Voice dictation is not supported by this browser/);
+});
+
+test('frontend exposes context categories and click-to-refine clarification options',()=>{
+  const js=fs.readFileSync(path.join(__dirname,'..','public','app.js'),'utf8');
+  assert.match(js,/Past history — not treated as current/);
+  assert.match(js,/Family \/ other person — ignored/);
+  assert.match(js,/data-clarify-index/);
+  assert.match(js,/option\.append/);
+});
+
+test('clinical ontology contains a broad external synonym layer',()=>{
+  const knowledge=require('../clinical-knowledge/symptoms.json');
+  assert.ok(knowledge.concepts.length>=100);
+  const back=knowledge.concepts.find(x=>x.id==='back_pain');
+  assert.ok(back.synonyms.includes('lower back ache'));
+  assert.ok(back.sources.some(x=>/NICE/i.test(x)));
+});
+
+test('Vercel entry exports the Express app directly',()=>{
+  const server=fs.readFileSync(path.join(__dirname,'..','server.js'),'utf8');
+  assert.match(server,/module\.exports = app/);
+});
+
+test('clinical knowledge base has unique valid concept ids and routing weights', () => {
+  const knowledge = require('../clinical-knowledge/symptoms.json');
+  const concepts = knowledge.concepts || [];
+  const ids = concepts.map(x => x.id);
+  assert.equal(new Set(ids).size, ids.length, 'concept ids must be unique');
+  for (const concept of concepts) {
+    assert.match(concept.id, /^[a-z0-9_]+$/);
+    assert.ok(String(concept.label || '').trim().length >= 2);
+    assert.ok(Array.isArray(concept.synonyms) && concept.synonyms.length >= 1);
+    for (const [specialty, weight] of Object.entries(concept.specialtyWeights || {})) {
+      assert.ok(String(specialty).trim());
+      assert.ok(Number.isFinite(Number(weight)) && Number(weight) >= 0);
+    }
+  }
+});
+
+test('server allows microphone permission only for the same origin', () => {
+  const server = fs.readFileSync(path.join(__dirname, '..', 'server.js'), 'utf8');
+  assert.match(server, /Permissions-Policy/);
+  assert.match(server, /microphone=\(self\)/);
+});
+
+test('laterality words do not break common symptom phrase recognition', () => {
+  const knee = routeSymptoms('Right knee pain and swelling.', []);
+  assert.equal(knee.specialty, 'Trauma & Orthopaedics');
+  assert.equal(knee.subSpecialty, 'Knee');
+  const ear = routeSymptoms('Buzzing in the left ear.', []);
+  assert.equal(ear.specialty, 'ENT');
+  assert.equal(ear.subSpecialty, 'Ear & Balance');
+});
+
+test('a clearly positive new complaint after a denied comma clause can reset negation', () => {
+  const r = routeSymptoms('No palpitations, no breathlessness, knee locks after football.', []);
+  assert.equal(r.specialty, 'Trauma & Orthopaedics');
+  assert.equal(r.subSpecialty, 'Knee');
+  assert.ok(r.contextSummary.negated.includes('Palpitations'));
+});
+
+test('positive severity wording after a denied comma clause is not swallowed by negation', () => {
+  const r = routeSymptoms('No severe chest pain, mild reflux after meals.', []);
+  assert.equal(r.specialty, 'Gastroenterology');
+  assert.ok(r.contextSummary.negated.includes('Chest pain / pressure'));
+  assert.ok(r.contextSummary.present.includes('Reflux / heartburn'));
+});
+
+test('resolved history before a comma does not contaminate a new current symptom', () => {
+  const r = routeSymptoms('Previous migraine has resolved, now blurred vision.', []);
+  assert.equal(r.specialty, 'Ophthalmology');
+  assert.ok(r.contextSummary.resolved.includes('Migraine'));
+  assert.ok(r.contextSummary.present.includes('Blurred / double vision'));
+});
+
+test('doctor evidence labels are deduplicated case-insensitively', () => {
+  const doctors = [{
+    name: 'Dr Rhythm', specialty: 'Cardiology', specialties: ['Cardiology'],
+    subSpecialties: ['Arrhythmia'], expertise: ['Palpitations'], conditions: ['palpitations'], biography: '',
+    profileUrl: 'https://lips.org.uk/our-specialists/dr-rhythm'
+  }];
+  const routing = routeSymptoms('Recurrent palpitations and heart racing.', doctors);
+  const ranked = rankDoctorsForRouting(doctors, routing, 'Recurrent palpitations and heart racing.');
+  const profileReason = ranked[0].matchReasons.find(x => x.startsWith('Profile evidence:')) || '';
+  const tail = profileReason.replace('Profile evidence:', '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+  assert.equal(new Set(tail).size, tail.length);
 });

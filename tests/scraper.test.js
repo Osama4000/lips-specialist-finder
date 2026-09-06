@@ -7,12 +7,14 @@ const {
   extractLocations,
   extractProfileUrls,
   extractProfileSlugs,
-  mergeFreshWithPrevious
+  mergeFreshWithPrevious,
+  extractOntologyTerms
 } = require('../scraper/lipsScraper');
 
 test('canonical profile URL is normalized and rejects non-profile paths',()=>{
   assert.equal(canonicalUrl('https://lips.org.uk/our-specialists/barry-andrews/?x=1#bio'),'https://lips.org.uk/our-specialists/barry-andrews/');
   assert.equal(canonicalUrl('https://lips.org.uk/our-specialists'),null);
+  assert.equal(canonicalUrl('https://lips.org.uk/our-specialists/emergency-clinic/'),null);
 });
 
 test('profile extraction identifies role and taxonomy without location contamination',()=>{
@@ -157,4 +159,19 @@ test('worker pool isolates a failed item without aborting the remaining profiles
   assert.equal(results[1].ok, false);
   assert.match(results[1].error.message, /transient/);
   assert.equal(results[2].value, 'C');
+});
+
+test('live profile biography is enriched with ontology symptoms such as back pain and sciatica',()=>{
+  const terms=extractOntologyTerms('Consultant spine surgeon treating lower back pain, slipped discs and sciatica.');
+  assert.ok(terms.includes('Back pain'));
+  assert.ok(terms.includes('Sciatica / radicular pain'));
+  assert.ok(terms.includes('Slipped / herniated disc'));
+});
+
+test('structured profile stores ontology terms from biography as conditions',()=>{
+  const text=`Mr Spine\nConsultant Neurosurgeon\nNeurosurgery\nSpinal Surgery\nBiography\nThis surgeon treats lower back pain, sciatica and herniated disc problems using specialist spinal techniques.\nLocations\nPrivate\nLIPS Healthcare, Battersea Power Station\nAvailability`;
+  const p=extractStructured(text,'Mr Spine');
+  assert.ok(p.conditions.includes('Back pain'));
+  assert.ok(p.conditions.includes('Sciatica / radicular pain'));
+  assert.ok(p.conditions.includes('Slipped / herniated disc'));
 });

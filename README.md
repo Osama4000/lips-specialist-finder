@@ -1,122 +1,134 @@
-# LIPS Specialist Finder v4
+# LIPS Specialist Finder v6
 
-Production-oriented contact-centre routing assistant for the public LIPS specialist directory.
+Context-aware contact-centre routing assistant for the public LIPS specialist directory.
 
-The application is intentionally focused on one job: take an English symptom description and help a staff member reach the most appropriate **specialty → sub-specialty → specialist** quickly. It does not perform booking and does not diagnose patients.
+The product has one job: turn a short **English** call note into a clinically sensible **specialty → sub-specialty → consultant shortlist**. It does not book appointments and it does not diagnose patients.
 
-## What changed in v4
+## v6 highlights
 
-- Faster live-directory updates: sitemap-first discovery, bounded discovery rounds, blocked heavy assets and concurrent profile workers.
-- Failed profiles are retried once without rerunning successful profiles.
-- Admin shows live update stage, processed/total, successes, failures, retries and percentage progress.
-- English-only symptom routing.
-- Negation-aware matching: `no chest pain`, `denies palpitations`, `without shortness of breath`, etc. are excluded from specialty scoring and doctor-profile evidence.
-- Negated urgent phrases are also excluded from urgent flags.
-- LIPS Healthcare clinic location extraction from the clinician's **Locations** section only; the global `Our Location` footer is ignored.
-- Clinically equivalent doctors who are verified as consulting at LIPS Healthcare are prioritised.
-- Exact sub-specialty fit always beats the commercial location preference.
-- Word-boundary matching prevents bugs such as matching `ENT` inside `Preventive`.
-- Cleaner profile parsing so location/address text cannot become a sub-specialty or expertise tag.
-- Live LIPS sub-speciality labels can participate in routing even when they are newer than the curated rules.
-- Multi-specialty profiles are indexed as a primary specialty plus secondary specialties, so a dual-listed consultant is not hidden from a valid route.
-- Diabetes and Endocrinology are routed separately to match the current LIPS profile taxonomy; Geriatrics is also covered explicitly.
-- Coverage gates protect a healthy directory from a partial crawl.
-- UI shows which symptoms were used and which were ignored because they were denied/absent.
-- No patient symptom text is written to application logs.
+- **Context-aware symptoms**, not raw keyword matching. Current, denied, historical, resolved, family/other-person and uncertain mentions are treated differently before scoring.
+- **101+ curated clinical concepts and common-language synonyms** supplement the terminology published on LIPS, so wording such as `lower back pain`, `heart racing`, `buzzing in the ear` and `pain shooting down my leg` can be understood even when the exact phrase is not a directory filter.
+- **Live LIPS evidence remains authoritative for consultant selection.** Every directory refresh indexes specialty, secondary specialties, sub-specialties, public conditions, expertise, biography and clinician locations. Terms found on live LIPS profiles can participate in routing without waiting for a code release.
+- **Profile enrichment** maps common-language concepts found in LIPS biographies to structured conditions/expertise, improving doctor-level evidence.
+- **Voice dictation option** beside the text box using the browser speech-recognition API (`en-GB`). Typing remains fully supported and the UI gracefully falls back when dictation is unavailable.
+- **Anatomical scope protection.** A knee specialist is not pushed below a foot/ankle specialist merely because both are Orthopaedics; similar separation exists for spine, ENT regions and GI areas.
+- **LIPS Healthcare preference remains a safe tie-breaker.** Clinical fit comes first; the clinic preference only separates clinically equivalent choices.
+- **One-question clarification** can appear when the note is ambiguous, e.g. generic back pain without enough information to distinguish a spine/radicular pathway.
+- **Urgent guardrails** hide routine consultant recommendations when configured emergency patterns are detected. These rules require organisational clinical governance approval before operational use.
+- **Vercel-friendly architecture.** The web service only performs routing. GitHub Actions performs the Playwright directory refresh, validates coverage, then commits the refreshed directory so Vercel can redeploy it.
 
-## Routing order
-
-The ranking is deliberately separated into clinical tiers:
-
-1. Exact/aliased sub-specialty match.
-2. Related sub-specialty or strong structured profile evidence.
-3. Specialty-only match.
-
-Inside the same clinical tier, a clinician verified as consulting at LIPS Healthcare is listed first when `PREFER_LIPS_HEALTHCARE=true`. The location preference cannot move a general specialist above an exact sub-specialty match.
-
-## Negation examples
+## Context examples
 
 Expected behaviour:
 
-- `No chest pain.` → no Cardiology route.
-- `No chest pain. Persistent knee pain and swelling.` → Trauma & Orthopaedics → Knee.
-- `Denies chest pain, palpitations or shortness of breath, but reports acid reflux.` → Gastroenterology.
-- `Chest pain on exertion but no palpitations.` → Cardiology.
-- `No improvement in chest pain.` → chest pain is still treated as present.
-- `No chest pain with palpitations.` → chest pain is denied; palpitations remain present.
-- `No pain with urination.` → the urination context stays inside the denied symptom and does not force Urology.
-- `Not only chest pain but palpitations.` → Cardiology; `not only` is not treated as negation.
+- `No chest pain.` → does **not** route to Cardiology.
+- `No chest pain with recurrent palpitations.` → Cardiology / Arrhythmia from the palpitations, not from chest pain.
+- `History of chest pain last year but currently acid reflux.` → current reflux drives Gastroenterology.
+- `Mother had breast cancer. Patient has knee pain.` → the family-history concept is shown but excluded from patient routing; knee symptoms drive Orthopaedics.
+- `Back pain has resolved. Current shoulder pain.` → the resolved back pain is ignored for the current route.
+- `Possible thyroid problem.` → Endocrinology evidence is down-weighted and the result is surfaced as uncertain rather than pretending certainty.
+- `Lower back pain shooting down the right leg with tingling.` → spine/radicular pathway with Spinal Surgery/Spinal Disorders preference where available.
 
-## LIPS Healthcare location preference
+## Hybrid routing pipeline
 
-The scraper parses only the doctor's `Locations` section. It stores:
-
-```json
-{
-  "locations": [
-    {
-      "type": "Private",
-      "name": "LIPS Healthcare, Battersea Power Station",
-      "address": "...",
-      "email": "...",
-      "phone": "...",
-      "website": "..."
-    }
-  ],
-  "locationVerified": true,
-  "worksAtLipsHealthcare": true
-}
+```text
+Call note (typed or dictated)
+        ↓
+Context extraction
+(current / denied / history / resolved / family / uncertain)
+        ↓
+Clinical concept + synonym layer
+        ↓
+Curated specialty/sub-specialty rules
+        + live LIPS directory terms
+        + live LIPS profile evidence
+        ↓
+Specialty candidates
+        ↓
+Sub-specialty fit + anatomical scope checks
+        ↓
+Doctor-level condition/expertise evidence
+        ↓
+LIPS Healthcare tie-breaker
+        ↓
+Short ranked consultant list
 ```
 
-If the scraper cannot reliably parse the clinician location section, `locationVerified` is false and the previous verified location data is preserved rather than guessing.
+The external symptom layer is deliberately used to **understand patient wording**, not to invent doctors. A consultant still has to be eligible through the live LIPS directory and its verified taxonomy/profile evidence.
 
-## Run locally
+## Clinical knowledge files
+
+- `clinical-knowledge/symptoms.json` — concepts, synonyms, specialty/sub-specialty weights and clarification prompts.
+- `clinical-knowledge/red-flags.json` — conservative emergency guardrails.
+- `clinical-knowledge/SOURCES.md` — public LIPS/NHS/NICE source notes and governance boundary.
+
+The knowledge layer is separate from `data/specialists.json`, so a LIPS website layout change does not erase the curated symptom vocabulary.
+
+## Voice dictation
+
+The microphone button uses `window.SpeechRecognition` / `window.webkitSpeechRecognition` where the browser provides it. It is configured for UK English and works best in current Chromium-based browsers over HTTPS.
+
+The application itself does **not** save audio. Browser/OS speech-recognition services can have their own processing and enterprise-policy behaviour, so dictation is optional and the typed workflow always remains available.
+
+## Live directory updates
+
+For low-cost demo/Vercel deployments, **do not run Playwright inside the web service**. Use:
+
+`GitHub → Actions → Update LIPS specialist directory → Run workflow`
+
+The workflow:
+
+1. installs dependencies and Chromium;
+2. runs static checks and regression tests;
+3. crawls the public LIPS directory/profile pages;
+4. parses specialties, sub-specialties, profile evidence and clinician locations;
+5. enriches profile terms with the v6 symptom ontology;
+6. rejects incomplete crawls using the coverage gate;
+7. commits only a passing `data/specialists.json` + `data/metadata.json` refresh.
+
+A scheduled refresh is also configured in `.github/workflows/update-lips-directory.yml`.
+
+## Vercel deployment
+
+The Express app is exported directly from `server.js` for Vercel. Configure at least:
+
+```text
+ADMIN_PASSWORD=<strong secret>
+REQUIRE_READY_DIRECTORY=true
+PREFER_LIPS_HEALTHCARE=true
+SERVER_SCRAPER_ENABLED=false
+AUTO_UPDATE_ON_START=false
+```
+
+Do not commit `.env` or `node_modules/`.
+
+After replacing the repository with this v6 build, run the GitHub directory workflow once. The ZIP contains bootstrap data; the action repopulates the repository with the current live LIPS directory. Wait for the green workflow run and subsequent Vercel redeploy, then verify `/ready` returns `ready: true`.
+
+See `VERCEL_DEPLOY.md` for the exact replacement sequence.
+
+## Local QA
 
 Requires Node.js 20+.
 
 ```bash
 npm install
-npx playwright install chromium
 npm test
+npm run check
+```
+
+For local live crawling:
+
+```bash
+npx playwright install chromium
+npm run update
+```
+
+For local UI testing, create `.env` from `.env.example` and run:
+
+```bash
 npm start
 ```
 
-Open:
+## Clinical and privacy boundary
 
-- Main tool: `http://localhost:10000/`
-- Admin: `http://localhost:10000/admin`
-- Liveness: `http://localhost:10000/health`
-- Readiness: `http://localhost:10000/ready`
-
-## Before live use
-
-The repository includes only a small bootstrap cache. It is deliberately marked as incomplete. Before operational use:
-
-1. Configure a persistent `DATA_DIR`.
-2. Set a strong `ADMIN_PASSWORD`.
-3. Run `npm test`.
-4. Run a live LIPS update from `/admin` or `npm run update`.
-5. Confirm the coverage gate passes.
-6. Confirm `/ready` returns HTTP 200.
-7. Review the admin counts for specialists, specialties, verified locations and LIPS-clinic specialists.
-8. Test a small set of known clinical routing cases with a LIPS clinician before exposing the tool to the contact centre.
-
-## Environment variables
-
-See `.env.example`.
-
-Important production settings:
-
-- `PREFER_LIPS_HEALTHCARE=true` — LIPS clinic is a tie-breaker inside the same clinical tier.
-- `REQUIRE_READY_DIRECTORY=true` — production routing returns 503 until the live directory passes the configured coverage gate.
-- `MIN_UPDATE_RECORDS=100` — minimum safe crawl size.
-- `MIN_UPDATE_SPECIALTIES=20` — minimum specialty coverage.
-- `MIN_PREVIOUS_RETENTION_RATIO=0.85` — rejects a crawl that unexpectedly loses too much of the previous directory.
-- `AUTO_UPDATE_ON_START=true` — useful on a long-running service with persistent disk.
-- `SCRAPE_CONCURRENCY=3` — parallel profile workers. Keep 3 on small Render instances; increase cautiously only with more memory.
-- `SCRAPE_RETRY_CONCURRENCY=2` — lower-concurrency retry pass for transient failures.
-- `DISCOVERY_STABLE_ROUNDS=4` — stops directory discovery once repeated rounds stop finding new profiles.
-
-## Privacy and clinical boundary
-
-Do not enter names, phone numbers, dates of birth, medical record numbers or other patient identifiers. The tool is a directory-routing assistant, not a diagnostic system. Urgent symptom flags are guardrails only; organisational clinical and emergency protocols remain authoritative.
+Do not enter patient names, phone numbers, dates of birth, medical-record identifiers or other unnecessary identifiers. This tool is directory-routing support, not diagnosis, triage certification or a substitute for clinician judgement. Red-flag rules and escalation wording must be reviewed and approved by the organisation's clinical governance lead before staff rely on them operationally.

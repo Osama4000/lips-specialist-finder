@@ -1,8 +1,8 @@
 {
   "name": "lips-specialist-finder",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "private": true,
-  "description": "Low-memory production/demo LIPS contact-centre routing assistant with out-of-process directory refresh.",
+  "description": "Context-aware LIPS contact-centre clinical routing assistant with voice dictation, live directory evidence and out-of-process refresh.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,7 +10,7 @@
     "scrape": "node scraper/cli.js",
     "test": "node --test tests/*.test.js",
     "update": "node scraper/cli.js",
-    "check": "node --check server.js && node --check services/router.js && node --check services/store.js && node --check scraper/lipsScraper.js && node --check public/app.js && node --check public/admin.js"
+    "check": "node --check server.js && node --check services/context.js && node --check services/clinicalKnowledge.js && node --check services/router.js && node --check services/store.js && node --check scraper/lipsScraper.js && node --check public/app.js && node --check public/admin.js && node -e \"JSON.parse(require('node:fs').readFileSync('clinical-knowledge/symptoms.json')); JSON.parse(require('node:fs').readFileSync('clinical-knowledge/red-flags.json'));\""
   },
   "engines": {
     "node": ">=20"

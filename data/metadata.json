@@ -1,22 +1,22 @@
 {
   "schemaVersion": 5,
   "scraperVersion": "5.0.0",
-  "startedAt": "2026-09-05T08:21:47.146Z",
-  "lastUpdated": "2026-09-05T08:36:23.111Z",
-  "attemptedAt": "2026-09-05T08:36:23.111Z",
-  "discovered": 150,
-  "updated": 134,
-  "stored": 134,
+  "startedAt": "2026-09-06T08:39:56.417Z",
+  "lastUpdated": "2026-09-06T08:56:31.458Z",
+  "attemptedAt": "2026-09-06T08:56:31.458Z",
+  "discovered": 157,
+  "updated": 135,
+  "stored": 135,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
-  "locationVerifiedCount": 2,
-  "lipsHealthcareSpecialistCount": 2,
-  "failed": 7,
-  "retried": 7,
+  "locationVerifiedCount": 4,
+  "lipsHealthcareSpecialistCount": 4,
+  "failed": 13,
+  "retried": 13,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
-  "minimumRecordsRequired": 114,
+  "minimumRecordsRequired": 113,
   "minimumSpecialtiesRequired": 20,
   "minimumPreviousRetentionRatio": 0.85,
   "maxProfilePages": 400,
@@ -49,6 +49,30 @@
     },
     {
       "url": "https://lips.org.uk/our-specialists/radiology-clinic/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/sun-burn-in-children/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/heat-rash-in-children/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/colic-in-babies/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/agnes-nereah/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/bone-health-and-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/protein-muscle-and-menopause/",
       "error": "Missing H1 / doctor name"
     }
   ],

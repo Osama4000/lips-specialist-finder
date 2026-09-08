@@ -1,22 +1,22 @@
 {
   "schemaVersion": 6,
   "scraperVersion": "6.0.0",
-  "startedAt": "2026-09-07T09:21:06.888Z",
-  "lastUpdated": "2026-09-07T09:34:55.742Z",
-  "attemptedAt": "2026-09-07T09:34:55.742Z",
-  "discovered": 141,
-  "updated": 132,
-  "stored": 132,
+  "startedAt": "2026-09-08T08:52:37.120Z",
+  "lastUpdated": "2026-09-08T09:02:44.949Z",
+  "attemptedAt": "2026-09-08T09:02:44.949Z",
+  "discovered": 138,
+  "updated": 131,
+  "stored": 131,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
-  "locationVerifiedCount": 11,
-  "lipsHealthcareSpecialistCount": 11,
-  "failed": 6,
-  "retried": 6,
+  "locationVerifiedCount": 10,
+  "lipsHealthcareSpecialistCount": 10,
+  "failed": 4,
+  "retried": 4,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
-  "minimumRecordsRequired": 111,
+  "minimumRecordsRequired": 112,
   "minimumSpecialtiesRequired": 20,
   "minimumPreviousRetentionRatio": 0.85,
   "maxProfilePages": 400,
@@ -37,14 +37,6 @@
     },
     {
       "url": "https://lips.org.uk/our-specialists/agnes-nereah/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/bone-health-and-menopause/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/protein-muscle-and-menopause/",
       "error": "Missing H1 / doctor name"
     }
   ],

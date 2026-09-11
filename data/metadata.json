@@ -1,36 +1,28 @@
 {
   "schemaVersion": 6,
   "scraperVersion": "6.0.0",
-  "startedAt": "2026-09-10T08:57:32.833Z",
-  "lastUpdated": "2026-09-10T09:12:04.007Z",
-  "attemptedAt": "2026-09-10T09:12:04.007Z",
-  "discovered": 147,
-  "updated": 138,
-  "stored": 138,
+  "startedAt": "2026-09-11T08:55:44.823Z",
+  "lastUpdated": "2026-09-11T09:08:12.376Z",
+  "attemptedAt": "2026-09-11T09:08:12.376Z",
+  "discovered": 144,
+  "updated": 137,
+  "stored": 137,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
-  "locationVerifiedCount": 14,
-  "lipsHealthcareSpecialistCount": 14,
-  "failed": 6,
-  "retried": 6,
+  "locationVerifiedCount": 21,
+  "lipsHealthcareSpecialistCount": 21,
+  "failed": 4,
+  "retried": 4,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
-  "minimumRecordsRequired": 112,
+  "minimumRecordsRequired": 117,
   "minimumSpecialtiesRequired": 20,
   "minimumPreviousRetentionRatio": 0.85,
   "maxProfilePages": 400,
   "scrapeConcurrency": 3,
   "retryConcurrency": 2,
   "errors": [
-    {
-      "url": "https://lips.org.uk/our-specialists/bone-health-and-menopause/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/protein-muscle-and-menopause/",
-      "error": "Missing H1 / doctor name"
-    },
     {
       "url": "https://lips.org.uk/our-specialists/sun-burn-in-children/",
       "error": "Missing H1 / doctor name"

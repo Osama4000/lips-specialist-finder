@@ -22,7 +22,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:37.966Z",
+    "scrapedAt": "2026-10-12T12:11:10.883Z",
     "seeded": false
   },
   {
@@ -37,6 +37,19 @@
     ],
     "expertise": [
       "Cataract",
+      "Education and professional highlights",
+      "Research and publications",
+      "Consultation types",
+      "LIPS Healthcare, Battersea Power Station",
+      "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
+      "appointments@lips.org.uk",
+      "+44 (0)20 3873 2370",
+      "King Edward VII's Hospital, London",
+      "https://www.kingedwardvii.co.uk/",
+      "Western Eye Hospital, London",
+      "Imperial College Healthcare NHS Trust",
+      "https://www.imperial.nhs.uk/",
+      "Charing Cross Hospital",
       "ophthalmology",
       "cataract",
       "Cataract / glaucoma"
@@ -48,11 +61,52 @@
     ],
     "biography": "",
     "role": "Consultant Ophthalmologist & Oculoplastic Surgeon",
-    "locations": [],
-    "locationVerified": false,
-    "worksAtLipsHealthcare": null,
+    "locations": [
+      {
+        "type": "PRIVATE",
+        "name": "LIPS Healthcare, Battersea Power Station",
+        "address": "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
+        "email": "appointments@lips.org.uk",
+        "phone": "+44 (0)20 3873 2370",
+        "website": ""
+      },
+      {
+        "type": "PRIVATE",
+        "name": "King Edward VII's Hospital, London",
+        "address": "",
+        "email": "",
+        "phone": "",
+        "website": "https://www.kingedwardvii.co.uk/"
+      },
+      {
+        "type": "PRIVATE",
+        "name": "Western Eye Hospital, London",
+        "address": "",
+        "email": "",
+        "phone": "",
+        "website": ""
+      },
+      {
+        "type": "PRIMARY",
+        "name": "Imperial College Healthcare NHS Trust",
+        "address": "",
+        "email": "",
+        "phone": "",
+        "website": "https://www.imperial.nhs.uk/"
+      },
+      {
+        "type": "PRIMARY",
+        "name": "Charing Cross Hospital",
+        "address": "",
+        "email": "",
+        "phone": "",
+        "website": ""
+      }
+    ],
+    "locationVerified": true,
+    "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:37.634Z",
+    "scrapedAt": "2026-10-12T12:11:10.932Z",
     "seeded": false
   },
   {
@@ -130,7 +184,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:37.750Z",
+    "scrapedAt": "2026-10-12T12:11:10.234Z",
     "seeded": false
   },
   {
@@ -162,7 +216,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:39.147Z",
+    "scrapedAt": "2026-10-12T12:11:11.856Z",
     "seeded": false
   },
   {
@@ -185,7 +239,7 @@
     "specialties": [
       "Cardiology"
     ],
-    "scrapedAt": "2026-10-11T11:01:39.093Z",
+    "scrapedAt": "2026-10-12T12:11:12.322Z",
     "seeded": false
   },
   {
@@ -209,7 +263,7 @@
     "biography": "",
     "role": "Consultant Neurosurgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:39.570Z",
+    "scrapedAt": "2026-10-12T12:11:12.540Z",
     "seeded": false,
     "locations": [
       {
@@ -295,7 +349,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:40.647Z",
+    "scrapedAt": "2026-10-12T12:11:14.322Z",
     "seeded": false
   },
   {
@@ -398,7 +452,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:40.505Z",
+    "scrapedAt": "2026-10-12T12:11:14.076Z",
     "seeded": false
   },
   {
@@ -461,7 +515,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:40.987Z",
+    "scrapedAt": "2026-10-12T12:11:14.386Z",
     "seeded": false
   },
   {
@@ -495,7 +549,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:41.709Z",
+    "scrapedAt": "2026-10-12T12:11:15.411Z",
     "seeded": false
   },
   {
@@ -521,7 +575,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:41.952Z",
+    "scrapedAt": "2026-10-12T12:11:16.152Z",
     "seeded": false
   },
   {
@@ -549,7 +603,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:42.388Z",
+    "scrapedAt": "2026-10-12T12:11:15.951Z",
     "seeded": false
   },
   {
@@ -613,7 +667,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:42.977Z",
+    "scrapedAt": "2026-10-12T12:11:17.150Z",
     "seeded": false
   },
   {
@@ -632,7 +686,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:43.228Z",
+    "scrapedAt": "2026-10-12T12:11:18.029Z",
     "seeded": false
   },
   {
@@ -722,7 +776,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:43.958Z",
+    "scrapedAt": "2026-10-12T12:11:18.184Z",
     "seeded": false
   },
   {
@@ -752,7 +806,7 @@
     "biography": "His main area of interest is in using advanced mapping and imaging technologies for complex brain tumour resection.",
     "role": "Consultant Neurosurgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:44.216Z",
+    "scrapedAt": "2026-10-12T12:11:19.103Z",
     "seeded": false,
     "locations": [
       {
@@ -767,7 +821,7 @@
         "type": "PRIVATE",
         "name": "LIPS Healthcare, Battersea Power Station",
         "address": "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
-        "email": "Vaqas.admin@Lips.org.uk",
+        "email": "appointments@lips.org.uk",
         "phone": "+44 20 3912 7233",
         "website": ""
       },
@@ -886,7 +940,7 @@
     "specialties": [
       "Trauma & Orthopaedics"
     ],
-    "scrapedAt": "2026-10-11T11:01:44.534Z",
+    "scrapedAt": "2026-10-12T12:11:19.872Z",
     "seeded": false
   },
   {
@@ -908,7 +962,7 @@
     "biography": "Dr HO is part of BUPA Open Referral but is not a Platinum Consultant Membership of medical associations: BMA, RCP, RSM, Psychodermatology UK",
     "role": "Consultant Dermatologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:45.388Z",
+    "scrapedAt": "2026-10-12T12:11:20.328Z",
     "seeded": false,
     "locations": [
       {
@@ -983,7 +1037,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:45.772Z",
+    "scrapedAt": "2026-10-12T12:11:20.529Z",
     "seeded": false
   },
   {
@@ -1012,7 +1066,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:46.036Z",
+    "scrapedAt": "2026-10-12T12:11:21.677Z",
     "seeded": false
   },
   {
@@ -1035,7 +1089,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:47.590Z",
+    "scrapedAt": "2026-10-12T12:11:22.087Z",
     "seeded": false
   },
   {
@@ -1091,7 +1145,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:47.475Z",
+    "scrapedAt": "2026-10-12T12:11:22.625Z",
     "seeded": false
   },
   {
@@ -1108,7 +1162,7 @@
     "biography": "",
     "role": "Consultant Dermatologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:47.412Z",
+    "scrapedAt": "2026-10-12T12:11:23.217Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -1154,7 +1208,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:48.505Z",
+    "scrapedAt": "2026-10-12T12:11:23.460Z",
     "seeded": false
   },
   {
@@ -1181,7 +1235,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:48.782Z",
+    "scrapedAt": "2026-10-12T12:11:24.006Z",
     "seeded": false
   },
   {
@@ -1215,7 +1269,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:49.184Z",
+    "scrapedAt": "2026-10-12T12:11:25.046Z",
     "seeded": false
   },
   {
@@ -1249,7 +1303,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:49.678Z",
+    "scrapedAt": "2026-10-12T12:11:24.846Z",
     "seeded": false
   },
   {
@@ -1274,7 +1328,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:50.063Z",
+    "scrapedAt": "2026-10-12T12:11:25.458Z",
     "seeded": false
   },
   {
@@ -1298,7 +1352,7 @@
     "biography": "",
     "role": "Consultant Neurosurgeon and Spinal Surgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:50.666Z",
+    "scrapedAt": "2026-10-12T12:11:27.027Z",
     "seeded": false,
     "locations": [
       {
@@ -1373,7 +1427,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:51.025Z",
+    "scrapedAt": "2026-10-12T12:11:26.923Z",
     "seeded": false
   },
   {
@@ -1392,7 +1446,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:51.601Z",
+    "scrapedAt": "2026-10-12T12:11:27.093Z",
     "seeded": false
   },
   {
@@ -1418,7 +1472,7 @@
     "biography": "",
     "role": "Consultant Limb Reconstruction and Knee Surgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:52.087Z",
+    "scrapedAt": "2026-10-12T12:11:28.441Z",
     "seeded": false,
     "locations": [
       {
@@ -1510,7 +1564,7 @@
     "specialties": [
       "Cardiology"
     ],
-    "scrapedAt": "2026-10-11T11:01:52.986Z",
+    "scrapedAt": "2026-10-12T12:11:29.345Z",
     "seeded": false
   },
   {
@@ -1584,7 +1638,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:53.327Z",
+    "scrapedAt": "2026-10-12T12:11:29.741Z",
     "seeded": false
   },
   {
@@ -1601,7 +1655,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:53.911Z",
+    "scrapedAt": "2026-10-12T12:11:30.721Z",
     "seeded": false
   },
   {
@@ -1629,7 +1683,7 @@
     "biography": "She is affiliated with leading organisations such as:",
     "role": "Consultant ENT Surgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:54.444Z",
+    "scrapedAt": "2026-10-12T12:11:31.044Z",
     "seeded": false,
     "locations": [
       {
@@ -1732,7 +1786,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:54.587Z",
+    "scrapedAt": "2026-10-12T12:11:31.547Z",
     "seeded": false
   },
   {
@@ -1749,11 +1803,28 @@
     "biography": "",
     "role": "Consultant Dermatologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:55.473Z",
+    "scrapedAt": "2026-10-12T12:11:32.979Z",
     "seeded": false,
-    "locations": [],
-    "locationVerified": false,
-    "worksAtLipsHealthcare": null,
+    "locations": [
+      {
+        "type": "PRIMARY",
+        "name": "Kingston Hospital NHS Foundation Trust",
+        "address": "Galsworthy Road, Kingston upon Thames, KT2 7QB",
+        "email": "",
+        "phone": "",
+        "website": "https://kingstonhospital.nhs.uk/"
+      },
+      {
+        "type": "PRIVATE",
+        "name": "LIPS Healthcare, Battersea Power Station",
+        "address": "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
+        "email": "appointments@lips.org.uk",
+        "phone": "+44 20 7046 2823",
+        "website": ""
+      }
+    ],
+    "locationVerified": true,
+    "worksAtLipsHealthcare": true,
     "specialties": [
       "Dermatology"
     ]
@@ -1788,7 +1859,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:56.104Z",
+    "scrapedAt": "2026-10-12T12:11:32.654Z",
     "seeded": false
   },
   {
@@ -1841,7 +1912,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:55.910Z",
+    "scrapedAt": "2026-10-12T12:11:32.984Z",
     "seeded": false
   },
   {
@@ -1914,7 +1985,7 @@
     "specialties": [
       "Cardiology"
     ],
-    "scrapedAt": "2026-10-11T11:01:57.073Z",
+    "scrapedAt": "2026-10-12T12:11:34.100Z",
     "seeded": false
   },
   {
@@ -1965,7 +2036,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:57.297Z",
+    "scrapedAt": "2026-10-12T12:11:34.788Z",
     "seeded": false
   },
   {
@@ -1999,7 +2070,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:57.571Z",
+    "scrapedAt": "2026-10-12T12:11:34.773Z",
     "seeded": false
   },
   {
@@ -2091,7 +2162,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:58.608Z",
+    "scrapedAt": "2026-10-12T12:11:35.750Z",
     "seeded": false
   },
   {
@@ -2131,7 +2202,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:58.545Z",
+    "scrapedAt": "2026-10-12T12:11:36.500Z",
     "seeded": false
   },
   {
@@ -2155,7 +2226,7 @@
     "biography": "Mr Gareth Chan is a Consultant Trauma & Orthopaedic Surgeon specialising in Foot & Ankle Surgery and Complex Trauma. He is recognised by all major UK insurers.",
     "role": "Consultant Trauma & Orthopaedic Surgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:01:58.984Z",
+    "scrapedAt": "2026-10-12T12:11:36.353Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -2204,7 +2275,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:00.353Z",
+    "scrapedAt": "2026-10-12T12:11:37.402Z",
     "seeded": false
   },
   {
@@ -2289,7 +2360,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:00.195Z",
+    "scrapedAt": "2026-10-12T12:11:37.844Z",
     "seeded": false
   },
   {
@@ -2314,7 +2385,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:00.731Z",
+    "scrapedAt": "2026-10-12T12:11:38.082Z",
     "seeded": false
   },
   {
@@ -2362,7 +2433,7 @@
     "specialties": [
       "Dermatology"
     ],
-    "scrapedAt": "2026-10-11T11:02:01.495Z",
+    "scrapedAt": "2026-10-12T12:11:39.023Z",
     "seeded": false
   },
   {
@@ -2410,7 +2481,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:01.708Z",
+    "scrapedAt": "2026-10-12T12:11:39.610Z",
     "seeded": false
   },
   {
@@ -2494,7 +2565,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:02.066Z",
+    "scrapedAt": "2026-10-12T12:11:39.189Z",
     "seeded": false
   },
   {
@@ -2523,7 +2594,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:03.281Z",
+    "scrapedAt": "2026-10-12T12:11:40.552Z",
     "seeded": false
   },
   {
@@ -2547,7 +2618,7 @@
     "biography": "G.R. has authored or co-authored over 800 peer-reviewed articles.",
     "role": "Consultant Cardiologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:03.580Z",
+    "scrapedAt": "2026-10-12T12:11:40.801Z",
     "seeded": false,
     "locations": [
       {
@@ -2589,7 +2660,7 @@
     "biography": "",
     "role": "Consultant General Practitioner",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:04.464Z",
+    "scrapedAt": "2026-10-12T12:11:42.121Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -2620,11 +2691,44 @@
     ],
     "biography": "Membership of the European Association for the Study of Liver Disease Membership British Society of Gastroenterology",
     "role": "Consultant Gastroenterologist and Hepatologist",
-    "locations": [],
-    "locationVerified": false,
-    "worksAtLipsHealthcare": null,
+    "locations": [
+      {
+        "type": "PRIMARY",
+        "name": "Barts Health NHS Trust",
+        "address": "The Royal Hospital, Whitechapel Rd, London E1 1BB, United Kingdom",
+        "email": "",
+        "phone": "",
+        "website": "https://www.bartshealth.nhs.uk/"
+      },
+      {
+        "type": "PRIVATE",
+        "name": "LIPS Healthcare, Battersea Power Station",
+        "address": "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
+        "email": "appointments@lips.org.uk",
+        "phone": "+44 20 7164 6114",
+        "website": ""
+      },
+      {
+        "type": "PRIVATE",
+        "name": "The Shard - HCA Healthcare UK",
+        "address": "HCA UK at The Shard, 32 St Thomas Street, London SE1 9BS",
+        "email": "",
+        "phone": "",
+        "website": "https://www.hcahealthcare.co.uk/"
+      },
+      {
+        "type": "PRIVATE",
+        "name": "HCA Canary Warf",
+        "address": "40 Bank Street, Canary Wharf, E14 5NR Online booking is not available for this specialist yet. Please contact the team to book.",
+        "email": "",
+        "phone": "",
+        "website": "https://www.hcahealthcare.co.uk/locations/outpatients/london-bridge-hospital/canary-wharf-outpatients"
+      }
+    ],
+    "locationVerified": true,
+    "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:05.041Z",
+    "scrapedAt": "2026-10-12T12:11:43.229Z",
     "seeded": false
   },
   {
@@ -2649,7 +2753,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:05.339Z",
+    "scrapedAt": "2026-10-12T12:11:42.876Z",
     "seeded": false
   },
   {
@@ -2672,7 +2776,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:05.999Z",
+    "scrapedAt": "2026-10-12T12:11:43.513Z",
     "seeded": false
   },
   {
@@ -2706,7 +2810,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:06.394Z",
+    "scrapedAt": "2026-10-12T12:11:44.212Z",
     "seeded": false
   },
   {
@@ -2733,7 +2837,7 @@
     "specialties": [
       "Aesthetics"
     ],
-    "scrapedAt": "2026-10-11T11:02:06.635Z",
+    "scrapedAt": "2026-10-12T12:11:44.659Z",
     "seeded": false
   },
   {
@@ -2769,7 +2873,7 @@
     "specialties": [
       "Trauma & Orthopaedics"
     ],
-    "scrapedAt": "2026-10-11T11:02:07.517Z",
+    "scrapedAt": "2026-10-12T12:11:44.949Z",
     "seeded": false
   },
   {
@@ -2833,7 +2937,7 @@
     "specialties": [
       "Neurology"
     ],
-    "scrapedAt": "2026-10-11T11:02:07.901Z",
+    "scrapedAt": "2026-10-12T12:11:45.780Z",
     "seeded": false
   },
   {
@@ -2852,7 +2956,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:08.102Z",
+    "scrapedAt": "2026-10-12T12:11:46.343Z",
     "seeded": false
   },
   {
@@ -2878,7 +2982,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:08.614Z",
+    "scrapedAt": "2026-10-12T12:11:46.842Z",
     "seeded": false
   },
   {
@@ -2919,7 +3023,7 @@
     "biography": "",
     "role": "Consultant Neurologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:09.701Z",
+    "scrapedAt": "2026-10-12T12:11:47.096Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -2949,7 +3053,7 @@
     "biography": "",
     "role": "Consultant Gynaecological Surgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:09.314Z",
+    "scrapedAt": "2026-10-12T12:11:47.631Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -2993,7 +3097,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:09.997Z",
+    "scrapedAt": "2026-10-12T12:11:48.414Z",
     "seeded": false
   },
   {
@@ -3048,7 +3152,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:10.464Z",
+    "scrapedAt": "2026-10-12T12:11:48.791Z",
     "seeded": false
   },
   {
@@ -3069,7 +3173,7 @@
     "biography": "",
     "role": "Consultant Endocrinology and Diabetes",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:11.292Z",
+    "scrapedAt": "2026-10-12T12:11:49.127Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -3093,7 +3197,7 @@
     "biography": "",
     "role": "Consultant Dermatologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:11.976Z",
+    "scrapedAt": "2026-10-12T12:11:49.954Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -3120,7 +3224,7 @@
     "biography": "",
     "role": "Consultant in Diabetes and Endocrinology",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:11.829Z",
+    "scrapedAt": "2026-10-12T12:11:50.629Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -3199,7 +3303,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:12.655Z",
+    "scrapedAt": "2026-10-12T12:11:50.796Z",
     "seeded": false
   },
   {
@@ -3264,7 +3368,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:13.303Z",
+    "scrapedAt": "2026-10-12T12:11:51.340Z",
     "seeded": false
   },
   {
@@ -3306,7 +3410,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:13.415Z",
+    "scrapedAt": "2026-10-12T12:11:52.138Z",
     "seeded": false
   },
   {
@@ -3365,7 +3469,7 @@
     "specialties": [
       "Cardiology"
     ],
-    "scrapedAt": "2026-10-11T11:02:13.891Z",
+    "scrapedAt": "2026-10-12T12:11:52.446Z",
     "seeded": false
   },
   {
@@ -3414,7 +3518,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:14.548Z",
+    "scrapedAt": "2026-10-12T12:11:53.033Z",
     "seeded": false
   },
   {
@@ -3444,7 +3548,7 @@
     "biography": "",
     "role": "Consultant Ophthalmologist Surgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:15.103Z",
+    "scrapedAt": "2026-10-12T12:11:53.278Z",
     "seeded": false,
     "locations": [
       {
@@ -3529,7 +3633,7 @@
     "biography": "Dr Peterzan is a Consultant Cardiologist based at St George's Hospital",
     "role": "Consultant Cardiologist - Heart failure and imaging",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:15.204Z",
+    "scrapedAt": "2026-10-12T12:11:54.113Z",
     "seeded": false,
     "locations": [
       {
@@ -3582,7 +3686,7 @@
     "biography": "",
     "role": "Cardiologist & Electrophysiologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:15.726Z",
+    "scrapedAt": "2026-10-12T12:11:54.523Z",
     "seeded": false,
     "locations": [
       {
@@ -3653,7 +3757,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:16.798Z",
+    "scrapedAt": "2026-10-12T12:11:55.204Z",
     "seeded": false
   },
   {
@@ -3676,7 +3780,7 @@
     "biography": "",
     "role": "Consultant Upper Gastrointestinal and General Surgeon",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:16.552Z",
+    "scrapedAt": "2026-10-12T12:11:55.509Z",
     "seeded": false,
     "locations": [
       {
@@ -3731,7 +3835,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:17.097Z",
+    "scrapedAt": "2026-10-12T12:11:56.057Z",
     "seeded": false
   },
   {
@@ -3760,7 +3864,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:18.001Z",
+    "scrapedAt": "2026-10-12T12:11:56.789Z",
     "seeded": false
   },
   {
@@ -3845,7 +3949,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:18.752Z",
+    "scrapedAt": "2026-10-12T12:11:57.836Z",
     "seeded": false
   },
   {
@@ -3875,7 +3979,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:19.470Z",
+    "scrapedAt": "2026-10-12T12:11:58.063Z",
     "seeded": false
   },
   {
@@ -3909,7 +4013,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:20.004Z",
+    "scrapedAt": "2026-10-12T12:11:58.481Z",
     "seeded": false
   },
   {
@@ -3926,7 +4030,7 @@
     "biography": "",
     "role": "Consultant Dermatologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:20.304Z",
+    "scrapedAt": "2026-10-12T12:11:59.749Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -3970,7 +4074,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:21.083Z",
+    "scrapedAt": "2026-10-12T12:11:59.821Z",
     "seeded": false
   },
   {
@@ -4084,7 +4188,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:21.224Z",
+    "scrapedAt": "2026-10-12T12:12:00.177Z",
     "seeded": false
   },
   {
@@ -4119,7 +4223,7 @@
         "type": "PRIVATE",
         "name": "LIPS Healthcare, Battersea Power Station",
         "address": "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
-        "email": "Sihra.admin@lips.org.uk",
+        "email": "appointments@lips.org.uk",
         "phone": "+44 2038709978",
         "website": ""
       },
@@ -4143,7 +4247,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:21.684Z",
+    "scrapedAt": "2026-10-12T12:12:01.941Z",
     "seeded": false
   },
   {
@@ -4175,7 +4279,7 @@
     "specialties": [
       "Cardiology"
     ],
-    "scrapedAt": "2026-10-11T11:02:22.245Z",
+    "scrapedAt": "2026-10-12T12:12:01.378Z",
     "seeded": false
   },
   {
@@ -4188,7 +4292,7 @@
     "biography": "",
     "role": "General Practitioner",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:22.750Z",
+    "scrapedAt": "2026-10-12T12:12:01.971Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -4238,7 +4342,7 @@
     "specialties": [
       "Trauma & Orthopaedics"
     ],
-    "scrapedAt": "2026-10-11T11:02:23.240Z",
+    "scrapedAt": "2026-10-12T12:12:03.225Z",
     "seeded": false
   },
   {
@@ -4258,7 +4362,7 @@
     "biography": "Royal College of Surgeons, ENTUK, British Association of Paediatric Otolaryngology (BAPO)",
     "role": "Consultant ENT",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:23.750Z",
+    "scrapedAt": "2026-10-12T12:12:03.847Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -4298,7 +4402,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:24.168Z",
+    "scrapedAt": "2026-10-12T12:12:03.830Z",
     "seeded": false
   },
   {
@@ -4325,7 +4429,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:24.689Z",
+    "scrapedAt": "2026-10-12T12:12:04.857Z",
     "seeded": false
   },
   {
@@ -4367,7 +4471,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:25.319Z",
+    "scrapedAt": "2026-10-12T12:12:05.562Z",
     "seeded": false
   },
   {
@@ -4403,7 +4507,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:25.374Z",
+    "scrapedAt": "2026-10-12T12:12:05.287Z",
     "seeded": false
   },
   {
@@ -4437,7 +4541,7 @@
     "specialties": [
       "Cardiology"
     ],
-    "scrapedAt": "2026-10-11T11:02:26.002Z",
+    "scrapedAt": "2026-10-12T12:12:06.813Z",
     "seeded": false
   },
   {
@@ -4503,7 +4607,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:27.004Z",
+    "scrapedAt": "2026-10-12T12:12:06.566Z",
     "seeded": false
   },
   {
@@ -4527,7 +4631,7 @@
     "biography": "Professional Qualifications and Training Certificate of Completion of Training (CCT) in Trauma and Orthopaedic Surgery (2021) – South East Thames Training Programme FRCS (Tr & Orth), Royal College of Surgeons of Edinburgh MD (Res) – University College London, specialising in outcomes of total ankle arthroplasty BSc in Orthopaedic Sciences (First Class Honours) – UCL/Royal National Orthopaedic Hospital Foot and ankle trauma management Total ankle replacement and arthrodesis Advanced imaging techniques and outcomes analysis BOFAS Chang Chen Award (First Prize) for meta-analysis on total ankle replacements Numerous national and international podium presentations at EFORT, AOFAS, and BOFAS conferences Principal Investigator for multi-centre clinical trials, including the TARVA study",
     "role": "Consultant Trauma and Orthopaedic Surgeon (Foot and Ankle)",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:26.533Z",
+    "scrapedAt": "2026-10-12T12:12:07.197Z",
     "seeded": false,
     "locations": [],
     "locationVerified": false,
@@ -4558,7 +4662,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:27.575Z",
+    "scrapedAt": "2026-10-12T12:12:07.690Z",
     "seeded": false
   },
   {
@@ -4626,7 +4730,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:27.888Z",
+    "scrapedAt": "2026-10-12T12:12:08.584Z",
     "seeded": false
   },
   {
@@ -4649,7 +4753,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:28.266Z",
+    "scrapedAt": "2026-10-12T12:12:08.835Z",
     "seeded": false
   },
   {
@@ -4686,7 +4790,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:29.139Z",
+    "scrapedAt": "2026-10-12T12:12:09.109Z",
     "seeded": false
   },
   {
@@ -4705,7 +4809,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:29.157Z",
+    "scrapedAt": "2026-10-12T12:12:10.156Z",
     "seeded": false
   },
   {
@@ -4745,7 +4849,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:29.763Z",
+    "scrapedAt": "2026-10-12T12:12:10.412Z",
     "seeded": false
   },
   {
@@ -4784,7 +4888,7 @@
     "biography": "Dr Ankolekar is a highly experienced Consultant Neurologist and works full time at King's College Hospital, London. He was the Clinical Lead for the Department of Stroke from 2018 to He has abundance of clinical experience in a wide variety of neurological diseases including headache, concussion, seizures, dizziness, disorders of sensation and neuromuscular function, memory and cognitive problems, movement disorders and stroke. His special interest areas include stroke, cerebrovascular disorders and memory problems. At King's College Hospital, he participates in the Acute Neurology and tertiary Stroke Service rota providing care for patients with acute neurological conditions and stroke. He is part of the South East London and Kent regional neurovascular multidisciplinary team, and runs regular General Neurology clinics. General Stroke Clinics, Complex Cerebrovascular Disease Clinics and Sickle Cell Neurology clinics. His research interests include blood pressure and memory Dr Ankolekar graduated from Kasturba Medical College, Mangalore, India in 1997. He completed his neurology training from the Yorkshire Deanery in Leeds, and obtained his PhD in Stroke Medicine from the University of Nottingham. He has been a full time Consultant Neurologist since 2013 and was appointed at the King's College Hospital in 2017.",
     "role": "Consultant Neurologist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:30.310Z",
+    "scrapedAt": "2026-10-12T12:12:10.803Z",
     "seeded": false,
     "locations": [
       {
@@ -4834,7 +4938,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:30.524Z",
+    "scrapedAt": "2026-10-12T12:12:11.437Z",
     "seeded": false
   },
   {
@@ -4861,7 +4965,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:31.140Z",
+    "scrapedAt": "2026-10-12T12:12:11.896Z",
     "seeded": false
   },
   {
@@ -4884,7 +4988,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:31.688Z",
+    "scrapedAt": "2026-10-12T12:12:12.153Z",
     "seeded": false
   },
   {
@@ -4901,7 +5005,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:32.056Z",
+    "scrapedAt": "2026-10-12T12:12:12.740Z",
     "seeded": false
   },
   {
@@ -4920,7 +5024,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:32.430Z",
+    "scrapedAt": "2026-10-12T12:12:13.140Z",
     "seeded": false
   },
   {
@@ -4969,7 +5073,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:33.080Z",
+    "scrapedAt": "2026-10-12T12:12:13.727Z",
     "seeded": false
   },
   {
@@ -5019,7 +5123,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:33.744Z",
+    "scrapedAt": "2026-10-12T12:12:13.947Z",
     "seeded": false
   },
   {
@@ -5059,7 +5163,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:33.694Z",
+    "scrapedAt": "2026-10-12T12:12:14.632Z",
     "seeded": false
   },
   {
@@ -5115,7 +5219,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:34.400Z",
+    "scrapedAt": "2026-10-12T12:12:16.298Z",
     "seeded": false
   },
   {
@@ -5140,7 +5244,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:35.248Z",
+    "scrapedAt": "2026-10-12T12:12:16.077Z",
     "seeded": false
   },
   {
@@ -5198,7 +5302,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:34.985Z",
+    "scrapedAt": "2026-10-12T12:12:16.409Z",
     "seeded": false
   },
   {
@@ -5303,7 +5407,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:35.793Z",
+    "scrapedAt": "2026-10-12T12:12:17.768Z",
     "seeded": false
   },
   {
@@ -5330,7 +5434,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:36.282Z",
+    "scrapedAt": "2026-10-12T12:12:17.654Z",
     "seeded": false
   },
   {
@@ -5355,7 +5459,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:36.693Z",
+    "scrapedAt": "2026-10-12T12:12:18.228Z",
     "seeded": false
   },
   {
@@ -5444,7 +5548,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:37.342Z",
+    "scrapedAt": "2026-10-12T12:12:19.608Z",
     "seeded": false
   },
   {
@@ -5469,7 +5573,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:37.749Z",
+    "scrapedAt": "2026-10-12T12:12:19.724Z",
     "seeded": false
   },
   {
@@ -5488,7 +5592,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:38.080Z",
+    "scrapedAt": "2026-10-12T12:12:20.016Z",
     "seeded": false
   },
   {
@@ -5541,7 +5645,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:38.665Z",
+    "scrapedAt": "2026-10-12T12:12:20.830Z",
     "seeded": false
   },
   {
@@ -5558,7 +5662,7 @@
     "biography": "He is an expert in Difficult Airway management and Thoracic Anaesthesia.",
     "role": "Consultant Anaesthetist",
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:39.514Z",
+    "scrapedAt": "2026-10-12T12:12:21.926Z",
     "seeded": false,
     "locations": [
       {
@@ -5588,7 +5692,7 @@
       {
         "type": "PRIVATE",
         "name": "King Edward VII's Hospital",
-        "address": "5-10 Beaumont Street, Marylebone, London, W1G 6AA.",
+        "address": "5-10 Beaumont Street, Marylebone, London, W1G 6AA. Online booking is not available for this specialist yet. Please contact the team to book.",
         "email": "",
         "phone": "",
         "website": "https://www.kingedwardvii.co.uk/"
@@ -5629,7 +5733,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:39.631Z",
+    "scrapedAt": "2026-10-12T12:12:21.529Z",
     "seeded": false
   },
   {
@@ -5679,7 +5783,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:40.160Z",
+    "scrapedAt": "2026-10-12T12:12:22.409Z",
     "seeded": false
   },
   {
@@ -5770,7 +5874,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:41.422Z",
+    "scrapedAt": "2026-10-12T12:12:23.060Z",
     "seeded": false
   },
   {
@@ -5814,7 +5918,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:40.792Z",
+    "scrapedAt": "2026-10-12T12:12:23.434Z",
     "seeded": false
   },
   {
@@ -5846,7 +5950,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:41.725Z",
+    "scrapedAt": "2026-10-12T12:12:23.947Z",
     "seeded": false
   },
   {
@@ -5858,6 +5962,17 @@
     ],
     "subSpecialties": [],
     "expertise": [
+      "Education and professional highlights",
+      "Research and publications",
+      "Consultation types",
+      "LIPS Healthcare, Battersea Power Station",
+      "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
+      "appointments@lips.org.uk",
+      "+44 (0)20 3870 9998",
+      "New Victoria Hospital (West Wimbledon)",
+      "184 Coombe Lane West, Kingston upon Thames, London, KT2 7EG",
+      "https://www.newvictoria.co.uk/",
+      "Guy's & St Thomas' NHS Foundation Trust",
       "urology"
     ],
     "conditions": [
@@ -5865,11 +5980,36 @@
     ],
     "biography": "",
     "role": "Consultant Urological Surgeon",
-    "locations": [],
-    "locationVerified": false,
-    "worksAtLipsHealthcare": null,
+    "locations": [
+      {
+        "type": "PRIVATE",
+        "name": "LIPS Healthcare, Battersea Power Station",
+        "address": "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
+        "email": "appointments@lips.org.uk",
+        "phone": "+44 (0)20 3870 9998",
+        "website": ""
+      },
+      {
+        "type": "PRIVATE",
+        "name": "New Victoria Hospital (West Wimbledon)",
+        "address": "184 Coombe Lane West, Kingston upon Thames, London, KT2 7EG",
+        "email": "",
+        "phone": "",
+        "website": "https://www.newvictoria.co.uk/"
+      },
+      {
+        "type": "PRIMARY",
+        "name": "Guy's & St Thomas' NHS Foundation Trust",
+        "address": "",
+        "email": "",
+        "phone": "",
+        "website": ""
+      }
+    ],
+    "locationVerified": true,
+    "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:42.033Z",
+    "scrapedAt": "2026-10-12T12:12:25.246Z",
     "seeded": false
   },
   {
@@ -5909,7 +6049,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:42.967Z",
+    "scrapedAt": "2026-10-12T12:12:24.986Z",
     "seeded": false
   },
   {
@@ -5935,7 +6075,7 @@
     "specialties": [
       "Cardiology"
     ],
-    "scrapedAt": "2026-10-11T11:02:43.221Z",
+    "scrapedAt": "2026-10-12T12:12:25.347Z",
     "seeded": false
   },
   {
@@ -5960,7 +6100,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:43.646Z",
+    "scrapedAt": "2026-10-12T12:12:26.806Z",
     "seeded": false
   },
   {
@@ -5983,7 +6123,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:44.381Z",
+    "scrapedAt": "2026-10-12T12:12:26.644Z",
     "seeded": false
   },
   {
@@ -6027,7 +6167,7 @@
     "locationVerified": true,
     "worksAtLipsHealthcare": true,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:44.658Z",
+    "scrapedAt": "2026-10-12T12:12:27.249Z",
     "seeded": false
   },
   {
@@ -6053,90 +6193,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:44.948Z",
-    "seeded": false
-  },
-  {
-    "name": "Mrs Eirini Lentari",
-    "profileUrl": "https://lips.org.uk/our-specialists/mrs-eirini-lentari/",
-    "specialty": "ENT",
-    "specialties": [
-      "ENT"
-    ],
-    "subSpecialties": [
-      "Throat"
-    ],
-    "expertise": [
-      "Throat",
-      "ent",
-      "tinnitus",
-      "Cough",
-      "Tinnitus",
-      "Sinus problem"
-    ],
-    "conditions": [
-      "ent",
-      "tinnitus",
-      "Cough",
-      "Tinnitus",
-      "Sinus problem"
-    ],
-    "biography": "She is affiliated with leading organisations such as:",
-    "role": "Consultant ENT Surgeon",
-    "locations": [
-      {
-        "type": "PRIMARY",
-        "name": "Cambridge University Hospitals NHS trust , OMNED Healthcare",
-        "address": "",
-        "email": "",
-        "phone": "",
-        "website": "https://www.omneshealthcare.co.uk/secondary-care-services/"
-      },
-      {
-        "type": "PRIMARY",
-        "name": "Barking Havering Redbridge University Trust",
-        "address": "Rom Valley Way, Romford, Essex, RM7 0AG",
-        "email": "",
-        "phone": "",
-        "website": "https://www.bhrhospitals.nhs.uk/queens-hospital"
-      },
-      {
-        "type": "PRIMARY",
-        "name": "Herts and West Essex ICB ,Communitas Clinics",
-        "address": "",
-        "email": "",
-        "phone": "",
-        "website": ""
-      },
-      {
-        "type": "PRIVATE",
-        "name": "LIPS Healthcare, Battersea Power Station",
-        "address": "Battersea Power Station, Turbine Hall B, Level 1, London, SW11 8DD",
-        "email": "appointments@lips.org.uk",
-        "phone": "+44 20 3031 3521",
-        "website": ""
-      },
-      {
-        "type": "PRIVATE",
-        "name": "Northway Clinic London",
-        "address": "13 Minnie Baldock St, London E16 1YE",
-        "email": "",
-        "phone": "",
-        "website": "http://www.northwayclinic.co.uk/"
-      },
-      {
-        "type": "PRIVATE",
-        "name": "Phoenix Hospital Group",
-        "address": "9 Harley St, London W1G 9QY",
-        "email": "",
-        "phone": "",
-        "website": "https://www.phoenixhospitalgroup.com/"
-      }
-    ],
-    "locationVerified": true,
-    "worksAtLipsHealthcare": true,
-    "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:02:45.735Z",
+    "scrapedAt": "2026-10-12T12:12:27.954Z",
     "seeded": false
   },
   {
@@ -6172,7 +6229,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:03:09.523Z",
+    "scrapedAt": "2026-10-12T12:12:51.369Z",
     "seeded": false
   },
   {
@@ -6195,7 +6252,7 @@
     "locationVerified": false,
     "worksAtLipsHealthcare": null,
     "source": "lips.org.uk",
-    "scrapedAt": "2026-10-11T11:03:09.695Z",
+    "scrapedAt": "2026-10-12T12:12:51.947Z",
     "seeded": false
   }
 ]

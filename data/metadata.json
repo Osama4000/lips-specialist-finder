@@ -1,28 +1,40 @@
 {
   "schemaVersion": 6,
   "scraperVersion": "6.0.0",
-  "startedAt": "2026-10-12T11:58:47.851Z",
-  "lastUpdated": "2026-10-12T12:13:38.036Z",
-  "attemptedAt": "2026-10-12T12:13:38.036Z",
-  "discovered": 147,
-  "updated": 141,
-  "stored": 141,
+  "startedAt": "2026-10-13T11:48:04.347Z",
+  "lastUpdated": "2026-10-13T12:02:57.908Z",
+  "attemptedAt": "2026-10-13T12:02:57.908Z",
+  "discovered": 151,
+  "updated": 142,
+  "stored": 142,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
-  "locationVerifiedCount": 67,
-  "lipsHealthcareSpecialistCount": 67,
-  "failed": 3,
-  "retried": 3,
+  "locationVerifiedCount": 68,
+  "lipsHealthcareSpecialistCount": 68,
+  "failed": 6,
+  "retried": 6,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
-  "minimumRecordsRequired": 120,
+  "minimumRecordsRequired": 119,
   "minimumSpecialtiesRequired": 20,
   "minimumPreviousRetentionRatio": 0.85,
   "maxProfilePages": 400,
   "scrapeConcurrency": 3,
   "retryConcurrency": 2,
   "errors": [
+    {
+      "url": "https://lips.org.uk/our-specialists/gut-health-and-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/menopause-and-heart-health/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/metabolic-health-during-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
     {
       "url": "https://lips.org.uk/our-specialists/bone-health-and-menopause/",
       "error": "Missing H1 / doctor name"

@@ -1,18 +1,18 @@
 {
   "schemaVersion": 6,
   "scraperVersion": "6.0.0",
-  "startedAt": "2026-10-21T09:22:14.266Z",
-  "lastUpdated": "2026-10-21T09:35:34.381Z",
-  "attemptedAt": "2026-10-21T09:35:34.381Z",
-  "discovered": 146,
-  "updated": 145,
-  "stored": 145,
+  "startedAt": "2026-10-22T09:27:39.514Z",
+  "lastUpdated": "2026-10-22T09:41:59.979Z",
+  "attemptedAt": "2026-10-22T09:41:59.979Z",
+  "discovered": 157,
+  "updated": 148,
+  "stored": 148,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
   "locationVerifiedCount": 80,
   "lipsHealthcareSpecialistCount": 80,
-  "failed": 1,
-  "retried": 1,
+  "failed": 9,
+  "retried": 9,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
@@ -23,6 +23,38 @@
   "scrapeConcurrency": 3,
   "retryConcurrency": 2,
   "errors": [
+    {
+      "url": "https://lips.org.uk/our-specialists/gut-health-and-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/menopause-and-heart-health/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/metabolic-health-during-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/bone-health-and-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/protein-muscle-and-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/sun-burn-in-children/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/heat-rash-in-children/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/colic-in-babies/",
+      "error": "Missing H1 / doctor name"
+    },
     {
       "url": "https://lips.org.uk/our-specialists/agnes-nereah/",
       "error": "Missing H1 / doctor name"

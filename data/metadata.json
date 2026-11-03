@@ -1,18 +1,18 @@
 {
   "schemaVersion": 6,
   "scraperVersion": "6.0.0",
-  "startedAt": "2026-11-02T12:24:09.951Z",
-  "lastUpdated": "2026-11-02T12:40:31.629Z",
-  "attemptedAt": "2026-11-02T12:40:31.629Z",
-  "discovered": 156,
-  "updated": 147,
-  "stored": 147,
+  "startedAt": "2026-11-03T11:55:52.893Z",
+  "lastUpdated": "2026-11-03T12:10:11.326Z",
+  "attemptedAt": "2026-11-03T12:10:11.326Z",
+  "discovered": 152,
+  "updated": 146,
+  "stored": 146,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
   "locationVerifiedCount": 89,
   "lipsHealthcareSpecialistCount": 89,
-  "failed": 9,
-  "retried": 9,
+  "failed": 6,
+  "retried": 6,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
@@ -41,18 +41,6 @@
     },
     {
       "url": "https://lips.org.uk/our-specialists/protein-muscle-and-menopause/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/sun-burn-in-children/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/heat-rash-in-children/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/colic-in-babies/",
       "error": "Missing H1 / doctor name"
     },
     {

@@ -1,18 +1,18 @@
 {
   "schemaVersion": 6,
   "scraperVersion": "6.0.0",
-  "startedAt": "2026-11-12T12:42:13.640Z",
-  "lastUpdated": "2026-11-12T12:55:39.045Z",
-  "attemptedAt": "2026-11-12T12:55:39.045Z",
-  "discovered": 156,
-  "updated": 147,
-  "stored": 147,
+  "startedAt": "2026-11-13T12:12:42.783Z",
+  "lastUpdated": "2026-11-13T12:28:22.720Z",
+  "attemptedAt": "2026-11-13T12:28:22.720Z",
+  "discovered": 153,
+  "updated": 145,
+  "stored": 145,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
-  "locationVerifiedCount": 95,
-  "lipsHealthcareSpecialistCount": 95,
-  "failed": 9,
-  "retried": 9,
+  "locationVerifiedCount": 96,
+  "lipsHealthcareSpecialistCount": 96,
+  "failed": 8,
+  "retried": 8,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
@@ -53,10 +53,6 @@
     },
     {
       "url": "https://lips.org.uk/our-specialists/colic-in-babies/",
-      "error": "Missing H1 / doctor name"
-    },
-    {
-      "url": "https://lips.org.uk/our-specialists/agnes-nereah/",
       "error": "Missing H1 / doctor name"
     }
   ],

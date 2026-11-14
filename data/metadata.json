@@ -1,28 +1,44 @@
 {
   "schemaVersion": 6,
   "scraperVersion": "6.0.0",
-  "startedAt": "2026-11-13T12:12:42.783Z",
-  "lastUpdated": "2026-11-13T12:28:22.720Z",
-  "attemptedAt": "2026-11-13T12:28:22.720Z",
-  "discovered": 153,
-  "updated": 145,
-  "stored": 145,
+  "startedAt": "2026-11-14T11:28:07.182Z",
+  "lastUpdated": "2026-11-14T11:44:41.851Z",
+  "attemptedAt": "2026-11-14T11:44:41.851Z",
+  "discovered": 158,
+  "updated": 146,
+  "stored": 146,
   "specialtyCount": 32,
   "extractedSpecialtyCount": 32,
-  "locationVerifiedCount": 96,
-  "lipsHealthcareSpecialistCount": 96,
-  "failed": 8,
-  "retried": 8,
+  "locationVerifiedCount": 97,
+  "lipsHealthcareSpecialistCount": 97,
+  "failed": 12,
+  "retried": 12,
   "recoveredOnRetry": 0,
   "preservedPrevious": false,
   "lastAttemptPassedCoverageGate": true,
-  "minimumRecordsRequired": 124,
+  "minimumRecordsRequired": 123,
   "minimumSpecialtiesRequired": 20,
   "minimumPreviousRetentionRatio": 0.85,
   "maxProfilePages": 400,
   "scrapeConcurrency": 3,
   "retryConcurrency": 2,
   "errors": [
+    {
+      "url": "https://lips.org.uk/our-specialists/mole-mapping/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/lumps-and-bumps/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/soy-for-menopause/",
+      "error": "Missing H1 / doctor name"
+    },
+    {
+      "url": "https://lips.org.uk/our-specialists/glp-1-weight-loss/",
+      "error": "Missing H1 / doctor name"
+    },
     {
       "url": "https://lips.org.uk/our-specialists/gut-health-and-menopause/",
       "error": "Missing H1 / doctor name"
